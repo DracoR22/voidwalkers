@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
+use crate::components::cube::CubeComponent;
+
 pub fn spawn_cube_system(mut commands: Commands, mut mesh_assets: ResMut<Assets<Mesh>>, mut material_assets: ResMut<Assets<StandardMaterial>>) {
     // Define the size of the cube
     let width = 50.0; // Width
@@ -22,5 +24,6 @@ pub fn spawn_cube_system(mut commands: Commands, mut mesh_assets: ResMut<Assets<
         ..default()
     })
     .insert(RigidBody::Dynamic)
-    .insert(Collider::cuboid(width / 2.0, height / 2.0, depth / 2.0)); // Use half-extents for the collider
+    .insert(Collider::cuboid(width / 2.0, height / 2.0, depth / 2.0)) // Use half-extents for the collider
+    .insert(CubeComponent);
 }
