@@ -1,5 +1,7 @@
-pub mod systems;
-pub mod components;
-pub mod plugins;
-pub mod resources;
+
 pub mod states;
+
+pub mod player;
+pub mod cubes;
+pub mod house;
+pub mod window;
