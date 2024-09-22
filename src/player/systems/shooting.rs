@@ -6,6 +6,7 @@ use crate::{cubes::components::CubeComponent, player::{components::{BulletTracer
 pub fn shoot_ray(
     mut commands: Commands,
     keyboard_input: Res<ButtonInput<KeyCode>>,
+    mouse_input: Res<ButtonInput<MouseButton>>,
     player_query: Query<&Transform, With<Player>>,
     camera_query: Query<&Transform, (With<PlayerFirstPersonCamera>, Without<Player>)>,
     rapier_context: Res<RapierContext>,
@@ -13,7 +14,7 @@ pub fn shoot_ray(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    if keyboard_input.just_pressed(KeyCode::KeyR) {
+    if mouse_input.just_pressed(MouseButton::Left) {
         let player_transform = player_query.single();
         let camera_transform = camera_query.single();
 

@@ -13,3 +13,6 @@ pub struct BulletTracer {
     pub life_time: f32,
     pub direction: Vec3,
 }
+
+#[derive(Component)]
+pub struct SightDot;
