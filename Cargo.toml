@@ -5,5 +5,5 @@ edition = "2021"
 
 [dependencies]
 bevy = "0.13"
-bevy_flycam = "0.13"
+bevy_kira_audio = "0.19"
 bevy_rapier3d = "0.25"
