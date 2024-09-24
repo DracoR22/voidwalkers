@@ -20,7 +20,7 @@ pub fn spawn_cube_system(mut commands: Commands, mut mesh_assets: ResMut<Assets<
     commands.spawn(PbrBundle {
         mesh: mesh.clone(),
         material: material.clone(),
-        transform: Transform::from_translation(Vec3::new(0.0, 50.0, 0.0)), // Position it above the ground
+        transform: Transform::from_translation(Vec3::new(400.0, 70.0, 0.0)), // Position it above the ground
         ..default()
     })
     .insert(RigidBody::Dynamic)

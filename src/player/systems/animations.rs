@@ -14,8 +14,6 @@ pub fn load_animation(
     audio: Res<Audio>
 ) {
 
-    // let audio_handle = asset_server.load("audios/ak74.ogg");
-
     for mut player in &mut players_query {
         keyboard_input.get_just_pressed().into_iter().for_each(|key_code| {
 
@@ -25,18 +23,22 @@ pub fn load_animation(
                 KeyCode::KeyR => *current_animation = 7,
                 // do the same for all animations
     
-                _ => *current_animation = 0
+                _ => ()
             }
         });
 
         if mouse_input.pressed(MouseButton::Left) {
-            // Continuously set the animation to 4 while the mouse button is heldwwwwww
+            // Continuously set the animation to 4 while the mouse button is held
             *current_animation = 4;
         }
     
         if mouse_input.just_released(MouseButton::Left) {
             // Stop looping or switch animation when left-click is released
             *current_animation = 0; // Reset or change animation on release
+        }
+
+        if keyboard_input.just_released(KeyCode::KeyW) {
+            *current_animation = 0;
         }
 
         let animation: &mut AnimationPlayer = player.play_with_transition(

@@ -6,7 +6,7 @@ use bevy::{
 };
 use bevy_rapier3d::prelude::*;
 
-use crate::player::{components::{Player, PlayerFirstPersonCamera}, resources::Animations};
+use crate::player::{components::{Player, PlayerFirstPersonCamera}, constants::GRAVITY_SCALE, resources::Animations};
 
 #[derive(Component)]
 pub struct AK74Model;
@@ -34,6 +34,18 @@ pub fn spawn_player_system(mut commands: Commands, mut mesh_assets: ResMut<Asset
         VisibilityBundle::default(),
         Player,
     ))
+    .insert(RigidBody::Dynamic) // Make the player dynamic
+    .insert(Collider::cuboid(player_size / 2.0, player_size / 2.0, player_size / 2.0)) // Set collider
+    .insert(GravityScale(GRAVITY_SCALE))
+    .insert(Friction {
+        coefficient: 0.5, // Adjust the friction coefficient (lower values for less sliding)
+        combine_rule: CoefficientCombineRule::Multiply, // You can use different combination rules
+    })
+    .insert(Damping {
+        linear_damping: 0.5, // Adjust linear damping to slow movement after collisions
+        angular_damping: 2.0, // Prevents unwanted rotation
+    })
+    .insert(LockedAxes::ROTATION_LOCKED)
     .with_children(|parent| {
         // Spawn the camera as a child of the player
         parent.spawn((

@@ -51,9 +51,9 @@ pub fn shoot_ray(
 
         let forward = player_transform.forward();
         let cam_forward = camera_transform.forward();
-let forward_x = forward.x;
-let forward_y = cam_forward.y; 
-let forward_z = forward.z;
+        let forward_x = forward.x;
+        let forward_y = cam_forward.y; 
+        let forward_z = forward.z;
 
         // Spawn bullet tracer
         commands.spawn((
@@ -70,7 +70,8 @@ let forward_z = forward.z;
                 life_time: TRACER_LIFETIME,
                 direction: *ray_direction,
             },
-        ));
+        ))
+        .insert(Collider::capsule_y(TRACER_WIDTH / 2.0, TRACER_WIDTH));
 
         // Handle hit logic here
         if let Some(entity) = hit_entity {
