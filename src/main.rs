@@ -1,14 +1,18 @@
-use std::env;
+
 
 use bevy::prelude::*;
+use bevy::log::LogPlugin;
 use bevy_kira_audio::prelude::*;
 use bevy_rapier3d::plugin::{NoUserData, RapierPhysicsPlugin};
 use voidhunt::{cubes::systems::spawn::spawn_cube_system, house::HousePlugin, player::PlayerPlugin, states::GameStatePlugin, weapons::WeaponsPlugin, window::WindowSetupPlugin};
 
 fn main() {
-    env::set_var("RUST_LOG", "info,bevy_kira_audio=error");
     App::new()
-    .add_plugins(DefaultPlugins)
+    .add_plugins(DefaultPlugins.set(LogPlugin {
+        filter: "error".into(),
+        level: bevy::log::Level::ERROR,
+        ..default()
+    }))
     .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
     .add_plugins(AudioPlugin)
     .add_plugins(WindowSetupPlugin)

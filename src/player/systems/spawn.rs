@@ -2,6 +2,10 @@ use bevy::{
     input::{
         mouse::{MouseButtonInput, MouseMotion, MouseWheel},
     },
+    core_pipeline::{
+        bloom::{BloomCompositeMode, BloomSettings},
+        tonemapping::Tonemapping,
+    },
     prelude::*,
 };
 use bevy_rapier3d::prelude::*;
@@ -50,9 +54,15 @@ pub fn spawn_player_system(mut commands: Commands, mut mesh_assets: ResMut<Asset
         // Spawn the camera as a child of the player
         parent.spawn((
             Camera3dBundle {
+                camera: Camera {
+                    hdr: true,
+                    ..default()
+                },
+                tonemapping: Tonemapping::TonyMcMapface,
                 transform: Transform::from_xyz(0.0, 107.7, 10.5),
                 ..default()
             },
+            BloomSettings::NATURAL,
             PlayerFirstPersonCamera
         ));
 
