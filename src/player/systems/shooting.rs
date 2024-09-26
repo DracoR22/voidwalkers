@@ -79,14 +79,8 @@ pub fn shoot_ray(
         if let Some(entity) = hit_entity {
             if let Ok((_, transform)) = cube_query.get(entity) {
                 println!("Hit a CubeComponent entity: {:?}", entity);
-                let position = transform.translation;
-                let x = position.x;
-                let y = position.y;
-                let z = position.z;
 
-                println!("Spawning blood at ({}, {}, {})", x, y, z);
-                spawn_blood(commands, effects, x, y, z);
-                println!("Blood spawned");
+                spawn_blood(commands, effects, 0.0, 0.0, 0.0, Some(entity));
             } else {
                 println!("Hit an entity, but not a CubeComponent: {:?}", entity);
             }

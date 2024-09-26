@@ -3,7 +3,7 @@ use bevy::log::LogPlugin;
 use bevy_kira_audio::prelude::*;
 use bevy_hanabi::prelude::*;
 use bevy_rapier3d::plugin::{NoUserData, RapierPhysicsPlugin};
-use voidhunt::{cubes::systems::spawn::spawn_cube_system, house::HousePlugin, player::PlayerPlugin, states::GameStatePlugin, weapons::WeaponsPlugin, window::WindowSetupPlugin};
+use voidhunt::{cubes::systems::spawn::spawn_cube_system, game::blood::cleanup_blood_effects, house::HousePlugin, player::PlayerPlugin, states::GameStatePlugin, weapons::WeaponsPlugin, window::WindowSetupPlugin};
 
 fn main() {
     App::new()
@@ -25,6 +25,7 @@ fn main() {
     // .add_systems(Startup, setup_blood_system)
     // .add_systems(Update, update_blood_system)
     .add_systems(Startup, spawn_cube_system)
+    .add_systems(Update, cleanup_blood_effects)
     // .add_systems(Startup, setup_particle)
     // .add_systems(Startup, spawn_blood)
     .run();

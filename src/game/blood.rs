@@ -1,12 +1,18 @@
 use bevy::prelude::*;
 use bevy_hanabi::prelude::*;
 
+#[derive(Component)]
+pub struct BloodEffectLifetime {
+   pub timer: Timer,
+}
+
  pub fn spawn_blood(
     mut commands: Commands,
     mut effects: ResMut<Assets<EffectAsset>>,
     position_x: f32,
     position_y: f32,
-    position_z: f32
+    position_z: f32,
+    parent: Option<Entity>
  ) {
     
     let mut gradient = Gradient::new();
@@ -118,12 +124,53 @@ use bevy_hanabi::prelude::*;
 
     let effect1 = effects.add(effect);
 
-    commands.spawn((
-        Name::new("firework"),
+    let blood_effect = (
+        Name::new("blood"),
         ParticleEffectBundle {
             effect: ParticleEffect::new(effect1),
             transform:  Transform::from_xyz(position_x, position_y, position_z),
             ..Default::default()
         },
-    ));
+        BloodEffectLifetime {
+            timer: Timer::from_seconds(3.0, TimerMode::Once), // Adjust the duration as needed
+        },
+    );
+
+    match parent {
+        Some(parent_entity) => {
+            // Spawn as a child of the provided entity
+            commands.entity(parent_entity).with_children(|parent| {
+                parent.spawn(blood_effect);
+            });
+        }
+        None => {
+            // Spawn as a standalone entity
+            commands.spawn(blood_effect);
+        }
+    }
+
+    // commands.spawn((
+    //     Name::new("blood"),
+    //     ParticleEffectBundle {
+    //         effect: ParticleEffect::new(effect1),
+    //         transform:  Transform::from_xyz(position_x, position_y, position_z),
+    //         ..Default::default()
+    //     },
+    //     BloodEffectLifetime {
+    //         timer: Timer::from_seconds(3.0, TimerMode::Once), // Adjust the duration as needed
+    //     },
+    // ));
+}
+
+pub fn cleanup_blood_effects(
+    mut commands: Commands,
+    time: Res<Time>,
+    mut query: Query<(Entity, &mut BloodEffectLifetime)>,
+) {
+    for (entity, mut lifetime) in query.iter_mut() {
+        lifetime.timer.tick(time.delta());
+        if lifetime.timer.finished() {
+            commands.entity(entity).despawn_recursive();
+        }
+    }
 }
