@@ -11,13 +11,27 @@ pub fn spawn_assets(
        commands.spawn(DirectionalLightBundle {
         directional_light: DirectionalLight {
             shadows_enabled: true,
-            color: Color::rgb(1.0, 0.9, 0.7),
-            illuminance: 200.0,
+            color: Color::WHITE,
+            illuminance: 800.0,
             ..default()
         },
         transform: Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_4)),
         ..default()
     });
+
+     // Bright warm light to simulate muzzle flash
+    //  commands.spawn(PointLightBundle {
+    //     point_light: PointLight {
+    //         intensity: 50000.0, // High intensity for a quick flash
+    //         color: Color::rgb(1.0, 0.8, 0.6), // Warm color like a fire/explosion
+    //         range: 500.0, // Adjust range to fit the flash
+    //         radius: 100.0,
+    //         shadows_enabled: true,
+    //         ..default()
+    //     },
+    //     transform: Transform::from_xyz(700.0, 1.0, 0.0), // Position the light at the gun's muzzle (transform from the gun or player)
+    //     ..default()
+    // });
 
     
     // emisive ball

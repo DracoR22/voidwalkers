@@ -1,7 +1,8 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
+use bevy_hanabi::prelude::*;
 
-use crate::{cubes::components::CubeComponent, player::{components::{BulletTracer, Player, PlayerFirstPersonCamera}, constants::{MAX_BULLET_DISTANCE, TRACER_LIFETIME, TRACER_WIDTH}}};
+use crate::{cubes::components::CubeComponent, game::blood::spawn_blood, player::{components::{BulletTracer, Player, PlayerFirstPersonCamera}, constants::{MAX_BULLET_DISTANCE, TRACER_LIFETIME, TRACER_WIDTH}}};
 
 pub fn shoot_ray(
     mut commands: Commands,
@@ -10,9 +11,10 @@ pub fn shoot_ray(
     player_query: Query<&Transform, With<Player>>,
     camera_query: Query<&Transform, (With<PlayerFirstPersonCamera>, Without<Player>)>,
     rapier_context: Res<RapierContext>,
-    cube_query: Query<&CubeComponent>,
+    cube_query: Query<(&CubeComponent, &Transform)>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    mut effects: ResMut<Assets<EffectAsset>>
 ) {
     if mouse_input.just_pressed(MouseButton::Left) {
         let player_transform = player_query.single();
@@ -75,10 +77,16 @@ pub fn shoot_ray(
 
         // Handle hit logic here
         if let Some(entity) = hit_entity {
-            if let Ok(_) = cube_query.get(entity) {
+            if let Ok((_, transform)) = cube_query.get(entity) {
                 println!("Hit a CubeComponent entity: {:?}", entity);
-                // Add your specific logic for hitting a cube here
-                // For example, change its color, make it disappear, etc.
+                let position = transform.translation;
+                let x = position.x;
+                let y = position.y;
+                let z = position.z;
+
+                println!("Spawning blood at ({}, {}, {})", x, y, z);
+                spawn_blood(commands, effects, x, y, z);
+                println!("Blood spawned");
             } else {
                 println!("Hit an entity, but not a CubeComponent: {:?}", entity);
             }
