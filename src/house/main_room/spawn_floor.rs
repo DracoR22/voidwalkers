@@ -24,7 +24,7 @@ pub fn spawn_floor(mut commands: Commands, asset_server: Res<AssetServer>) {
                 ..default()
             })
             // .insert(floor_size)
-            .insert(Collider::cuboid(800.0, 800.0, 0.05))
+            .insert(Collider::cuboid(10.0, 10.0, 0.05))
             .insert(RigidBody::Fixed);
         }
     }

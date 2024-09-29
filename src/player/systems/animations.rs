@@ -1,10 +1,7 @@
 use std::time::Duration;
-use bevy_kira_audio::prelude::*;
 use bevy::{animation, prelude::*};
 
 use crate::{game::link_animations::AnimationEntityLink, player::{components::Player, resources::Animations}};
-
-use super::spawn::AK74Model;
 
 pub fn load_animation(
     animations: Res<Animations>,

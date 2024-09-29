@@ -1,11 +1,12 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
+
+
 pub fn spawn_assets(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>
+    mouse_input: Res<ButtonInput<MouseButton>>
 ) {
        // Add a directional light
        commands.spawn(DirectionalLightBundle {
@@ -76,13 +77,24 @@ pub fn spawn_assets(
         ..default()
     });
 
-    // plant pot
+    // xmas tree
     commands.spawn(SceneBundle {
-        scene: asset_server.load("models/indoor_plant.glb#Scene0"),
+        scene: asset_server.load("models/xmas_tree.glb#Scene0"),
         transform: Transform {
-            translation: Vec3::new(1720.0, 1.0, 150.0),
-            scale: Vec3::splat(20.0),
+            translation: Vec3::new(1720.0, 1.0, 200.0),
+            scale: Vec3::splat(100.0),
             rotation: Quat::from_rotation_y(std::f32::consts::PI),
+            ..default()
+        },
+        ..default()
+    });
+
+    // presents
+    commands.spawn(SceneBundle {
+        scene: asset_server.load("models/white_present.glb#Scene0"),
+        transform: Transform {
+            translation: Vec3::new(1720.0, 10.0, 300.0),
+            scale: Vec3::splat(1.0),
             ..default()
         },
         ..default()
@@ -113,14 +125,14 @@ pub fn spawn_assets(
     });
 
     // coffee table
-    commands.spawn(SceneBundle {
-        scene: asset_server.load("models/wood_slab_coffee_table.glb#Scene0"),
-        transform: Transform {
-            translation: Vec3::new(1350.0, 1.0, -60.0),
-            scale: Vec3::splat(160.0),
-            rotation: Quat::from_rotation_y(std::f32::consts::PI),
-            ..default()
-        },
-        ..default()
-    });
+    // commands.spawn(SceneBundle {
+    //     scene: asset_server.load("models/wood_slab_coffee_table.glb#Scene0"),
+    //     transform: Transform {
+    //         translation: Vec3::new(1350.0, 1.0, -60.0),
+    //         scale: Vec3::splat(160.0),
+    //         rotation: Quat::from_rotation_y(std::f32::consts::PI),
+    //         ..default()
+    //     },
+    //     ..default()
+    // });
 }

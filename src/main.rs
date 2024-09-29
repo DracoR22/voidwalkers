@@ -3,7 +3,7 @@ use bevy::log::LogPlugin;
 use bevy_kira_audio::prelude::*;
 use bevy_hanabi::prelude::*;
 use bevy_rapier3d::plugin::{NoUserData, RapierPhysicsPlugin};
-use voidhunt::{cubes::systems::spawn::spawn_cube_system, enemies::EnemiesPlugin, game::blood::cleanup_blood_effects, house::HousePlugin, player::PlayerPlugin, states::GameStatePlugin, weapons::WeaponsPlugin, window::WindowSetupPlugin};
+use voidhunt::{cubes::systems::spawn::spawn_cube_system, enemies::EnemiesPlugin, game::blood::{cleanup_blood_effects, spawn_blood_mesh}, house::HousePlugin, player::PlayerPlugin, states::GameStatePlugin, weapons::WeaponsPlugin, window::WindowSetupPlugin};
 
 fn main() {
     App::new()
@@ -24,10 +24,7 @@ fn main() {
     .add_plugins(WeaponsPlugin)
 
     .add_systems(Startup, spawn_cube_system)
+    .add_systems(Startup, spawn_blood_mesh)
     .add_systems(Update, cleanup_blood_effects)
     .run();
-}
-
-fn start_background_audio(asset_server: Res<AssetServer>, audio: Res<Audio>) {
-    audio.play(asset_server.load("audios/ak74.ogg")).looped();
 }

@@ -14,7 +14,8 @@ pub fn shoot_ray(
     cube_query: Query<(&CubeComponent, &Transform)>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    mut effects: ResMut<Assets<EffectAsset>>
+    mut effects: ResMut<Assets<EffectAsset>>,
+    asset_server: Res<AssetServer>,
 ) {
     if mouse_input.just_pressed(MouseButton::Left) {
         let player_transform = player_query.single();
@@ -80,7 +81,7 @@ pub fn shoot_ray(
             if let Ok((_, transform)) = cube_query.get(entity) {
                 println!("Hit a CubeComponent entity: {:?}", entity);
 
-                spawn_blood(commands, effects, 0.0, 0.0, 0.0, Some(entity));
+                spawn_blood(commands, effects, 0.0, 0.0, 0.0, Some(entity), asset_server);
             } else {
                 println!("Hit an entity, but not a CubeComponent: {:?}", entity);
             }
