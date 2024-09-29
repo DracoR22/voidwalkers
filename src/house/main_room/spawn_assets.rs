@@ -1,24 +1,85 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
-
-
 pub fn spawn_assets(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
-    mouse_input: Res<ButtonInput<MouseButton>>
+    mouse_input: Res<ButtonInput<MouseButton>>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
        // Add a directional light
-       commands.spawn(DirectionalLightBundle {
-        directional_light: DirectionalLight {
-            shadows_enabled: true,
-            color: Color::WHITE,
-            illuminance: 800.0,
-            ..default()
-        },
-        transform: Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_4)),
-        ..default()
-    });
+    //    commands.spawn(DirectionalLightBundle {
+    //     directional_light: DirectionalLight {
+    //         shadows_enabled: true,
+    //         color: Color::rgb(1.0, 0.8, 0.6),
+    //         illuminance: 800.0,
+    //         ..default()
+    //     },
+    //     transform: Transform::from_rotation(Quat::from_rotation_x(-std::f32::consts::FRAC_PI_4)),
+    //     ..default()
+    // });
+
+      // ambient light
+    //   commands.insert_resource(AmbientLight {
+    //     color: Color::rgb(1.0, 0.8, 0.6),
+    //     brightness: 10.0,
+    // });
+
+       // point light
+       commands
+       .spawn(PointLightBundle {
+           // transform: Transform::from_xyz(5.0, 8.0, 2.0),
+           transform: Transform::from_xyz(730.0, 226.0, -395.0),
+           point_light: PointLight {
+               intensity: 100_000_000_0.0,
+               range: 100_000_000_000_000.0,
+               color: Color::rgb(1.0, 0.8, 0.6),
+               shadows_enabled: true,
+               ..default()
+           },
+           ..default()
+       })
+       .with_children(|builder| {
+           builder.spawn(SceneBundle {
+            scene: asset_server.load("models/lamp.glb#Scene0"),
+            transform: Transform {
+                rotation: Quat::from_rotation_y(std::f32::consts::PI / 2.0), 
+                scale: Vec3::splat(20.0),
+                translation: Vec3::new(0.0, 0.0, 64.0),
+                ..default()
+            },
+               ..default()
+           });
+       });
+
+       // point light 2
+       commands
+       .spawn(PointLightBundle {
+           // transform: Transform::from_xyz(5.0, 8.0, 2.0),
+           transform: Transform::from_xyz(1780.0, 236.0, -165.0),
+           point_light: PointLight {
+               intensity: 100_000_000_0.0,
+               range: 100_000_000_000.0,
+               color: Color::rgb(1.0, 0.8, 0.6),
+               shadows_enabled: true,
+               ..default()
+           },
+           ..default()
+       })
+       .with_children(|builder| {
+           builder.spawn(SceneBundle {
+            scene: asset_server.load("models/lamp.glb#Scene0"),
+            transform: Transform {
+                rotation: Quat::from_rotation_y(-std::f32::consts::PI / 2.0), 
+                scale: Vec3::splat(20.0),
+                translation: Vec3::new(0.0, 0.0, -64.0),
+                ..default()
+            },
+               ..default()
+           });
+       });
+
 
      // Bright warm light to simulate muzzle flash
     //  commands.spawn(PointLightBundle {
@@ -65,13 +126,13 @@ pub fn spawn_assets(
         ..default()
     });
 
-    // victorian sofa
+    // sofa
     commands.spawn(SceneBundle {
-        scene: asset_server.load("models/victorian_lounge_sofa.glb#Scene0"),
+        scene: asset_server.load("models/sofa.glb#Scene0"),
         transform: Transform {
-            translation: Vec3::new(1720.0, 90.0, -90.0),
-            scale: Vec3::splat(190.0),
-            rotation: Quat::from_rotation_y(std::f32::consts::PI),
+            translation: Vec3::new(1130.0, 10.0, -500.0),
+            scale: Vec3::splat(125.0),
+            // rotation: Quat::from_rotation_y(std::f32::consts::PI),
             ..default()
         },
         ..default()
@@ -111,6 +172,19 @@ pub fn spawn_assets(
         },
         ..default()
     });
+
+     // wood window
+     commands.spawn(SceneBundle {
+        scene: asset_server.load("models/wooden_window.glb#Scene0"),
+        transform: Transform {
+            translation: Vec3::new(1215.0, 5.0, -49.0),
+            scale: Vec3::splat(3.0),
+            rotation: Quat::from_rotation_y(-std::f32::consts::PI / 2.0),
+            ..default()
+        },
+        ..default()
+    });
+
 
     // floor lamp
     commands.spawn(SceneBundle {
