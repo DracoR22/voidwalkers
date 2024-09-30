@@ -4,11 +4,8 @@ use bevy::{
     },
     prelude::*,
 };
-use bevy_rapier3d::prelude::*;
 
-use crate::player::{components::{Player, PlayerFirstPersonCamera}, constants::{PLAYER_JUMP, PLAYER_SPEED}};
-
-use super::spawn::AK74Model;
+use crate::{player::{components::{Player, PlayerFirstPersonCamera}, constants::{PLAYER_JUMP, PLAYER_SPEED}}, weapons::components::AK74Component};
 
 pub fn player_look_system(
     windows: Query<&Window>,
@@ -67,25 +64,4 @@ pub fn player_movement_system(keyboard_input: Res<ButtonInput<KeyCode>>,  mut qu
             transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
         }
     }
-}
-
-pub fn update_gun_rotation(
-    camera_query: Query<&Transform, With<PlayerFirstPersonCamera>>,
-    mut gun_query: Query<&mut Transform, (With<AK74Model>, Without<PlayerFirstPersonCamera>)>,
-) {
-    let camera_transform = camera_query.single();
-    let mut gun_transform = gun_query.single_mut();
-
-    // Create a rotation that aligns the gun with the camera
-    let gun_rotation = camera_transform.rotation * Quat::from_rotation_y(std::f32::consts::PI);
-
-    // Update the gun's rotation
-    gun_transform.rotation = gun_rotation;
-
-    // Adjust the gun's position relative to the camera
-    gun_transform.translation = camera_transform.translation 
-        + camera_transform.forward() * 0.3 // Move it forward (reduced from 0.5)
-        + camera_transform.right() * 0.15 // Move it to the right (reduced from 0.3)
-        - camera_transform.up() * 0.1 // Move it down (reduced from 0.2)
-        + Vec3::new(0.0, -20.3, 0.0); // Additional downward offset
 }

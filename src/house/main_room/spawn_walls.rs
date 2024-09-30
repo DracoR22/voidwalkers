@@ -4,38 +4,53 @@ use bevy_rapier3d::prelude::*;
 pub fn spawn_walls(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
-    mut mesh_assets: ResMut<Assets<Mesh>>
+    mut mesh_assets: ResMut<Assets<Mesh>>,
+    mut material_assets: ResMut<Assets<StandardMaterial>>,
 ) {
     let wall_model: Handle<Scene> = asset_server.load("models/wall1.glb#Scene0");
     let wall_model_alt: Handle<Scene> = asset_server.load("models/wall2.glb#Scene0");
     let wall_model_door: Handle<Scene> = asset_server.load("models/wall_door.glb#Scene0");
 
     let initial_position = Vec3::new(1577.0, 0.0, -570.0);
-    let spacing_x = 185.0; // The amount to subtract from the X position for each wall
+    let spacing_x = 185.0 - 0.1; // The amount to subtract from the X position for each wall
 
-    let mesh = mesh_assets.add(Cuboid::new(1500.0, 10.0, 1120.0));
+    let mesh = mesh_assets.add(Cuboid::new(1500.0, 355.0, 50.0));
+    let texture_handle = asset_server.load("textures/WallPaper_ALB.png");
 
-    commands.spawn(PbrBundle {
-        transform: Transform::from_translation(Vec3::new(1060.0, 350.0, -20.0)), 
+    let material_handle = material_assets.add(StandardMaterial {
+        base_color_texture: Some(texture_handle),
         ..default()
-    });
+    });  
+
+
+    // commands.spawn(PbrBundle {
+    //     mesh: mesh.clone(),
+    //     material: material_handle,
+    //     transform: Transform {
+    //         translation: Vec3::new(1060.0, 175.0, -595.0),
+    //         // rotation: Quat::from_rotation_x(std::f32::consts::PI / 2.0),
+    //         ..default()
+    //     }, 
+    //     ..default()
+    // });
 
     // first row
-    // for i in 0..9 {
-    //     let x_position = initial_position.x - (i as f32) * spacing_x;
-    //     commands.spawn(SceneBundle {
-    //         scene: wall_model_alt.clone(),
-    //         transform: Transform {
-    //             translation: Vec3::new(x_position, initial_position.y, initial_position.z),
-    //             scale: Vec3::new(100.0, 120.0, 100.0), 
+    for i in 0..9 {
+        let x_position = initial_position.x - (i as f32) * spacing_x;
+        commands.spawn(SceneBundle {
+            scene: wall_model_alt.clone(),
+            transform: Transform {
+                translation: Vec3::new(x_position, initial_position.y, initial_position.z),
+                scale: Vec3::new(100.0, 120.0, 100.0), 
                
-    //             ..default()
-    //         },
-    //         ..default()
-    //     })
-    //     .insert(Collider::cuboid(1.0, 100.0, 0.2))
-    //     .insert(RigidBody::Fixed);
-    // }
+                ..default()
+            },
+            ..default()
+        })
+        .insert(Collider::cuboid(1.0, 100.0, 0.2))
+        .insert(RigidBody::Fixed);
+    }
+
 
     // second row
    for y in 0..2 {

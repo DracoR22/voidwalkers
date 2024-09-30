@@ -21,16 +21,16 @@ pub fn spawn_player_system(mut commands: Commands, mut mesh_assets: ResMut<Asset
 
     let mesh = mesh_assets.add(Cuboid::new(player_size, player_size,player_size)); 
 
-    commands.insert_resource(Animations(vec![
-        asset_server.load("animations/ak.glb#Animation0"), // add more animations
-        asset_server.load("animations/ak.glb#Animation1"),
-        asset_server.load("animations/ak.glb#Animation2"),
-        asset_server.load("animations/ak.glb#Animation3"),
-        asset_server.load("animations/ak.glb#Animation4"),
-        asset_server.load("animations/ak.glb#Animation5"),
-        asset_server.load("animations/ak.glb#Animation6"),
-        asset_server.load("animations/ak.glb#Animation7")
-    ]));
+    // commands.insert_resource(Animations(vec![
+    //     asset_server.load("animations/ak.glb#Animation0"), // add more animations
+    //     asset_server.load("animations/ak.glb#Animation1"),
+    //     asset_server.load("animations/ak.glb#Animation2"),
+    //     asset_server.load("animations/ak.glb#Animation3"),
+    //     asset_server.load("animations/ak.glb#Animation4"),
+    //     asset_server.load("animations/ak.glb#Animation5"),
+    //     asset_server.load("animations/ak.glb#Animation6"),
+    //     asset_server.load("animations/ak.glb#Animation7")
+    // ]));
 
       // Spawn the player entity
       commands.spawn((
@@ -67,19 +67,19 @@ pub fn spawn_player_system(mut commands: Commands, mut mesh_assets: ResMut<Asset
         ));
 
         // Spawn the model as a separate child of the player
-        parent.spawn((
-            SceneBundle {
-                scene: asset_server.load("animations/ak.glb#Scene0"),
-                transform: Transform {
-                    scale: Vec3::splat(50.0), // Adjust scale if needed
-                    // translation: Vec3::new(0.2, -0.5, 0.3), 
-                    // rotation: Quat::from_rotation_y(std::f32::consts::PI), 
-                    ..default()
-                },
-                ..default()
-            },
-            AK74Model, // New component to identify the model
-        ));
+        // parent.spawn((
+        //     SceneBundle {
+        //         scene: asset_server.load("animations/ak.glb#Scene0"),
+        //         transform: Transform {
+        //             scale: Vec3::splat(50.0), // Adjust scale if needed
+        //             // translation: Vec3::new(0.2, -0.5, 0.3), 
+        //             // rotation: Quat::from_rotation_y(std::f32::consts::PI), 
+        //             ..default()
+        //         },
+        //         ..default()
+        //     },
+        //     AK74Model, // New component to identify the model
+        // ));
     });
 
     //  commands.spawn(SceneBundle {

@@ -14,7 +14,6 @@ fn main() {
         ..default()
     }))
     .add_plugins(HanabiPlugin)
-    .insert_resource(ClearColor(Color::rgb(0.1, 0.1, 0.1)))
     .add_plugins(AudioPlugin)
     .add_plugins(WindowSetupPlugin)
     .add_plugins(RapierPhysicsPlugin::<NoUserData>::default())

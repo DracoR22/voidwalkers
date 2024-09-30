@@ -30,7 +30,7 @@ pub fn spawn_assets(
        commands
        .spawn(PointLightBundle {
            // transform: Transform::from_xyz(5.0, 8.0, 2.0),
-           transform: Transform::from_xyz(730.0, 226.0, -395.0),
+           transform: Transform::from_xyz(760.0, 286.0, -520.0),
            point_light: PointLight {
                intensity: 100_000_000_0.0,
                range: 100_000_000_000_000.0,
@@ -39,25 +39,24 @@ pub fn spawn_assets(
                ..default()
            },
            ..default()
-       })
-       .with_children(|builder| {
-           builder.spawn(SceneBundle {
-            scene: asset_server.load("models/lamp.glb#Scene0"),
-            transform: Transform {
-                rotation: Quat::from_rotation_y(std::f32::consts::PI / 2.0), 
-                scale: Vec3::splat(20.0),
-                translation: Vec3::new(0.0, 0.0, 64.0),
-                ..default()
-            },
-               ..default()
-           });
+       });
+
+       commands.spawn(SceneBundle {
+        scene: asset_server.load("models/lamp.glb#Scene0"),
+        transform: Transform {
+            rotation: Quat::from_rotation_y(std::f32::consts::PI / 2.0), 
+            scale: Vec3::splat(20.0),
+            translation: Vec3::new(730.0, 226.0, -395.0),
+            ..default()
+        },
+           ..default()
        });
 
        // point light 2
        commands
        .spawn(PointLightBundle {
            // transform: Transform::from_xyz(5.0, 8.0, 2.0),
-           transform: Transform::from_xyz(1780.0, 236.0, -165.0),
+           transform: Transform::from_xyz(1720.0, 286.0, -510.0),
            point_light: PointLight {
                intensity: 100_000_000_0.0,
                range: 100_000_000_000.0,
@@ -66,19 +65,19 @@ pub fn spawn_assets(
                ..default()
            },
            ..default()
-       })
-       .with_children(|builder| {
-           builder.spawn(SceneBundle {
-            scene: asset_server.load("models/lamp.glb#Scene0"),
-            transform: Transform {
-                rotation: Quat::from_rotation_y(-std::f32::consts::PI / 2.0), 
-                scale: Vec3::splat(20.0),
-                translation: Vec3::new(0.0, 0.0, -64.0),
-                ..default()
-            },
-               ..default()
-           });
        });
+    //    .with_children(|builder| {
+    //        builder.spawn(SceneBundle {
+    //         scene: asset_server.load("models/lamp.glb#Scene0"),
+    //         transform: Transform {
+    //             rotation: Quat::from_rotation_y(-std::f32::consts::PI / 2.0), 
+    //             scale: Vec3::splat(20.0),
+    //             translation: Vec3::new(0.0, 0.0, -64.0),
+    //             ..default()
+    //         },
+    //            ..default()
+    //        });
+    //    });
 
 
      // Bright warm light to simulate muzzle flash
@@ -197,6 +196,30 @@ pub fn spawn_assets(
         },
         ..default()
     });
+
+    commands.spawn(SceneBundle {
+        scene: asset_server.load("animations/saiga.glb#Scene0"),
+        transform: Transform {
+            translation: Vec3::new(270.0, 10.0, -630.0),
+            scale: Vec3::splat(100.0),
+            rotation: Quat::from_rotation_y(std::f32::consts::PI),
+            ..default()
+        },
+        ..default()
+    });
+
+    commands.spawn(SceneBundle {
+        scene: asset_server.load("animations/pistol.glb#Scene0"),
+        transform: Transform {
+            translation: Vec3::new(270.0, 10.0, -430.0),
+            scale: Vec3::splat(100.0),
+            rotation: Quat::from_rotation_y(std::f32::consts::PI),
+            ..default()
+        },
+        ..default()
+    });
+
+
 
     // coffee table
     // commands.spawn(SceneBundle {

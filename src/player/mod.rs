@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use systems::{animations::load_animation, movement::{player_look_system, player_movement_system, update_gun_rotation}, shooting::{shoot_ray, update_tracers}, sight::spawn_sight_dot, spawn::spawn_player_system};
+use systems::{movement::{player_look_system, player_movement_system}, shooting::{shoot_ray, update_tracers}, sight::spawn_sight_dot, spawn::spawn_player_system};
 
 use crate::{game::link_animations::link_animations, states::game_state::GameState};
 
@@ -23,8 +23,6 @@ impl Plugin for PlayerPlugin {
             player_look_system,
             shoot_ray,
             update_tracers,
-            update_gun_rotation,
-            load_animation, link_animations
         )
         .chain()
         .run_if(in_state(GameState::Playing)),
