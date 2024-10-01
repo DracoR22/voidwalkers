@@ -129,7 +129,7 @@ pub fn spawn_assets(
     commands.spawn(SceneBundle {
         scene: asset_server.load("models/sofa.glb#Scene0"),
         transform: Transform {
-            translation: Vec3::new(1130.0, 10.0, -500.0),
+            translation: Vec3::new(1130.0, 3.0, -500.0),
             scale: Vec3::splat(125.0),
             // rotation: Quat::from_rotation_y(std::f32::consts::PI),
             ..default()
@@ -172,7 +172,7 @@ pub fn spawn_assets(
         ..default()
     });
 
-     // wood window
+     // wood window 2
      commands.spawn(SceneBundle {
         scene: asset_server.load("models/wooden_window.glb#Scene0"),
         transform: Transform {
@@ -183,7 +183,6 @@ pub fn spawn_assets(
         },
         ..default()
     });
-
 
     // floor lamp
     commands.spawn(SceneBundle {

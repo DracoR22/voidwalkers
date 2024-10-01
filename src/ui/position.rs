@@ -5,20 +5,24 @@ use crate::player::components::Player;
 #[derive(Component)]
 pub struct PlayerPosition;
 
-pub fn write_player_position(mut commands: Commands) {
+pub fn write_player_position(commands: &mut Commands) -> Entity {
   let style = TextStyle::default();
 
-  commands.spawn((TextBundle::from_sections(vec![
-    TextSection::new(
+  let text_position = commands.spawn((
+    PlayerPosition,
+    TextBundle::from_sections(vec![TextSection::new(
         "Pos: x: 0.0, y: 0.0, z: 0.0",
-        style.clone()
-    )
-  ]).with_style(Style {
-    position_type: PositionType::Absolute,
-    top: Val::Px(12.0),
-    left: Val::Px(12.0),
-    ..default()
-  }), PlayerPosition));
+        style.clone(),
+    )])
+    .with_style(Style {
+        // position_type: PositionType::Absolute,
+        // top: Val::Px(12.0),
+        // left: Val::Px(12.0),
+        ..default()
+    }),
+  )).id();
+
+  return text_position
 }
 
 pub fn update_player_position(

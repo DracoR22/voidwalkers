@@ -10,43 +10,27 @@ pub struct GameFpsRoot;
 #[derive(Component)]
 pub struct GameFPSText;
 
-pub fn write_game_fps(mut commands: Commands) {
+pub fn write_game_fps(commands: &mut Commands) -> Entity {
     let style = TextStyle::default();
 
-      let root = commands.spawn((
-        GameFpsRoot,
-        NodeBundle {
-            // z_index: ZIndex::Global(i32::MAX),
-            style: Style {
-                position_type: PositionType::Absolute,
-                top: Val::Px(32.0),
-                left: Val::Px(12.0),
-                // give it some padding for readability
-                // padding: UiRect::all(Val::Px(4.0)),
-                ..Default::default()
-            },
-            ..Default::default()
-        },
-    )).id();
-    // create our text
     let text_fps = commands.spawn((
         GameFPSText,
         TextBundle {
-            // use two sections, so it is easy to update just the number
             text: Text::from_sections([
                 TextSection {
-                    value: "FPS: ".into(),
-                    style: style.clone()
+                    value: "fps: ".into(),
+                    style: style.clone(),
                 },
                 TextSection {
                     value: " N/A".into(),
-                    style: style.clone()
+                    style: style.clone(),
                 },
             ]),
             ..Default::default()
         },
     )).id();
-    commands.entity(root).push_children(&[text_fps]);
+
+   return text_fps
 }
 
 pub fn update_game_fps(

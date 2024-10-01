@@ -72,7 +72,10 @@ pub fn load_ak74_animation(
                 *current_animation = AK74AnimationsList::IDLE; // Reset or change animation on release
             }
     
-            if keyboard_input.just_released(KeyCode::KeyW) {
+            if keyboard_input.just_released(KeyCode::KeyW)
+            || keyboard_input.just_released(KeyCode::KeyA)
+            || keyboard_input.just_released(KeyCode::KeyS)
+            || keyboard_input.just_released(KeyCode::KeyD) {
                 *current_animation = AK74AnimationsList::IDLE;
             }
             
