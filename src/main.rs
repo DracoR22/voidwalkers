@@ -5,6 +5,7 @@ use bevy_hanabi::prelude::*;
 use bevy_rapier3d::plugin::{NoUserData, RapierPhysicsPlugin};
 use voidhunt::{cubes::systems::spawn::spawn_cube_system, enemies::EnemiesPlugin, game::blood::{cleanup_blood_effects, spawn_blood_mesh}, house::HousePlugin, player::PlayerPlugin, states::GameStatePlugin, ui::GameUIPugin, weapons::WeaponsPlugin, window::WindowSetupPlugin};
 use bevy::render::render_resource::{AsBindGroup, ShaderRef};
+use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 
 fn main() {
     App::new()
@@ -13,6 +14,7 @@ fn main() {
         level: bevy::log::Level::ERROR,
         ..default()
     }))
+    .add_plugins(FrameTimeDiagnosticsPlugin::default())
     .add_plugins(HanabiPlugin)
     .add_plugins(AudioPlugin)
     .add_plugins(WindowSetupPlugin)
