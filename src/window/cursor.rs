@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy::window::CursorGrabMode;
 
-use crate::states::game_state::GameState;
+use crate::game::state::GameState;
 
 pub fn setup_window(mut windows: Query<&mut Window>) {
     let mut window = windows.single_mut();

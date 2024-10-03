@@ -16,9 +16,9 @@ impl Plugin for GlockPlugin {
          .add_systems(Update, (
             spawn_glock,
             despawn_glock,
-            update_gun_rotation,
             link_multiple_animations,
             load_glock_animation
-         ));
+         ))
+         .add_systems(Update, update_gun_rotation.after(spawn_glock));
     }
 }

@@ -1,6 +1,14 @@
 use bevy::prelude::*;
 
-use crate::states::game_state::GameState;
+#[derive(Debug, Clone, Eq, Default, PartialEq, Hash, States)]
+pub enum GameState {
+    #[default]
+    Playing,
+    MainMenu,
+    EditMode,
+    Paused,
+    GameOver,
+}
 
 pub fn game_state_input_events(
     mut next_state: ResMut<NextState<GameState>>,

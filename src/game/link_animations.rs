@@ -15,6 +15,7 @@ pub fn get_top_parent(mut curr_entity: Entity, parent_query: &Query<&Parent>) ->
    curr_entity
 }
 
+// this function is used to find an entity with an animation player inside of another entity
 pub fn link_animations(
    player_query: Query<Entity, Added<AnimationPlayer>>,
    parent_query: Query<&Parent>,
@@ -39,6 +40,7 @@ pub fn link_animations(
 #[derive(Component)]
 pub struct MultipleAnimationEntityLinks(pub Vec<Entity>); // Store multiple entities
 
+// this implementation let us to have multiple animation players inside the same entity
 pub fn link_multiple_animations(
     player_query: Query<Entity, Added<AnimationPlayer>>,
     parent_query: Query<&Parent>,

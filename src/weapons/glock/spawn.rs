@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::{components::{GlockComponent, HasGlock}, resources::CurrentWeapon}};
+use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::{components::{GlockComponent, HasGlock}, states::CurrentWeapon}};
 
 pub fn spawn_glock(
     mut commands: Commands,
@@ -95,14 +95,14 @@ pub fn update_gun_rotation(
             let dynamic_z_offset = if camera_pitch >= 0.0 {
                 2.9 - (camera_pitch * -5.2)  // Move closer when looking up
             } else {
-                2.9 + (camera_pitch.abs() * -3.5)  // Move further away when looking down
+                2.9 + (camera_pitch.abs() * -5.2)  // Move further away when looking down
             };
 
             // Adjust the gun's position relative to the camera
             gun_transform.translation = camera_transform.translation
-                + camera_transform.forward() * dynamic_z_offset // Move it forward (reduced from 0.5)
-                + camera_transform.right() * 0.15 // Move it to the right (reduced from 0.3)
-                - camera_transform.up() * 0.1 // Move it down (reduced from 0.2)
+                + camera_transform.forward() * dynamic_z_offset // Move it forward 
+                + camera_transform.right() * 0.15 // Move it to the right 
+                - camera_transform.up() * 0.1 // Move it down 
                 + Vec3::new(0.0, -4.3, 0.0); // Additional downward offset
         }
     }

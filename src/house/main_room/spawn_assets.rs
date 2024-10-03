@@ -114,6 +114,9 @@ pub fn spawn_assets(
     // .insert(RigidBody::Dynamic)
     // .insert(Collider::ball(35.0));
 
+    // cube
+    
+
     // bean bag chair
     commands.spawn(SceneBundle {
         scene: asset_server.load("models/bean_bag_chair.glb#Scene0"),

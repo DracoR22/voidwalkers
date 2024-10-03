@@ -1,11 +1,9 @@
 use bevy::prelude::*;
 
 #[derive(Debug, Clone, Eq, Default, PartialEq, Hash, States)]
-pub enum GameState {
+pub enum CurrentWeapon {
+    None,
+    AK74,
     #[default]
-    Playing,
-    MainMenu,
-    EditMode,
-    Paused,
-    GameOver,
+    Glock
 }

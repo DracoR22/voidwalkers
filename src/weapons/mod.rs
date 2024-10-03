@@ -8,6 +8,7 @@ pub mod resources;
 
 pub mod ak74;
 pub mod glock;
+pub mod states;
 
 pub struct WeaponsPlugin;
 
