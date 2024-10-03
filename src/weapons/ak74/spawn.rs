@@ -1,15 +1,15 @@
 use bevy::{input::mouse::MouseWheel, prelude::*};
 
-use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::{components::{AK74Component, CurrentWeapon, CurrentWeaponState, HasAK74}, glock::spawn::spawn_glock}};
+use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::{components::{AK74Component, HasAK74}, glock::spawn::spawn_glock, resources::CurrentWeapon}};
 
 pub fn spawn_ak74(  
     mut commands: Commands,
     player_query: Query<(Entity, Option<&HasAK74>), With<Player>>, // Check if the player has the AK74
     asset_server: Res<AssetServer>,
-    state: Res<State<CurrentWeaponState>>,
+    state: Res<State<CurrentWeapon>>,
 ) {
    match state.get() {
-    CurrentWeaponState::AK74 => {
+    CurrentWeapon::AK74 => {
          // Get the player entity and check if they already have the AK74
     if let Ok((player_entity, has_ak74)) = player_query.get_single() {
         if has_ak74.is_none() { 
@@ -32,7 +32,6 @@ pub fn spawn_ak74(
 
             // Add the HasAK74 component to prevent future spawns
             commands.entity(player_entity).insert(HasAK74);
-            commands.entity(player_entity).insert(CurrentWeapon::AK74);
         }
     }
     }
@@ -46,11 +45,11 @@ pub fn despawn_ak74(
     ak74_query: Query<Entity, With<AK74Component>>, 
     keyboard_input: Res<ButtonInput<KeyCode>>,
     asset_server: Res<AssetServer>,
-    state: Res<State<CurrentWeaponState>>,
-    mut next_state: ResMut<NextState<CurrentWeaponState>>,
+    state: Res<State<CurrentWeapon>>,
+    mut next_state: ResMut<NextState<CurrentWeapon>>,
 ) {
    match state.get() {
-    CurrentWeaponState::AK74 => {
+    CurrentWeapon::AK74 => {
           // Get the player entity and check if they have the AK74
      if keyboard_input.just_pressed(KeyCode::KeyQ) {
         if let Ok((player_entity, has_ak74)) = player_query.get_single() {
@@ -67,7 +66,7 @@ pub fn despawn_ak74(
                 // commands.entity(player_entity).insert(CurrentWeapon::Glock);
 
                 // AK74 switches to glock
-                next_state.set(CurrentWeaponState::Glock);
+                next_state.set(CurrentWeapon::Glock);
             }
         }
  }

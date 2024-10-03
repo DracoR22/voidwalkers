@@ -35,3 +35,27 @@ pub fn link_animations(
        }
    }
 }
+
+#[derive(Component)]
+pub struct MultipleAnimationEntityLinks(pub Vec<Entity>); // Store multiple entities
+
+pub fn link_multiple_animations(
+    player_query: Query<Entity, Added<AnimationPlayer>>,
+    parent_query: Query<&Parent>,
+    mut animations_entity_link_query: Query<&mut MultipleAnimationEntityLinks>,
+    mut commands: Commands,
+) {
+  // Get all the Animation players that may be deep and hidden in the hierarchy
+  for entity in player_query.iter() {
+    let top_entity = get_top_parent(entity, &parent_query);
+    
+    // Check if the top parent already has AnimationEntityLinks
+    if let Ok(mut links) = animations_entity_link_query.get_mut(top_entity) {
+        // If it does, add the new animation player entity
+        links.0.push(entity);
+    } else {
+        // Otherwise, insert a new AnimationEntityLinks with the current animation player
+        commands.entity(top_entity).insert(MultipleAnimationEntityLinks(vec![entity]));
+    }
+}
+}

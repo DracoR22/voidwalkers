@@ -1,15 +1,15 @@
 use bevy::prelude::*;
 
-use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::components::{CurrentWeapon, CurrentWeaponState, GlockComponent, HasGlock}};
+use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::{components::{GlockComponent, HasGlock}, resources::CurrentWeapon}};
 
 pub fn spawn_glock(
     mut commands: Commands,
     player_query: Query<(Entity, Option<&HasGlock>), With<Player>>,
     asset_server: Res<AssetServer>,
-    state: Res<State<CurrentWeaponState>>
+    state: Res<State<CurrentWeapon>>
 ) {
   match state.get() {
-    CurrentWeaponState::Glock => {
+    CurrentWeapon::Glock => {
         // Get the player entity and check if they already have the Glock
   if let Ok((player_entity, has_glock)) = player_query.get_single() {
     if has_glock.is_none() {
@@ -32,7 +32,6 @@ pub fn spawn_glock(
 
         // Add the HasGlock component to prevent future spawns
         commands.entity(player_entity).insert(HasGlock);
-        commands.entity(player_entity).insert(CurrentWeapon::Glock);
     }
 }
     }
@@ -45,11 +44,11 @@ pub fn despawn_glock(
     player_query: Query<(Entity, Option<&HasGlock>), With<Player>>,
     glock_query: Query<Entity, With<GlockComponent>>, 
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    state: Res<State<CurrentWeaponState>>,
-    mut next_state: ResMut<NextState<CurrentWeaponState>>,
+    state: Res<State<CurrentWeapon>>,
+    mut next_state: ResMut<NextState<CurrentWeapon>>,
 ) {
   match state.get() {
-    CurrentWeaponState::Glock => {
+    CurrentWeapon::Glock => {
         if keyboard_input.just_pressed(KeyCode::KeyQ) {
             if let Ok((player_entity, has_glock)) = player_query.get_single() {
                 if let Some(_) = has_glock {
@@ -64,7 +63,7 @@ pub fn despawn_glock(
                     commands.entity(player_entity).remove::<HasGlock>();
                     // commands.entity(player_entity).insert(CurrentWeapon::AK74);
 
-                    next_state.set(CurrentWeaponState::AK74);
+                    next_state.set(CurrentWeapon::AK74);
                 }
             }
            }

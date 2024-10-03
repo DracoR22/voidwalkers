@@ -2,9 +2,7 @@ use animations::{load_ak74_animation, setup_ak74_animations};
 use bevy::prelude::*;
 use spawn::{despawn_ak74, respawn_ak74, spawn_ak74, update_gun_rotation};
 
-use crate::game::link_animations::link_animations;
-
-use super::components::CurrentWeaponState;
+use crate::game::link_animations::{link_animations, link_multiple_animations};
 
 pub mod animations;
 pub mod audio;
@@ -20,7 +18,7 @@ impl Plugin for AK74Plugin {
             spawn_ak74,
             despawn_ak74,
             respawn_ak74,
-            link_animations,
+            link_multiple_animations,
             load_ak74_animation,
           ))
           // .add_systems(Update, (

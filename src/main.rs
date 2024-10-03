@@ -3,7 +3,7 @@ use bevy::log::LogPlugin;
 use bevy_kira_audio::prelude::*;
 use bevy_hanabi::prelude::*;
 use bevy_rapier3d::plugin::{NoUserData, RapierPhysicsPlugin};
-use voidhunt::{cubes::systems::spawn::spawn_cube_system, enemies::EnemiesPlugin, game::blood::{cleanup_blood_effects, spawn_blood_mesh}, house::HousePlugin, player::PlayerPlugin, states::GameStatePlugin, ui::GameUIPugin, weapons::{components::CurrentWeaponState, WeaponsPlugin}, window::WindowSetupPlugin};
+use voidhunt::{cubes::systems::spawn::spawn_cube_system, enemies::EnemiesPlugin, game::blood::{cleanup_blood_effects, spawn_blood_mesh}, house::HousePlugin, player::PlayerPlugin, states::GameStatePlugin, ui::GameUIPugin, weapons::{resources::CurrentWeapon, WeaponsPlugin}, window::WindowSetupPlugin};
 use bevy::render::render_resource::{AsBindGroup, ShaderRef};
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 
@@ -25,7 +25,7 @@ fn main() {
     .add_plugins(EnemiesPlugin)
     .add_plugins(WeaponsPlugin)
     .add_plugins(GameUIPugin)
-    .init_state::<CurrentWeaponState>()
+    .init_state::<CurrentWeapon>()
     .add_systems(Startup, spawn_cube_system)
     .add_systems(Startup, spawn_blood_mesh)
     .add_systems(Update, cleanup_blood_effects)
