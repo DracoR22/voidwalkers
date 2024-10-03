@@ -1,20 +1,23 @@
 use bevy::{input::mouse::MouseWheel, prelude::*};
 
-use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::components::{AK74Component, HasAK74}};
+use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::{components::{AK74Component, CurrentWeapon, CurrentWeaponState, HasAK74}, glock::spawn::spawn_glock}};
 
-pub fn spawn_ak74(
+pub fn spawn_ak74(  
     mut commands: Commands,
     player_query: Query<(Entity, Option<&HasAK74>), With<Player>>, // Check if the player has the AK74
-    asset_server: Res<AssetServer>
+    asset_server: Res<AssetServer>,
+    state: Res<State<CurrentWeaponState>>,
 ) {
-    // Get the player entity and check if they already have the AK74
+   match state.get() {
+    CurrentWeaponState::AK74 => {
+         // Get the player entity and check if they already have the AK74
     if let Ok((player_entity, has_ak74)) = player_query.get_single() {
-        if has_ak74.is_none() { // If the player doesn't have the AK74, spawn it
+        if has_ak74.is_none() { 
         println!("SPAWNED AK!");
             commands.entity(player_entity).with_children(|parent| {
                 parent.spawn((
                     SceneBundle {
-                        scene: asset_server.load("animations/ak.glb#Scene0"),
+                        scene: asset_server.load("animations/ak74.glb#Scene0"),
                         transform: Transform {
                             scale: Vec3::splat(50.0), 
                              translation: Vec3::new(0.2, 85.5, 0.3), 
@@ -29,41 +32,55 @@ pub fn spawn_ak74(
 
             // Add the HasAK74 component to prevent future spawns
             commands.entity(player_entity).insert(HasAK74);
+            commands.entity(player_entity).insert(CurrentWeapon::AK74);
         }
     }
+    }
+    _ => ()
+   }
 }
 
 pub fn despawn_ak74(
     mut commands: Commands,
-    player_query: Query<(Entity, Option<&HasAK74>), With<Player>>, // Check if the player has the AK74
-    ak74_query: Query<Entity, With<AK74Component>>, // Query to find the AK74 entity
-    mut evr_scroll: EventReader<MouseWheel>
+    player_query: Query<(Entity, Option<&HasAK74>), With<Player>>, 
+    ak74_query: Query<Entity, With<AK74Component>>, 
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    asset_server: Res<AssetServer>,
+    state: Res<State<CurrentWeaponState>>,
+    mut next_state: ResMut<NextState<CurrentWeaponState>>,
 ) {
-    // Check for mouse wheel scroll up
-    for event in evr_scroll.read() {
-        if event.y > 0.0 { // Scroll up direction
-            // Get the player entity and check if they have the AK74
-            if let Ok((player_entity, has_ak74)) = player_query.get_single() {
-                if has_ak74.is_some() {
-                    println!("DESPAWNING AK!");
+   match state.get() {
+    CurrentWeaponState::AK74 => {
+          // Get the player entity and check if they have the AK74
+     if keyboard_input.just_pressed(KeyCode::KeyQ) {
+        if let Ok((player_entity, has_ak74)) = player_query.get_single() {
+            if has_ak74.is_some() {
+                println!("DESPAWNING AK!");
 
-                    // Iterate over all AK74 entities and despawn them
-                    for ak74_entity in ak74_query.iter() {
-                        commands.entity(ak74_entity).despawn_recursive(); // Despawn the AK74 entity and its children
-                    }
-
-                    // Remove the HasAK74 component from the player
-                    // commands.entity(player_entity).remove::<HasAK74>();
+                // Iterate over all AK74 entities and despawn them
+                for ak74_entity in ak74_query.iter() {
+                    commands.entity(ak74_entity).despawn_recursive(); // Despawn the AK74 entity and its children
                 }
+
+                // Spawn Glock after despawning AK-74
+                commands.entity(player_entity).remove::<HasAK74>();
+                // commands.entity(player_entity).insert(CurrentWeapon::Glock);
+
+                // AK74 switches to glock
+                next_state.set(CurrentWeaponState::Glock);
             }
         }
+ }
     }
+    _ => ()
+   }
 }
 
 pub fn respawn_ak74(
     mut commands: Commands,
     player_query: Query<(Entity, Option<&HasAK74>), With<Player>>, // Check if the player already has the AK74
     mut evr_scroll: EventReader<MouseWheel>,                      // MouseWheel event reader
+    keyboard_input: Res<ButtonInput<KeyCode>>,
     asset_server: Res<AssetServer>,
 ) {
     // Check for mouse wheel scroll down
@@ -78,7 +95,7 @@ pub fn respawn_ak74(
                     commands.entity(player_entity).with_children(|parent| {
                         parent.spawn((
                             SceneBundle {
-                                scene: asset_server.load("animations/ak.glb#Scene0"),
+                                scene: asset_server.load("animations/ak74.glb#Scene0"),
                                 transform: Transform {
                                     scale: Vec3::splat(50.0), 
                                     translation: Vec3::new(0.2, 85.5, 0.3), 

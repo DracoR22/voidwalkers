@@ -23,7 +23,7 @@ impl Default for AK74AnimationsList {
 impl From<&KeyCode> for AK74AnimationsList {
     fn from(key_code: &KeyCode) -> Self {
         match key_code {
-            KeyCode::KeyQ => AK74AnimationsList::DRAW,
+            KeyCode::KeyE => AK74AnimationsList::DRAW,
             KeyCode::KeyW => AK74AnimationsList::WALK,
             KeyCode::KeyA => AK74AnimationsList::WALK,
             KeyCode::KeyS => AK74AnimationsList::WALK,
@@ -38,14 +38,14 @@ impl From<&KeyCode> for AK74AnimationsList {
 
 pub fn setup_ak74_animations(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.insert_resource(AK74Animations(vec![
-        asset_server.load("animations/ak.glb#Animation0"), // add more animations
-        asset_server.load("animations/ak.glb#Animation1"),
-        asset_server.load("animations/ak.glb#Animation2"),
-        asset_server.load("animations/ak.glb#Animation3"),
-        asset_server.load("animations/ak.glb#Animation4"),
-        asset_server.load("animations/ak.glb#Animation5"),
-        asset_server.load("animations/ak.glb#Animation6"),
-        asset_server.load("animations/ak.glb#Animation7")
+        asset_server.load("animations/ak74.glb#Animation0"), // add more animations
+        asset_server.load("animations/ak74.glb#Animation1"),
+        asset_server.load("animations/ak74.glb#Animation2"),
+        asset_server.load("animations/ak74.glb#Animation3"),
+        asset_server.load("animations/ak74.glb#Animation4"),
+        asset_server.load("animations/ak74.glb#Animation5"),
+        asset_server.load("animations/ak74.glb#Animation6"),
+        asset_server.load("animations/ak74.glb#Animation7")
     ]));
 }
 

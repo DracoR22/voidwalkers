@@ -4,6 +4,8 @@ use spawn::{despawn_ak74, respawn_ak74, spawn_ak74, update_gun_rotation};
 
 use crate::game::link_animations::link_animations;
 
+use super::components::CurrentWeaponState;
+
 pub mod animations;
 pub mod audio;
 pub mod spawn;
@@ -18,9 +20,12 @@ impl Plugin for AK74Plugin {
             spawn_ak74,
             despawn_ak74,
             respawn_ak74,
+            link_animations,
             load_ak74_animation,
-            link_animations
           ))
+          // .add_systems(Update, (
+
+          // ).run_if(in_state(CurrentWeaponState::AK74)))
           .add_systems(Update, update_gun_rotation.after(spawn_ak74));
     }
 }

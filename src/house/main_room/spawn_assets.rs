@@ -208,7 +208,7 @@ pub fn spawn_assets(
     });
 
     commands.spawn(SceneBundle {
-        scene: asset_server.load("animations/pistol.glb#Scene0"),
+        scene: asset_server.load("animations/glock.glb#Scene0"),
         transform: Transform {
             translation: Vec3::new(270.0, 10.0, -430.0),
             scale: Vec3::splat(100.0),
