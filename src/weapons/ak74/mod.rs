@@ -1,8 +1,11 @@
 use animations::{load_ak74_animation, setup_ak74_animations};
+use audio::{play_ak74_audio, setup_ak74_audio};
 use bevy::prelude::*;
 use spawn::{despawn_ak74, respawn_ak74, spawn_ak74, update_gun_rotation};
 
 use crate::game::link_animations::{link_animations, link_multiple_animations};
+
+use super::states::CurrentWeapon;
 
 pub mod animations;
 pub mod audio;
@@ -13,7 +16,10 @@ pub struct AK74Plugin;
 impl Plugin for AK74Plugin {
     fn build(&self, app: &mut App) {
         app
-          .add_systems(Startup, setup_ak74_animations)
+          .add_systems(Startup, (
+            setup_ak74_animations,
+            setup_ak74_audio
+          ))
           .add_systems(Update, (
             spawn_ak74,
             despawn_ak74,
@@ -21,9 +27,9 @@ impl Plugin for AK74Plugin {
             link_multiple_animations,
             load_ak74_animation,
           ))
-          // .add_systems(Update, (
-
-          // ).run_if(in_state(CurrentWeaponState::AK74)))
+          .add_systems(Update, (
+            play_ak74_audio,
+          ).run_if(in_state(CurrentWeapon::AK74)))
           .add_systems(Update, update_gun_rotation.after(spawn_ak74));
     }
 }

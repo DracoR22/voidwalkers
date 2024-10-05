@@ -99,6 +99,10 @@ pub fn load_ak74_animation(
                             animation.repeat();
                             animation.set_speed(1.0); 
                     }
+
+                    if *current_animation == AK74AnimationsList::RELOADFULL {
+                        animation.set_speed(1.8); 
+                    }
                 
                 }}
             }

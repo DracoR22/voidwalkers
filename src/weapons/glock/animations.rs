@@ -92,6 +92,9 @@ pub fn load_glock_animation(
             
                         if *current_animation == GlockAnimationsList::SHOOT {
                             animation.repeat();
+                        }
+
+                        if *current_animation == GlockAnimationsList::RELOADFULL {
                             animation.set_speed(1.0); 
                         }
                     }

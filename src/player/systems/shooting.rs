@@ -64,7 +64,7 @@ pub fn shoot_ray(
                 mesh: meshes.add(Mesh::from(shape::Box::new(TRACER_WIDTH, TRACER_WIDTH, TRACER_WIDTH))),
                 material,
                 transform: Transform::from_xyz(0., 100000., 0.)
-                .looking_to(Vec3::new(forward_x, forward_y,forward_z), Vec3::Y),
+                .looking_to(Vec3::new(forward_x, forward_y, forward_z), Vec3::Y),
                 ..default()
             },
             BulletTracer {
