@@ -48,7 +48,7 @@ fn main() {
     .add_plugins(GameUIPugin)
     .init_state::<CurrentWeapon>()
     .add_systems(Startup, spawn_cube_system)
-    .add_systems(Update, setup_muzzle_flash)
+    .add_systems(Startup, setup_muzzle_flash)
     .add_systems(Update, update_muzzle_flash)
     .run();
 }
@@ -72,45 +72,67 @@ pub fn setup_muzzle_flash(
         color_texture: asset_server.load("textures/muzzle-flash.png"),
     });
 
-   if let Ok((player_entity, has_flash)) = player_query.get_single() {
-    //  commands.entity(player_entity).with_children(|parent| {
-    //       parent.spawn((
+    // commands.spawn((
     //         MaterialMeshBundle {
-    //             mesh: meshes.add(Mesh::from(shape::Quad::new(Vec2::new(200.2, 200.2)))),
+    //             mesh: meshes.add(Mesh::from(shape::Quad::new(Vec2::new(20.2, 20.2)))),
     //             material,
-    //             transform: Transform::from_xyz(0.2, 85.0, -67.0),
+    //             transform: Transform::from_xyz(700.0, 10.0, 0.0),
     //             visibility: Visibility::Visible,
     //             ..default()
     //         },
     //         MuzzleFlash {
     //             timer: Timer::from_seconds(1000.05, TimerMode::Once),
     //         },
-    //     ));
-    //  });
+    // ));
+     
     
-    commands.entity(player_entity).with_children(|parent| {
-       if has_flash.is_none() {
-        parent.spawn((
-            SceneBundle {
-                scene: asset_server.load("models/muzzle-flash.glb"),
-                transform: Transform {
-                    scale: Vec3::splat(300.0), 
-                    translation: Vec3::new(10.2, 85.0, 7.0), 
-                    rotation: Quat::from_rotation_y(std::f32::consts::PI), 
-                    ..default()
-                },
-                visibility: Visibility::Visible,
-                ..default()
-            },
-            MuzzleFlash {
-                           timer: Timer::from_seconds(1000.05, TimerMode::Once),
-                   },
-        ));
-        }
-     });
+//    commands.spawn((
+//             SceneBundle {
+//                 scene: asset_server.load("models/muzzle-flash.glb#Scene0"),
+//                 transform: Transform {
+//                     scale: Vec3::splat(30.0), 
+//                     translation: Vec3::new(700.2, 10.85, 0.0), 
+//                     rotation: Quat::from_rotation_y(std::f32::consts::PI), 
+//                     ..default()
+//                 },
+//                 visibility: Visibility::Visible,
+//                 ..default()
+//             },
+//             MuzzleFlash {
+//                            timer: Timer::from_seconds(1000.05, TimerMode::Once),
+//                    },
+//         ));
 
-     commands.entity(player_entity).insert(HasFlash);
-   };
+
+// Spawn a 2D UI node that holds the muzzle flash
+commands.spawn((
+    NodeBundle {
+        style: Style {
+            width: Val::Px(50.0),
+            height: Val::Px(50.0),
+            position_type: PositionType::Absolute,
+            left: Val::Percent(50.0),
+            top: Val::Percent(50.0),
+            
+            ..default()
+        },
+        visibility: Visibility::Hidden,  
+        ..default()
+    },
+    MuzzleFlash {
+        timer: Timer::from_seconds(0.05, TimerMode::Once), 
+    },
+)).with_children(|parent| {
+    parent.spawn(ImageBundle {
+        image: UiImage {
+            texture: asset_server.load("textures/muzzle-flash.png"),
+            ..default()
+        },
+
+         ..default()
+    });
+});
+    
  
 }
 
@@ -144,7 +166,7 @@ pub fn update_muzzle_flash(
 
             // Optionally adjust position, but don't reset it to a fixed point.
             // Only adjust this part if you want the muzzle flash to appear at the muzzle of the gun.
-            transform.translation = Vec3::new(camera_transform.translation.x * 2.0, transform.translation.y, transform.translation.z * 2.0); // REMOVE OR MODIFY AS NEEDED
+            // transform.translation = Vec3::new(camera_transform.translation.x * 2.0, transform.translation.y, transform.translation.z * 2.0); // REMOVE OR MODIFY AS NEEDED
         }
     }
 
