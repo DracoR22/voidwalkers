@@ -17,9 +17,9 @@ impl Plugin for MainRoomPlugin {
         app
         .add_systems(Startup, (
             spawn_floor,
-            spawn_assets,
-            spawn_walls,
-            spawn_ceiling
+            // spawn_assets,
+            // spawn_walls,
+            // spawn_ceiling
         )
         .chain()
     );

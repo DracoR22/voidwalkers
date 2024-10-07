@@ -3,7 +3,7 @@ use bevy::log::LogPlugin;
 use bevy_kira_audio::prelude::*;
 use bevy_hanabi::prelude::*;
 use bevy_rapier3d::plugin::{NoUserData, RapierPhysicsPlugin};
-use voidhunt::{cubes::systems::spawn::spawn_cube_system, enemies::EnemiesPlugin, game::{blood::{cleanup_blood_effects, spawn_blood_mesh}, GamePlugin}, house::HousePlugin, player::{components::{Player, PlayerFirstPersonCamera}, PlayerPlugin}, ui::GameUIPugin, weapons::{states::CurrentWeapon, WeaponsPlugin}, window::WindowSetupPlugin};
+use voidhunt::{cubes::systems::spawn::spawn_cube_system, enemies::EnemiesPlugin, game::{blood::{cleanup_blood_effects, spawn_blood_mesh}, GamePlugin}, house::HousePlugin, player::{components::{Player, PlayerFirstPersonCamera}, PlayerPlugin}, ui::GameUIPugin, weapons::{glock::spawn::MuzzleFlash, states::CurrentWeapon, WeaponsPlugin}, window::WindowSetupPlugin};
 use bevy::render::render_resource::{AsBindGroup, ShaderRef};
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy::prelude::AlphaMode;
@@ -54,11 +54,6 @@ fn main() {
 }
 
 
-#[derive(Component)]
-pub struct MuzzleFlash {
-    pub timer: Timer,
-}
-
 pub fn setup_muzzle_flash(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -68,42 +63,23 @@ pub fn setup_muzzle_flash(
 ) {
    
     let material = materials.add(MuzzleFlashMaterial {
-        color: Color::rgba(5.0, 5.0, 5.0, 1.0), // Bright white with full alpha
-        color_texture: asset_server.load("textures/muzzle-flash.png"),
+        color: Color::rgba(1.0, 1.0, 1.0, 1.0), // Bright white with full alpha
+        color_texture: asset_server.load("textures/MuzzleFlash.png"),
     });
 
-    // commands.spawn((
-    //         MaterialMeshBundle {
-    //             mesh: meshes.add(Mesh::from(shape::Quad::new(Vec2::new(20.2, 20.2)))),
-    //             material,
-    //             transform: Transform::from_xyz(700.0, 10.0, 0.0),
-    //             visibility: Visibility::Visible,
-    //             ..default()
-    //         },
-    //         MuzzleFlash {
-    //             timer: Timer::from_seconds(1000.05, TimerMode::Once),
-    //         },
-    // ));
-     
+    commands.spawn((
+            MaterialMeshBundle {
+                mesh: meshes.add(Mesh::from(shape::Quad::new(Vec2::new(30.2, 30.2)))),
+                material,
+                transform: Transform::from_xyz(700.0, 10.0, 0.0),
+                visibility: Visibility::Visible,
+                ..default()
+            },
+            MuzzleFlash {
+                timer: Timer::from_seconds(1000.05, TimerMode::Once),
+            },
+    ));
     
-//    commands.spawn((
-//             SceneBundle {
-//                 scene: asset_server.load("models/muzzle-flash.glb#Scene0"),
-//                 transform: Transform {
-//                     scale: Vec3::splat(30.0), 
-//                     translation: Vec3::new(700.2, 10.85, 0.0), 
-//                     rotation: Quat::from_rotation_y(std::f32::consts::PI), 
-//                     ..default()
-//                 },
-//                 visibility: Visibility::Visible,
-//                 ..default()
-//             },
-//             MuzzleFlash {
-//                            timer: Timer::from_seconds(1000.05, TimerMode::Once),
-//                    },
-//         ));
-
-
 // Spawn a 2D UI node that holds the muzzle flash
 commands.spawn((
     NodeBundle {
@@ -125,7 +101,7 @@ commands.spawn((
 )).with_children(|parent| {
     parent.spawn(ImageBundle {
         image: UiImage {
-            texture: asset_server.load("textures/muzzle-flash.png"),
+            texture: asset_server.load("textures/MuzzleFlash.png"),
             ..default()
         },
 
@@ -161,7 +137,7 @@ pub fn update_muzzle_flash(
             *visibility = Visibility::Visible;
 
             // Make the muzzle flash face towards the camera
-            let direction_to_camera = camera_transform.translation - transform.translation;
+            // let direction_to_camera = camera_transform.translation - transform.translation;
             // transform.look_at(camera_transform.translation, Vec3::Y); 
 
             // Optionally adjust position, but don't reset it to a fixed point.
@@ -177,6 +153,12 @@ pub fn update_muzzle_flash(
         }
     }
 }
+
+
+
+
+
+
 
 #[derive(Asset, AsBindGroup, TypePath, Clone)]
 struct LiquidMaterial {

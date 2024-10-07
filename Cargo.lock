@@ -3805,6 +3805,7 @@ dependencies = [
  "bevy_hanabi",
  "bevy_kira_audio",
  "bevy_rapier3d",
+ "rand",
 ]
 
 [[package]]

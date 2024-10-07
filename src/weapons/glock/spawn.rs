@@ -2,6 +2,11 @@ use bevy::prelude::*;
 
 use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::{components::{GlockComponent, HasGlock}, states::CurrentWeapon}};
 
+#[derive(Component)]
+pub struct MuzzleFlash {
+    pub timer: Timer,
+}
+
 pub fn spawn_glock(
     mut commands: Commands,
     player_query: Query<(Entity, Option<&HasGlock>), With<Player>>,
@@ -28,6 +33,23 @@ pub fn spawn_glock(
                 },
                 GlockComponent,
             ));
+
+            // parent.spawn((
+            //     SceneBundle {
+            //         scene: asset_server.load("models/muzzle-flash.glb#Scene0"),
+            //         transform: Transform {
+            //             scale: Vec3::splat(100.0), 
+            //             translation: Vec3::new(0.2, 30.85, -500.0), 
+            //             rotation: Quat::from_rotation_y(std::f32::consts::PI), 
+            //             ..default()
+            //         },
+            //         visibility: Visibility::Visible,
+            //         ..default()
+            //     },
+            //     MuzzleFlash {
+            //                    timer: Timer::from_seconds(100.05, TimerMode::Once),
+            //         },
+            // ));
         });
 
         // Add the HasGlock component to prevent future spawns
