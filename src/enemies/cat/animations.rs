@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::game::link_animations::AnimationEntityLink;
+use crate::common::link_animations::AnimationEntityLink;
 
 use super::{components::Cat, resources::CatAnimations};
 

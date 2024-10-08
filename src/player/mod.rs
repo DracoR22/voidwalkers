@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use systems::{movement::{player_look_system, player_movement_system}, shooting::{shoot_ray, update_tracers}, sight::spawn_sight_dot, spawn::spawn_player_system};
 
-use crate::game::{link_animations::link_animations, state::GameState};
+use crate::game::{state::GameState};
 
 pub mod components;
 pub mod resources;

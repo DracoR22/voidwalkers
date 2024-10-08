@@ -2,10 +2,7 @@ use bevy::prelude::*;
 use bevy::prelude::AlphaMode;
 use bevy_hanabi::prelude::*;
 
-#[derive(Component)]
-pub struct BloodEffectLifetime {
-   pub timer: Timer,
-}
+use super::components::BloodEffectLifetime;
 
  pub fn spawn_blood(
     mut commands: Commands,

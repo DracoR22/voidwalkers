@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use cat::{animations::play_cat_animation, spawn::spawn_cat};
 
-use crate::game::link_animations::link_animations;
+use crate::common::link_animations::link_animations;
 
 pub mod cat;
 

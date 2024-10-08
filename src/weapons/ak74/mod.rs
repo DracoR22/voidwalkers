@@ -3,7 +3,7 @@ use audio::{play_ak74_audio, setup_ak74_audio};
 use bevy::prelude::*;
 use spawn::{despawn_ak74, respawn_ak74, spawn_ak74, update_gun_rotation};
 
-use crate::game::link_animations::{link_animations, link_multiple_animations};
+use crate::common::link_animations::link_multiple_animations;
 
 use super::states::CurrentWeapon;
 

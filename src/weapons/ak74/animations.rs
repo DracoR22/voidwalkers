@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 use std::time::Duration;
-use crate::{game::link_animations::{AnimationEntityLink, MultipleAnimationEntityLinks}, player::components::Player, weapons::{resources::AK74Animations, states::CurrentWeapon}};
+use crate::{common::link_animations::MultipleAnimationEntityLinks, player::components::Player, weapons::{resources::AK74Animations, states::CurrentWeapon}};
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum AK74AnimationsList {

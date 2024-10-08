@@ -1,8 +1,10 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use bevy_hanabi::prelude::*;
+use bevy::prelude::AlphaMode;
 
-use crate::{cubes::components::CubeComponent, game::blood::spawn_blood, player::{components::{BulletTracer, Player, PlayerFirstPersonCamera}, constants::{MAX_BULLET_DISTANCE, TRACER_LIFETIME, TRACER_WIDTH}}};
+
+use crate::{cubes::components::CubeComponent, effects::blood_decal::spawn_blood, player::{components::{BulletTracer, Player, PlayerFirstPersonCamera}, constants::{MAX_BULLET_DISTANCE, TRACER_LIFETIME, TRACER_WIDTH}}};
 
 pub fn shoot_ray(
     mut commands: Commands,
@@ -42,11 +44,12 @@ pub fn shoot_ray(
         };
 
         let tracer_length = (end_position - ray_origin).length();
-        
+        println!("Tracer Start Position (World Coordinates): {:?}", ray_origin);
 
         let material = materials.add(StandardMaterial {
-            base_color: Color::WHITE,
-            emissive: Color::WHITE * 2.0, // Make the tracer glow
+            base_color: Color::rgba(1.0, 1.0, 1.0, 0.0),
+            alpha_mode: AlphaMode::Mask(0.0),
+            
             ..Default::default()
         });
 
@@ -65,6 +68,7 @@ pub fn shoot_ray(
                 material,
                 transform: Transform::from_xyz(0., 100000., 0.)
                 .looking_to(Vec3::new(forward_x, forward_y, forward_z), Vec3::Y),
+                visibility: Visibility::Hidden,
                 ..default()
             },
             BulletTracer {
