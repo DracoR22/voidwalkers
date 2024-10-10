@@ -96,7 +96,7 @@ pub fn respawn_ak74(
                             SceneBundle {
                                 scene: asset_server.load("animations/ak74.glb#Scene0"),
                                 transform: Transform {
-                                    scale: Vec3::splat(50.0), 
+                                    scale: Vec3::splat(10.0), 
                                     translation: Vec3::new(0.2, 85.5, 0.3), 
                                     rotation: Quat::from_rotation_y(std::f32::consts::PI), 
                                     ..default()
@@ -132,9 +132,9 @@ pub fn update_gun_rotation(
 
             // Adjust the gun's position relative to the camera
             gun_transform.translation = camera_transform.translation
-                + camera_transform.forward() * 0.3 // Move it forward (reduced from 0.5)
-                + camera_transform.right() * 0.15 // Move it to the right (reduced from 0.3)
-                - camera_transform.up() * 0.1 // Move it down (reduced from 0.2)
+                + camera_transform.forward() * 10.3 // Move it forward 
+                + camera_transform.right() * 0.70 // Move it to the right 
+                - camera_transform.up() * 0.1 // Move it down 
                 + Vec3::new(0.0, -20.3, 0.0); // Additional downward offset
         }
     }

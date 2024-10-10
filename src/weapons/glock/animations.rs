@@ -1,5 +1,5 @@
 use std::time::Duration;
-
+use std::collections::HashSet;
 use bevy::prelude::*;
 
 use crate::{common::link_animations::MultipleAnimationEntityLinks, player::components::Player, weapons::{resources::GlockAnimations, states::CurrentWeapon}};
@@ -50,7 +50,8 @@ pub fn load_glock_animation(
     mut player_character_query: Query<(&Player, &MultipleAnimationEntityLinks)>, // Use AnimationEntityLinks
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mouse_input: Res<ButtonInput<MouseButton>>,
-    state: Res<State<CurrentWeapon>>
+    state: Res<State<CurrentWeapon>>,
+    mut pressed_keys: Local<HashSet<KeyCode>>
 ) {
     match state.get() {
         CurrentWeapon::Glock => {
@@ -58,7 +59,12 @@ pub fn load_glock_animation(
                 for &animation_entity in &animation_entity_links.0 { // Iterate through all linked entities
                     if let Ok(mut animation_player) = players_query.get_mut(animation_entity) {
                         keyboard_input.get_just_pressed().into_iter().for_each(|key_code| {
+                            pressed_keys.insert(*key_code);
                             *current_animation = GlockAnimationsList::from(key_code);
+                        });
+
+                        keyboard_input.get_just_released().for_each(|key_code| {
+                            pressed_keys.remove(key_code);
                         });
             
                         if mouse_input.just_pressed(MouseButton::Left) {
@@ -70,13 +76,17 @@ pub fn load_glock_animation(
                             *current_animation = GlockAnimationsList::IDLE; // Reset or change animation on release
                         }
             
-                        if keyboard_input.just_released(KeyCode::KeyW)
-                            || keyboard_input.just_released(KeyCode::KeyA)
-                            || keyboard_input.just_released(KeyCode::KeyS)
-                            || keyboard_input.just_released(KeyCode::KeyD) {
-                            *current_animation = GlockAnimationsList::IDLE;
+                        if *current_animation == GlockAnimationsList::IDLE || *current_animation == GlockAnimationsList::WALK {
+                            if pressed_keys.contains(&KeyCode::KeyW)
+                                || pressed_keys.contains(&KeyCode::KeyA)
+                                || pressed_keys.contains(&KeyCode::KeyS)
+                                || pressed_keys.contains(&KeyCode::KeyD) {
+                                *current_animation = GlockAnimationsList::WALK;
+                            } else {
+                                *current_animation = GlockAnimationsList::IDLE;
+                            }
                         }
-            
+
                         if *current_animation != GlockAnimationsList::IDLE && animation_player.is_finished() {
                             *current_animation = GlockAnimationsList::IDLE;
                         }

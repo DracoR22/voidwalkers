@@ -4,37 +4,36 @@ use crate::{player::components::{Player, PlayerFirstPersonCamera}};
 
 use super::components::{HasMuzzleFlash, MuzzleFlash};
 
-pub fn spawn_muzzle_flash(
+pub fn setup_muzzle_flash(
     mut commands: Commands,
-    player_query: Query<(Entity, Option<&HasMuzzleFlash>), With<Player>>,
-    asset_server: Res<AssetServer>
+    player_query: Query<Entity, With<Player>>,
+    asset_server: Res<AssetServer>,
 ) {
-  if let Ok((player_entity, has_flash)) = player_query.get_single() {
-    if has_flash.is_none() {
+    let muzzle_flash_handle = asset_server.load("models/muzzle-flash.glb#Scene0");
+
+    if let Ok(player_entity) = player_query.get_single() {
         commands.entity(player_entity).with_children(|parent| {
             parent.spawn((
                 SceneBundle {
-                    scene: asset_server.load("models/muzzle-flash.glb#Scene0"),
+                    scene: muzzle_flash_handle.clone(),
                     transform: Transform {
-                        scale: Vec3::splat(0.3), 
-                        translation: Vec3::new(90.2, 8.85, -200.0), 
-                        // rotation: Quat::from_rotation_y(std::f32::consts::PI), 
+                        scale: Vec3::splat(0.3),
+                        translation: Vec3::new(90.2, 8.85, -200.0),
                         ..default()
                     },
-                    visibility: Visibility::Hidden,
+                      visibility: Visibility::Hidden, 
                     ..default()
                 },
                 MuzzleFlash {
-                        timer: Timer::from_seconds(0.02, TimerMode::Once),
-                 },
+                    timer: Timer::from_seconds(0.05, TimerMode::Once),
+                    is_active: false,
+                    frames_visible: 0
+                },
             ));
         });
-
-        // Add the HasMuzzleFlash component to prevent future spawns
-        commands.entity(player_entity).insert(HasMuzzleFlash);
     }
-  }
 }
+
 
 pub fn update_muzzle_flash(
     mut commands: Commands,
@@ -59,8 +58,10 @@ pub fn update_muzzle_flash(
         for (_, mut muzzle_flash, mut visibility, mut transform) in muzzle_flash_query.iter_mut() {
             // Reset the muzzle flash timer
             muzzle_flash.timer.reset();
+            muzzle_flash.is_active = true;
+            muzzle_flash.frames_visible = 0;
             *visibility = Visibility::Visible;
-
+            println!("Updated muzzle flash");
             let mut new_y_pos = 72.0;
             let mut new_z_pos = -200.50001;
             
@@ -107,8 +108,14 @@ pub fn update_muzzle_flash(
 
     // Update visibility based on the muzzle flash timer
     for (_, mut muzzle_flash, mut visibility, _) in muzzle_flash_query.iter_mut() {
-        if muzzle_flash.timer.tick(time.delta()).just_finished() {
+       if muzzle_flash.is_active {
+        muzzle_flash.frames_visible += 1;
+        if muzzle_flash.timer.tick(time.delta()).just_finished() || muzzle_flash.frames_visible >= 10 {
+       
             *visibility = Visibility::Hidden;
+            muzzle_flash.is_active = false;
+            muzzle_flash.frames_visible = 0;
         }
+       }
     }
 }
