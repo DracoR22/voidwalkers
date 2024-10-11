@@ -33,9 +33,9 @@ pub fn spawn_assets(
            transform: Transform::from_xyz(760.0, 286.0, -520.0),
            point_light: PointLight {
                intensity: 100_000_000_0.0,
-               range: 100_000_000_000_000.0,
+               range: 100_000_000.0,
                color: Color::rgb(1.0, 0.8, 0.6),
-               shadows_enabled: true,
+            //    shadows_enabled: true,
                ..default()
            },
            ..default()
@@ -49,23 +49,24 @@ pub fn spawn_assets(
             translation: Vec3::new(730.0, 226.0, -395.0),
             ..default()
         },
-           ..default()
+           ..default()  
        });
 
        // point light 2
        commands
        .spawn(PointLightBundle {
            // transform: Transform::from_xyz(5.0, 8.0, 2.0),
-           transform: Transform::from_xyz(1720.0, 286.0, -510.0),
+           transform: Transform::from_xyz(1520.0, 286.0, -510.0),
            point_light: PointLight {
                intensity: 100_000_000_0.0,
-               range: 100_000_000_000.0,
+               range: 100_000.0,
                color: Color::rgb(1.0, 0.8, 0.6),
-               shadows_enabled: true,
+            //    shadows_enabled: true,
                ..default()
            },
            ..default()
        });
+
     //    .with_children(|builder| {
     //        builder.spawn(SceneBundle {
     //         scene: asset_server.load("models/lamp.glb#Scene0"),
@@ -78,21 +79,6 @@ pub fn spawn_assets(
     //            ..default()
     //        });
     //    });
-
-
-     // Bright warm light to simulate muzzle flash
-    //  commands.spawn(PointLightBundle {
-    //     point_light: PointLight {
-    //         intensity: 50000.0, // High intensity for a quick flash
-    //         color: Color::rgb(1.0, 0.8, 0.6), // Warm color like a fire/explosion
-    //         range: 500.0, // Adjust range to fit the flash
-    //         radius: 100.0,
-    //         shadows_enabled: true,
-    //         ..default()
-    //     },
-    //     transform: Transform::from_xyz(700.0, 1.0, 0.0), // Position the light at the gun's muzzle (transform from the gun or player)
-    //     ..default()
-    // });
 
     
     // emisive ball
@@ -128,6 +114,18 @@ pub fn spawn_assets(
         ..default()
     });
 
+    // antique table
+    commands.spawn(SceneBundle {
+        scene: asset_server.load("models/antique_table.glb#Scene0"),
+        transform: Transform {
+            translation: Vec3::new(760.0, 3.0, -420.0),
+            scale: Vec3::splat(137.0),
+            rotation: Quat::from_rotation_y(std::f32::consts::PI / 2.0),
+            ..default()
+        },
+        ..default()
+    });
+
     // sofa
     commands.spawn(SceneBundle {
         scene: asset_server.load("models/sofa.glb#Scene0"),
@@ -140,34 +138,45 @@ pub fn spawn_assets(
         ..default()
     });
 
-    // xmas tree
+    // table lamp
     commands.spawn(SceneBundle {
-        scene: asset_server.load("models/xmas_tree.glb#Scene0"),
+        scene: asset_server.load("models/table-lamp.glb#Scene0"),
         transform: Transform {
-            translation: Vec3::new(1720.0, 1.0, 200.0),
-            scale: Vec3::splat(100.0),
-            rotation: Quat::from_rotation_y(std::f32::consts::PI),
+            translation: Vec3::new(1300.0, 3.0, -1000.0),
+            scale: Vec3::splat(137.0),
             ..default()
         },
         ..default()
     });
 
-    // presents
-    commands.spawn(SceneBundle {
-        scene: asset_server.load("models/white_present.glb#Scene0"),
-        transform: Transform {
-            translation: Vec3::new(1720.0, 10.0, 300.0),
-            scale: Vec3::splat(1.0),
-            ..default()
-        },
-        ..default()
-    });
+    // xmas tree
+    // commands.spawn(SceneBundle {
+    //     scene: asset_server.load("models/xmas_tree.glb#Scene0"),
+    //     transform: Transform {
+    //         translation: Vec3::new(1720.0, 1.0, 200.0),
+    //         scale: Vec3::splat(100.0),
+    //         rotation: Quat::from_rotation_y(std::f32::consts::PI),
+    //         ..default()
+    //     },
+    //     ..default()
+    // });
+
+    // // presents
+    // commands.spawn(SceneBundle {
+    //     scene: asset_server.load("models/white_present.glb#Scene0"),
+    //     transform: Transform {
+    //         translation: Vec3::new(1720.0, 10.0, 300.0),
+    //         scale: Vec3::splat(1.0),
+    //         ..default()
+    //     },
+    //     ..default()
+    // });
 
     // wood window
     commands.spawn(SceneBundle {
         scene: asset_server.load("models/wooden_window.glb#Scene0"),
         transform: Transform {
-            translation: Vec3::new(1260.0, 1.0, -40.0),
+            translation: Vec3::new(1260.0, 1.0, -20.0),
             scale: Vec3::splat(3.0),
             rotation: Quat::from_rotation_y(std::f32::consts::PI),
             ..default()
@@ -175,11 +184,11 @@ pub fn spawn_assets(
         ..default()
     });
 
-     // wood window 2
+     // wood window next to sofa
      commands.spawn(SceneBundle {
         scene: asset_server.load("models/wooden_window.glb#Scene0"),
         transform: Transform {
-            translation: Vec3::new(1215.0, 5.0, -49.0),
+            translation: Vec3::new(1215.0, 5.0, -50.0),
             scale: Vec3::splat(3.0),
             rotation: Quat::from_rotation_y(-std::f32::consts::PI / 2.0),
             ..default()
@@ -188,39 +197,16 @@ pub fn spawn_assets(
     });
 
     // floor lamp
-    commands.spawn(SceneBundle {
-        scene: asset_server.load("models/floor-lamp.glb#Scene0"),
-        transform: Transform {
-            translation: Vec3::new(270.0, 1.0, -430.0),
-            scale: Vec3::splat(100.0),
-            rotation: Quat::from_rotation_y(std::f32::consts::PI),
-            ..default()
-        },
-        ..default()
-    });
-
-    commands.spawn(SceneBundle {
-        scene: asset_server.load("animations/saiga.glb#Scene0"),
-        transform: Transform {
-            translation: Vec3::new(270.0, 10.0, -630.0),
-            scale: Vec3::splat(100.0),
-            rotation: Quat::from_rotation_y(std::f32::consts::PI),
-            ..default()
-        },
-        ..default()
-    });
-
-    commands.spawn(SceneBundle {
-        scene: asset_server.load("animations/glock.glb#Scene0"),
-        transform: Transform {
-            translation: Vec3::new(270.0, 10.0, -430.0),
-            scale: Vec3::splat(100.0),
-            rotation: Quat::from_rotation_y(std::f32::consts::PI),
-            ..default()
-        },
-        ..default()
-    });
-
+    // commands.spawn(SceneBundle {
+    //     scene: asset_server.load("models/floor-lamp.glb#Scene0"),
+    //     transform: Transform {
+    //         translation: Vec3::new(270.0, 1.0, -430.0),
+    //         scale: Vec3::splat(100.0),
+    //         rotation: Quat::from_rotation_y(std::f32::consts::PI),
+    //         ..default()
+    //     },
+    //     ..default()
+    // });
 
 
     // coffee table

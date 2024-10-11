@@ -96,7 +96,7 @@ pub fn respawn_ak74(
                             SceneBundle {
                                 scene: asset_server.load("animations/ak74.glb#Scene0"),
                                 transform: Transform {
-                                    scale: Vec3::splat(10.0), 
+                                    scale: Vec3::splat(50.0), 
                                     translation: Vec3::new(0.2, 85.5, 0.3), 
                                     rotation: Quat::from_rotation_y(std::f32::consts::PI), 
                                     ..default()

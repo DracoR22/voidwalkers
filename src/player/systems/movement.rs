@@ -43,6 +43,8 @@ pub fn player_movement_system(keyboard_input: Res<ButtonInput<KeyCode>>,  mut qu
         let forward = transform.forward();
         let right = transform.right();
 
+        let mut speed = PLAYER_SPEED;
+
         if keyboard_input.pressed(KeyCode::KeyW) {
             direction += *forward;
         }
@@ -58,10 +60,13 @@ pub fn player_movement_system(keyboard_input: Res<ButtonInput<KeyCode>>,  mut qu
         if keyboard_input.pressed(KeyCode::Space) {
             direction.y += PLAYER_JUMP
         }
+        if keyboard_input.pressed(KeyCode::ShiftLeft) {
+            speed *= 2.0;
+        }
 
         if direction != Vec3::ZERO {
             direction = direction.normalize();
-            transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
+            transform.translation += direction * speed * time.delta_seconds();
         }
     }
 }

@@ -10,7 +10,6 @@ pub fn spawn_glock(
 ) {
   match state.get() {
     CurrentWeapon::Glock => {
-        // Get the player entity and check if they already have the Glock
   if let Ok((player_entity, has_glock)) = player_query.get_single() {
     if has_glock.is_none() {
         println!("SPAWNED GLOCK!");
@@ -84,21 +83,14 @@ pub fn update_gun_rotation(
     camera_query: Query<&Transform, With<PlayerFirstPersonCamera>>,
     mut gun_query: Query<&mut Transform, (With<GlockComponent>, Without<PlayerFirstPersonCamera>)>,
 ) {
-    // Ensure the camera exists before proceeding
     if let Ok(camera_transform) = camera_query.get_single() {
-        // Ensure the gun exists before trying to modify its transform
         if let Ok(mut gun_transform) = gun_query.get_single_mut() {
-            // Create a rotation that aligns the gun with the camera
             let gun_rotation = camera_transform.rotation * Quat::from_rotation_y(std::f32::consts::PI);
 
-            // Update the gun's rotation
             gun_transform.rotation = gun_rotation;
 
-             // Get the pitch angle (rotation around X-axis) from the camera's rotation
-             let forward_vec = camera_transform.forward();
-             let camera_pitch = forward_vec.y; 
-
-            //  let dynamic_z_offset = 0.3 - (camera_pitch * -5.2);
+            let forward_vec = camera_transform.forward();
+            let camera_pitch = forward_vec.y; 
 
             let dynamic_z_offset = if camera_pitch >= 0.0 {
                 2.9 - (camera_pitch * -5.2)  // Move closer when looking up
