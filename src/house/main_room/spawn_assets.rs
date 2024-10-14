@@ -56,7 +56,7 @@ pub fn spawn_assets(
        commands
        .spawn(PointLightBundle {
            // transform: Transform::from_xyz(5.0, 8.0, 2.0),
-           transform: Transform::from_xyz(1520.0, 286.0, -510.0),
+           transform: Transform::from_xyz(1420.0, 286.0, -510.0),
            point_light: PointLight {
                intensity: 100_000_000_0.0,
                range: 100_000.0,
@@ -172,17 +172,6 @@ pub fn spawn_assets(
     //     ..default()
     // });
 
-    // wood window
-    commands.spawn(SceneBundle {
-        scene: asset_server.load("models/wooden_window.glb#Scene0"),
-        transform: Transform {
-            translation: Vec3::new(1260.0, 1.0, -20.0),
-            scale: Vec3::splat(3.0),
-            rotation: Quat::from_rotation_y(std::f32::consts::PI),
-            ..default()
-        },
-        ..default()
-    });
 
      // wood window next to sofa
      commands.spawn(SceneBundle {

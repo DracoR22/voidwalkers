@@ -4,6 +4,7 @@ use bevy::{
     },
     prelude::*,
 };
+use bevy_rapier3d::prelude::*;
 
 use crate::{player::{components::{Player, PlayerFirstPersonCamera}, constants::{PLAYER_JUMP, PLAYER_SPEED}}, weapons::components::AK74Component};
 
@@ -36,15 +37,19 @@ pub fn player_look_system(
     camera_transform.rotation = Quat::from_euler(EulerRot::YXZ, yaw, pitch, 0.0);
 }
 
-pub fn player_movement_system(keyboard_input: Res<ButtonInput<KeyCode>>,  mut query: Query<&mut Transform, With<Player>>, time: Res<Time>) {
-    if let Ok(mut transform) = query.get_single_mut() {
+pub fn player_movement_system(
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    mut query: Query<(&mut Velocity, &mut Transform), With<Player>>,
+    time: Res<Time>,
+) {
+    if let Ok((mut velocity, mut transform)) = query.get_single_mut() {
         let mut direction = Vec3::ZERO;
-
+        
         let forward = transform.forward();
         let right = transform.right();
-
+        
         let mut speed = PLAYER_SPEED;
-
+        
         if keyboard_input.pressed(KeyCode::KeyW) {
             direction += *forward;
         }
@@ -57,16 +62,23 @@ pub fn player_movement_system(keyboard_input: Res<ButtonInput<KeyCode>>,  mut qu
         if keyboard_input.pressed(KeyCode::KeyD) {
             direction += *right;
         }
-        if keyboard_input.pressed(KeyCode::Space) {
-            direction.y += PLAYER_JUMP
-        }
         if keyboard_input.pressed(KeyCode::ShiftLeft) {
             speed *= 2.0;
         }
-
+        
         if direction != Vec3::ZERO {
             direction = direction.normalize();
+            let movement = direction * speed * time.delta_seconds();
+            
             transform.translation += direction * speed * time.delta_seconds();
+            // velocity.linvel += Vec3::new(movement.x, 0.0, movement.z);
+        }
+        
+        // Apply drag to slow down the player when no input is given
+        // velocity.linvel *= 0.9;
+        
+        if keyboard_input.just_pressed(KeyCode::Space) && velocity.linvel.y.abs() < 0.1 {
+            velocity.linvel.y = PLAYER_JUMP;
         }
     }
 }

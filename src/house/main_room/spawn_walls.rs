@@ -7,10 +7,6 @@ pub fn spawn_walls(
     mut mesh_assets: ResMut<Assets<Mesh>>,
     mut material_assets: ResMut<Assets<StandardMaterial>>,
 ) {
-    let wall_model: Handle<Scene> = asset_server.load("models/wall1.glb#Scene0");
-    let wall_model_alt: Handle<Scene> = asset_server.load("models/wall2.glb#Scene0");
-    let wall_model_door: Handle<Scene> = asset_server.load("models/wall_door.glb#Scene0");
-
     let initial_position = Vec3::new(1700.0, 156.0, -570.0);
     let spacing_x = 180.0 - 0.1; // The amount to subtract from the X position for each wall
 
