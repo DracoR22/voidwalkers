@@ -34,10 +34,8 @@ pub fn play_ak74_audio(
             casing_timer.timer.reset();
             casing_timer.shot_fired = true;
         }
-    
-    }
-   }
-   // Update the timer
+
+        // Update the timer
    ak74_timer.0.tick(time.delta());
 
    // If the left mouse button is pressed
@@ -55,8 +53,9 @@ pub fn play_ak74_audio(
        // reset the timer when the button is released
        ak74_timer.0.reset();
    }
+    } 
 
-   // Update the casing timer
+    // Update the casing timer
    casing_timer.timer.tick(time.delta());
 
    // If the casing timer has finished and a shot was fired, play the casing sound
@@ -64,4 +63,6 @@ pub fn play_ak74_audio(
        audio.play(audio_handles.0[2].clone());
        casing_timer.shot_fired = false;  // Reset the flag
    }
+   }
+   
 }

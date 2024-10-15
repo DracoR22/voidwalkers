@@ -81,7 +81,7 @@ pub fn shoot_ray(
                     material,
                     transform: Transform::from_xyz(0., 100000., 0.)
                     .looking_to(Vec3::new(forward_x, forward_y, forward_z), Vec3::Y),
-                    // visibility: Visibility::Hidden,
+                    visibility: Visibility::Hidden,
                     ..default()
                 },
                 BulletTracer {

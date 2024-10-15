@@ -73,6 +73,10 @@ pub fn load_ak74_animation(
                                 *current_animation = AK74AnimationsList::SHOOT;
                             }
                         
+                        } else {
+                            if *current_animation == AK74AnimationsList::SHOOT {
+                                *current_animation = AK74AnimationsList::IDLE;
+                            }
                         }
                     }
             
