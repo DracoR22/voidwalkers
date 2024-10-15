@@ -1,6 +1,6 @@
 use bevy::{input::mouse::MouseWheel, prelude::*};
 
-use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::{components::{AK74Component, HasAK74}, states::CurrentWeapon}};
+use crate::{player::components::{Player, PlayerFirstPersonCamera}, game::weapons::{components::{AK74Component, HasAK74}, states::CurrentWeapon}};
 
 pub fn spawn_ak74(  
     mut commands: Commands,
@@ -26,7 +26,11 @@ pub fn spawn_ak74(
                         },
                         ..default()
                     },
-                    AK74Component
+                    AK74Component {
+                        current_ammo: 35,
+                        magazine_size: 35,
+                        max_ammo: 325
+                    }
                 ));
             });
 
@@ -103,7 +107,11 @@ pub fn respawn_ak74(
                                 },
                                 ..default()
                             },
-                            AK74Component,
+                            AK74Component {
+                                current_ammo: 35,
+                                magazine_size: 35,
+                                max_ammo: 325
+                            },
                         ));
                     });
 

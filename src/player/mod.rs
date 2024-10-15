@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use systems::{movement::{player_look_system, player_movement_system}, shooting::{shoot_ray, update_tracers}, sight::spawn_sight_dot, spawn::spawn_player_system};
+use systems::{movement::{player_look_system, player_movement_system}, shooting::{shoot_ray, update_tracers, WeaponFireTimer}, sight::spawn_sight_dot, spawn::spawn_player_system};
 
 use crate::game::{state::GameState};
 
@@ -16,7 +16,7 @@ impl Plugin for PlayerPlugin {
         //  .insert_resource(Animations(Vec::new()))
         .add_systems(Startup, spawn_player_system)
         .add_systems(Startup, spawn_sight_dot)
-       
+        .insert_resource(WeaponFireTimer(Timer::from_seconds(0.1, TimerMode::Repeating)))
 
         .add_systems(Update, (
             player_movement_system,

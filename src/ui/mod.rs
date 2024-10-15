@@ -1,9 +1,11 @@
 use bevy::prelude::*;
 use fps::{update_game_fps, write_game_fps, GameFPSText, GameFpsRoot};
+use gameplay::GamePlayUIPlugin;
 use position::{update_player_position, write_player_position, PlayerPosition};
 
 pub mod position;
 pub mod fps;
+pub mod gameplay;
 
 #[derive(Component)]
 pub struct DebugMenu;
@@ -13,6 +15,7 @@ pub struct GameUIPugin;
 impl Plugin for GameUIPugin {
     fn build(&self, app: &mut App) {
         app
+        .add_plugins(GamePlayUIPlugin)
         .add_systems(Startup, write_debug_menu)
         .add_systems(Update, (
             update_player_position, 
@@ -34,7 +37,7 @@ pub fn write_debug_menu(mut commands: Commands) {
                 padding: UiRect::all(Val::Px(4.0)),
                 ..Default::default()
             },
-            // You can customize the positioning or style here if needed
+            
             ..Default::default()
         },
     )).id();

@@ -15,7 +15,7 @@ pub struct WeaponsPlugin;
 impl Plugin for WeaponsPlugin {
     fn build(&self, app: &mut App) {
         app
-        .insert_resource(AK74Timer(Timer::from_seconds(0.3, TimerMode::Repeating)))
+        .insert_resource(AK74Timer(Timer::from_seconds(0.1, TimerMode::Repeating)))
         .insert_resource(GlockTimer(Timer::from_seconds(0.3, TimerMode::Repeating)))
         .insert_resource(CasingAudioTimer {
             timer: Timer::from_seconds(0.5, TimerMode::Once),

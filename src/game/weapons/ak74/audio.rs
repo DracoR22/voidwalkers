@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy_kira_audio::prelude::*;
 
-use crate::weapons::resources::{AK74Audios, AK74Timer, CasingAudioTimer};
+use crate::game::weapons::{components::AK74Component, resources::{AK74Audios, AK74Timer, CasingAudioTimer}};
 
 pub fn setup_ak74_audio(asset_server: Res<AssetServer>, mut commands: Commands) {
  commands.insert_resource(AK74Audios(vec![
@@ -19,6 +19,7 @@ pub fn play_ak74_audio(
     time: Res<Time>,
     mut ak74_timer: ResMut<AK74Timer>,
     mut casing_timer: ResMut<CasingAudioTimer>,
+    ak74_query: Query<&AK74Component>
 ) {
     // reload audio
     if keyboard_input.just_pressed(KeyCode::KeyR) {
@@ -26,12 +27,16 @@ pub fn play_ak74_audio(
     }
 
     // fire audio
-    if mouse_input.just_pressed(MouseButton::Left) {
-        audio.play(audio_handles.0[0].clone());
-        casing_timer.timer.reset();
-        casing_timer.shot_fired = true;
+   if let Ok(ak74) = ak74_query.get_single() {
+    if ak74.current_ammo > 0 {
+        if mouse_input.just_pressed(MouseButton::Left) {
+            audio.play(audio_handles.0[0].clone());
+            casing_timer.timer.reset();
+            casing_timer.shot_fired = true;
+        }
+    
     }
-
+   }
    // Update the timer
    ak74_timer.0.tick(time.delta());
 
@@ -47,7 +52,7 @@ pub fn play_ak74_audio(
            casing_timer.shot_fired = true;
        }
    } else {
-       // Optionally, reset the timer when the button is released
+       // reset the timer when the button is released
        ak74_timer.0.reset();
    }
 

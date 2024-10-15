@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{player::components::{Player, PlayerFirstPersonCamera}};
+use crate::{game::weapons::{components::{AK74Component, GlockComponent}, states::{can_shoot_and_decrease_ammo, CurrentWeapon}}, player::components::{Player, PlayerFirstPersonCamera}};
 
 use super::components::{HasMuzzleFlash, MuzzleFlash};
 
@@ -41,6 +41,9 @@ pub fn update_muzzle_flash(
     mouse_input: Res<ButtonInput<MouseButton>>,
     mut muzzle_flash_query: Query<(Entity, &mut MuzzleFlash, &mut Visibility, &mut Transform)>,
     camera_query: Query<&Transform, (With<PlayerFirstPersonCamera>, Without<MuzzleFlash>)>,
+    weapon_state: Res<State<CurrentWeapon>>,
+    mut glock_query: Query<&mut GlockComponent>,
+    mut ak74_query: Query<&mut AK74Component>,
 ) {
     // Get the camera transform
     let camera_transform = if let Ok(transform) = camera_query.get_single() {
@@ -55,6 +58,9 @@ pub fn update_muzzle_flash(
 
     // Check if the left mouse button is pressed
     if mouse_input.just_pressed(MouseButton::Left) {
+        let can_shoot = can_shoot_and_decrease_ammo(weapon_state.get(), &mut glock_query, &mut ak74_query);
+       
+       if can_shoot {
         for (_, mut muzzle_flash, mut visibility, mut transform) in muzzle_flash_query.iter_mut() {
             // Reset the muzzle flash timer
             muzzle_flash.timer.reset();
@@ -104,6 +110,7 @@ pub fn update_muzzle_flash(
             let pitch_rotation = Quat::from_rotation_x(camera_pitch * 1.5);
             transform.rotation = pitch_rotation;
         }
+       }
     }
 
     // Update visibility based on the muzzle flash timer

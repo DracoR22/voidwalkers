@@ -3,7 +3,7 @@ use bevy::log::LogPlugin;
 use bevy_kira_audio::prelude::*;
 use bevy_hanabi::prelude::*;
 use bevy_rapier3d::plugin::{NoUserData, RapierPhysicsPlugin};
-use voidhunt::{cubes::systems::spawn::spawn_cube_system, effects::EffectsPlugin, enemies::EnemiesPlugin, game::{GamePlugin}, house::HousePlugin, player::{components::{Player, PlayerFirstPersonCamera}, PlayerPlugin}, ui::GameUIPugin, weapons::{states::CurrentWeapon, WeaponsPlugin}, window::WindowSetupPlugin};
+use voidhunt::{cubes::systems::spawn::spawn_cube_system, effects::EffectsPlugin, enemies::EnemiesPlugin, game::{GamePlugin}, house::HousePlugin, player::{components::{Player, PlayerFirstPersonCamera}, PlayerPlugin}, ui::GameUIPugin, window::WindowSetupPlugin};
 use bevy::render::render_resource::{AsBindGroup, ShaderRef};
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy::prelude::AlphaMode;
@@ -42,9 +42,7 @@ fn main() {
     .add_plugins(HousePlugin)
     .add_plugins(PlayerPlugin)
     .add_plugins(EnemiesPlugin)
-    .add_plugins(WeaponsPlugin)
     .add_plugins(GameUIPugin)
-    .init_state::<CurrentWeapon>()
     .add_systems(Startup, spawn_cube_system)
     .add_plugins(EffectsPlugin)
     

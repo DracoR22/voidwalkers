@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 use std::time::Duration;
-use crate::{common::link_animations::MultipleAnimationEntityLinks, player::components::Player, weapons::{resources::AK74Animations, states::CurrentWeapon}};
+use crate::{common::link_animations::MultipleAnimationEntityLinks, game::weapons::{components::AK74Component, resources::AK74Animations, states::CurrentWeapon}, player::components::Player};
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum AK74AnimationsList {
@@ -57,6 +57,7 @@ pub fn load_ak74_animation(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mouse_input: Res<ButtonInput<MouseButton>>,
     state: Res<State<CurrentWeapon>>,
+    ak74_query: Query<&AK74Component>
 ) {
     match state.get() {
         CurrentWeapon::AK74 => {
@@ -65,11 +66,16 @@ pub fn load_ak74_animation(
                 if let Ok(mut animation_player) = players_query.get_mut(animation_entity) {
                     keyboard_input.get_just_pressed().into_iter().for_each(|key_code| *current_animation = AK74AnimationsList::from(key_code));
             
-                    if mouse_input.pressed(MouseButton::Left) {
-                        // Continuously set the animation to 4 while the mouse button is held
-                        *current_animation = AK74AnimationsList::SHOOT;
+                    // shoot
+                    if let Ok(ak74) = ak74_query.get_single() {
+                        if ak74.current_ammo > 0 {
+                            if mouse_input.pressed(MouseButton::Left) {
+                                *current_animation = AK74AnimationsList::SHOOT;
+                            }
+                        
+                        }
                     }
-                
+            
                     if mouse_input.just_released(MouseButton::Left) {
                         // Stop looping or switch animation when left-click is released
                         *current_animation = AK74AnimationsList::IDLE; // Reset or change animation on release
@@ -97,7 +103,7 @@ pub fn load_ak74_animation(
             
                     if *current_animation == AK74AnimationsList::SHOOT {
                             animation.repeat();
-                            animation.set_speed(1.0); 
+                            animation.set_speed(2.0); 
                     }
 
                     if *current_animation == AK74AnimationsList::RELOADFULL {

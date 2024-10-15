@@ -3,23 +3,30 @@ use bevy_rapier3d::prelude::*;
 use bevy_hanabi::prelude::*;
 use bevy::prelude::AlphaMode;
 
+#[derive(Resource)]
+pub struct WeaponFireTimer(pub Timer);
 
-use crate::{cubes::components::CubeComponent, effects::blood_decal::spawn_blood, player::{components::{BulletTracer, Player, PlayerFirstPersonCamera}, constants::{MAX_BULLET_DISTANCE, TRACER_LIFETIME, TRACER_WIDTH}}};
+use crate::{cubes::components::CubeComponent, effects::blood_decal::spawn_blood, game::weapons::{components::{AK74Component, GlockComponent}, resources::AK74Timer, states::{can_shoot_and_decrease_ammo, CurrentWeapon}}, player::{components::{BulletTracer, Player, PlayerFirstPersonCamera}, constants::{MAX_BULLET_DISTANCE, TRACER_LIFETIME, TRACER_WIDTH}}};
 
 pub fn shoot_ray(
     mut commands: Commands,
-    keyboard_input: Res<ButtonInput<KeyCode>>,
     mouse_input: Res<ButtonInput<MouseButton>>,
     player_query: Query<&Transform, With<Player>>,
     camera_query: Query<&Transform, (With<PlayerFirstPersonCamera>, Without<Player>)>,
+    mut glock_query: Query<&mut GlockComponent>,
+    mut ak74_query: Query<&mut AK74Component>,
     rapier_context: Res<RapierContext>,
     cube_query: Query<(&CubeComponent, &Transform)>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    mut effects: ResMut<Assets<EffectAsset>>,
+    effects: ResMut<Assets<EffectAsset>>,
     asset_server: Res<AssetServer>,
+    weapon_state: Res<State<CurrentWeapon>>,
+    mut weapon_fire_timer: ResMut<WeaponFireTimer>,
+    time: Res<Time>,
 ) {
-    if mouse_input.just_pressed(MouseButton::Left) {
+    weapon_fire_timer.0.tick(time.delta());
+    if mouse_input.pressed(MouseButton::Left) && weapon_fire_timer.0.finished() {
         let player_transform = player_query.single();
         let camera_transform = camera_query.single();
 
@@ -29,59 +36,65 @@ pub fn shoot_ray(
         let ray_origin = combined_transform.translation;
         let ray_direction = combined_transform.forward();
 
-        let hit = rapier_context.cast_ray(
-            ray_origin,
-            *ray_direction,
-            MAX_BULLET_DISTANCE,
-            true,
-            QueryFilter::default(),
-        );
+        let can_shoot = can_shoot_and_decrease_ammo(weapon_state.get(), &mut glock_query, &mut ak74_query);
 
-        let (end_position, hit_entity) = if let Some((entity, intersection)) = hit {
-            (ray_origin + ray_direction * intersection, Some(entity))
-        } else {
-            (ray_origin + ray_direction * MAX_BULLET_DISTANCE, None)
-        };
+        // handle ammo logic
+       
+          if can_shoot {
 
-        let tracer_length = (end_position - ray_origin).length();
-        println!("Tracer Start Position (World Coordinates): {:?}", ray_origin);
+            let hit = rapier_context.cast_ray(
+                ray_origin,
+                *ray_direction,
+                MAX_BULLET_DISTANCE,
+                true,
+                QueryFilter::default(),
+            );
+    
+            let (end_position, hit_entity) = if let Some((entity, intersection)) = hit {
+                (ray_origin + ray_direction * intersection, Some(entity))
+            } else {
+                (ray_origin + ray_direction * MAX_BULLET_DISTANCE, None)
+            };
+    
+            let tracer_length = (end_position - ray_origin).length();
+            println!("Tracer Start Position (World Coordinates): {:?}", ray_origin);
+    
+            let material = materials.add(StandardMaterial {
+                base_color: Color::rgba(1.0, 1.0, 1.0, 0.0),
+                alpha_mode: AlphaMode::Mask(0.0),
+                
+                ..Default::default()
+            });
+    
+            println!("transform {:?}", camera_transform.forward());
+    
+            let forward = player_transform.forward();
+            let cam_forward = camera_transform.forward();
+            let forward_x = forward.x;
+            let forward_y = cam_forward.y; 
+            let forward_z = forward.z;
+    
+            // Spawn bullet tracer
+            commands.spawn((
+                PbrBundle {
+                    mesh: meshes.add(Mesh::from(shape::Box::new(TRACER_WIDTH, TRACER_WIDTH, TRACER_WIDTH))),
+                    material,
+                    transform: Transform::from_xyz(0., 100000., 0.)
+                    .looking_to(Vec3::new(forward_x, forward_y, forward_z), Vec3::Y),
+                    // visibility: Visibility::Hidden,
+                    ..default()
+                },
+                BulletTracer {
+                    start_position: ray_origin,
+                    end_position,
+                    life_time: TRACER_LIFETIME,
+                    direction: *ray_direction,
+                },
+            ))
+            .insert(Collider::capsule_y(TRACER_WIDTH / 2.0, TRACER_WIDTH));
 
-        let material = materials.add(StandardMaterial {
-            base_color: Color::rgba(1.0, 1.0, 1.0, 0.0),
-            alpha_mode: AlphaMode::Mask(0.0),
-            
-            ..Default::default()
-        });
-
-        println!("transform {:?}", camera_transform.forward());
-
-        let forward = player_transform.forward();
-        let cam_forward = camera_transform.forward();
-        let forward_x = forward.x;
-        let forward_y = cam_forward.y; 
-        let forward_z = forward.z;
-
-        // Spawn bullet tracer
-        commands.spawn((
-            PbrBundle {
-                mesh: meshes.add(Mesh::from(shape::Box::new(TRACER_WIDTH, TRACER_WIDTH, TRACER_WIDTH))),
-                material,
-                transform: Transform::from_xyz(0., 100000., 0.)
-                .looking_to(Vec3::new(forward_x, forward_y, forward_z), Vec3::Y),
-                visibility: Visibility::Hidden,
-                ..default()
-            },
-            BulletTracer {
-                start_position: ray_origin,
-                end_position,
-                life_time: TRACER_LIFETIME,
-                direction: *ray_direction,
-            },
-        ))
-        .insert(Collider::capsule_y(TRACER_WIDTH / 2.0, TRACER_WIDTH));
-
-        // Handle hit logic here
-        if let Some(entity) = hit_entity {
+          // Handle hit logic
+          if let Some(entity) = hit_entity {
             if let Ok((_, transform)) = cube_query.get(entity) {
                 println!("Hit a CubeComponent entity: {:?}", entity);
 
@@ -92,8 +105,9 @@ pub fn shoot_ray(
         } else {
             println!("No entity hit");
         }
+          }
+        }
     }
-}
 
 
 pub fn update_tracers(

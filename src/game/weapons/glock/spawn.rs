@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{player::components::{Player, PlayerFirstPersonCamera}, weapons::{components::{GlockComponent, HasGlock}, states::CurrentWeapon}};
+use crate::{player::components::{Player, PlayerFirstPersonCamera}, game::weapons::{components::{GlockComponent, HasGlock}, states::CurrentWeapon}};
 
 pub fn spawn_glock(
     mut commands: Commands,
@@ -25,7 +25,11 @@ pub fn spawn_glock(
                     },
                     ..default()
                 },
-                GlockComponent,
+                GlockComponent {
+                    current_ammo: 15,
+                    magazine_size: 15,
+                    max_ammo: 125
+                },
             ));
         });
 

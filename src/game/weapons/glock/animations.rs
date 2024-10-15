@@ -2,7 +2,7 @@ use std::time::Duration;
 use std::collections::HashSet;
 use bevy::prelude::*;
 
-use crate::{common::link_animations::MultipleAnimationEntityLinks, player::components::Player, weapons::{resources::GlockAnimations, states::CurrentWeapon}};
+use crate::{common::link_animations::MultipleAnimationEntityLinks, game::weapons::{components::GlockComponent, resources::GlockAnimations, states::CurrentWeapon}, player::components::Player};
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum GlockAnimationsList {
@@ -51,7 +51,8 @@ pub fn load_glock_animation(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mouse_input: Res<ButtonInput<MouseButton>>,
     state: Res<State<CurrentWeapon>>,
-    mut pressed_keys: Local<HashSet<KeyCode>>
+    mut pressed_keys: Local<HashSet<KeyCode>>,
+    glock_query: Query<&GlockComponent>
 ) {
     match state.get() {
         CurrentWeapon::Glock => {
@@ -67,10 +68,15 @@ pub fn load_glock_animation(
                             pressed_keys.remove(key_code);
                         });
             
-                        if mouse_input.just_pressed(MouseButton::Left) {
-                            *current_animation = GlockAnimationsList::SHOOT;
+                        // shooting
+                        if let Ok(glock) = glock_query.get_single() {
+                            if glock.current_ammo > 0 {
+                                if mouse_input.just_pressed(MouseButton::Left) {
+                                    *current_animation = GlockAnimationsList::SHOOT;
+                                }
+                            }
                         }
-            
+
                         if mouse_input.just_released(MouseButton::Left) {
                             // Stop looping or switch animation when left-click is released
                             *current_animation = GlockAnimationsList::IDLE; // Reset or change animation on release

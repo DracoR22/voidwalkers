@@ -6,7 +6,7 @@ use bevy::{
 };
 use bevy_rapier3d::prelude::*;
 
-use crate::{player::{components::{Player, PlayerFirstPersonCamera}, constants::{PLAYER_JUMP, PLAYER_SPEED}}, weapons::components::AK74Component};
+use crate::{player::{components::{Player, PlayerFirstPersonCamera}, constants::{PLAYER_JUMP, PLAYER_SPEED}}, game::weapons::components::AK74Component};
 
 pub fn player_look_system(
     windows: Query<&Window>,
