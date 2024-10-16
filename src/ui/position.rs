@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::player::components::Player;
+use crate::game::player::components::Player;
 
 #[derive(Component)]
 pub struct PlayerPosition;

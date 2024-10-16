@@ -6,11 +6,14 @@ use spawn::{despawn_glock, print_glock_position_system, spawn_glock, update_gun_
 
 use crate::common::link_animations::link_multiple_animations;
 
-use super::states::CurrentWeapon;
+use super::state::CurrentWeapon;
 
 pub mod spawn;
 pub mod animations;
 pub mod audio;
+
+pub const MAX_GLOCK_AMMO: usize = 125;
+pub const GLOCK_MAGAZINE_SIZE: usize = 15;
 
 pub struct GlockPlugin;
 

@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use blood_decal::{cleanup_blood_effects, spawn_blood_mesh};
 use muzzle_flash::{update_muzzle_flash, setup_muzzle_flash};
 
-use crate::player::systems::spawn::spawn_player_system;
+use crate::game::player::spawn::spawn_player_system;
 
 pub mod muzzle_flash;
 pub mod components;

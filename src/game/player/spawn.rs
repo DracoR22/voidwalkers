@@ -10,7 +10,7 @@ use bevy::{
 };
 use bevy_rapier3d::prelude::*;
 
-use crate::player::{components::{Player, PlayerFirstPersonCamera}, constants::{GRAVITY_SCALE, PLAYER_SPEED}, resources::Animations};
+use crate::game::player::{components::{Player, PlayerFirstPersonCamera}, constants::{GRAVITY_SCALE, PLAYER_SPEED}};
 
 #[derive(Component)]
 pub struct AK74Model;

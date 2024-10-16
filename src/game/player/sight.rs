@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::player::components::SightDot;
+use crate::game::player::components::SightDot;
 
 pub fn spawn_sight_dot(mut commands: Commands, assets_server: Res<AssetServer>) {
 commands.spawn((

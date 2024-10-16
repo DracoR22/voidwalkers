@@ -2,7 +2,7 @@ use std::time::Duration;
 use std::collections::HashSet;
 use bevy::prelude::*;
 
-use crate::{common::link_animations::MultipleAnimationEntityLinks, game::weapons::{components::GlockComponent, resources::GlockAnimations, states::CurrentWeapon}, player::components::Player};
+use crate::{common::link_animations::MultipleAnimationEntityLinks, game::weapons::{components::GlockComponent, resources::GlockAnimations, state::CurrentWeapon}, game::player::components::Player};
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum GlockAnimationsList {

@@ -5,7 +5,7 @@ use spawn::{despawn_ak74, respawn_ak74, spawn_ak74, update_gun_rotation};
 
 use crate::common::link_animations::link_multiple_animations;
 
-use super::states::CurrentWeapon;
+use super::state::CurrentWeapon;
 
 pub mod animations;
 pub mod audio;
