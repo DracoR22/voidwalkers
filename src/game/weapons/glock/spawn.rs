@@ -28,7 +28,8 @@ pub fn spawn_glock(
                 GlockComponent {
                     current_ammo: GLOCK_MAGAZINE_SIZE,
                     magazine_size: GLOCK_MAGAZINE_SIZE,
-                    max_ammo: MAX_GLOCK_AMMO
+                    max_ammo: MAX_GLOCK_AMMO,
+                    timer: 0.6
                 },
             ));
         });

@@ -3,7 +3,7 @@ use bevy_rapier3d::prelude::*;
 use bevy_hanabi::prelude::*;
 use bevy::prelude::AlphaMode;
 
-use crate::{cubes::components::CubeComponent, effects::blood_decal::spawn_blood, game::{player::{components::{BulletTracer, Player, PlayerFirstPersonCamera}, constants::{MAX_BULLET_DISTANCE, TRACER_LIFETIME, TRACER_WIDTH}}, weapons::{common::{can_shoot_and_decrease_ammo, WeaponFireTimer}, components::{AK74Component, GlockComponent}, resources::AK74Timer, state::CurrentWeapon}}};
+use crate::{cubes::components::CubeComponent, effects::blood_decal::spawn_blood, game::{player::{components::{BulletTracer, Player, PlayerFirstPersonCamera}, constants::{MAX_BULLET_DISTANCE, TRACER_LIFETIME, TRACER_WIDTH}}, weapons::{common::{can_shoot_and_decrease_ammo, WeaponFireTimer}, components::{AK74Component, GlockComponent}, resources::{AK74Timer, GlockTimer}, state::CurrentWeapon}}};
 
 pub fn shoot_ray(
     mut commands: Commands,
@@ -20,6 +20,8 @@ pub fn shoot_ray(
     asset_server: Res<AssetServer>,
     weapon_state: Res<State<CurrentWeapon>>,
     mut weapon_fire_timer: ResMut<WeaponFireTimer>,
+    mut glock_fire_timer: ResMut<GlockTimer>,
+    // mut ak74_fire_timer: ResMut<AK74Timer>,
     time: Res<Time>,
 ) {
     let player_transform = player_query.single();
@@ -30,17 +32,15 @@ pub fn shoot_ray(
     
     let ray_origin = combined_transform.translation;
     let ray_direction = combined_transform.forward();
-    weapon_fire_timer.0.tick(time.delta());
 
     match weapon_state.get() {
         CurrentWeapon::Glock => {
             if mouse_input.just_pressed(MouseButton::Left) {
-                let can_shoot = can_shoot_and_decrease_ammo(weapon_state.get(), &mut glock_query, &mut ak74_query);
-        
+                let can_shoot = can_shoot_and_decrease_ammo(glock_query);
+               
                 // handle ammo logic
                
                   if can_shoot {
-        
                     let hit = rapier_context.cast_ray(
                         ray_origin,
                         *ray_direction,
@@ -109,13 +109,14 @@ pub fn shoot_ray(
         },
 
         CurrentWeapon::AK74 => {
+            weapon_fire_timer.0.tick(time.delta());
             if mouse_input.pressed(MouseButton::Left) && weapon_fire_timer.0.finished() {
-                let can_shoot = can_shoot_and_decrease_ammo(weapon_state.get(), &mut glock_query, &mut ak74_query);
-        
+                let can_shoot = can_shoot_and_decrease_ammo(ak74_query);
+               
                 // handle ammo logic
                
                   if can_shoot {
-        
+                  
                     let hit = rapier_context.cast_ray(
                         ray_origin,
                         *ray_direction,

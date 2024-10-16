@@ -58,7 +58,7 @@ pub fn update_muzzle_flash(
 
     // Check if the left mouse button is pressed
     if mouse_input.just_pressed(MouseButton::Left) {
-        let can_shoot = can_shoot_and_decrease_ammo(weapon_state.get(), &mut glock_query, &mut ak74_query);
+        let can_shoot = true;
        
        if can_shoot {
         for (_, mut muzzle_flash, mut visibility, mut transform) in muzzle_flash_query.iter_mut() {

@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use super::{components::{AK74Component, GlockComponent}, glock::GLOCK_MAGAZINE_SIZE, state::CurrentWeapon};
+use super::{components::{AK74Component, GlockComponent, Weapon}, glock::GLOCK_MAGAZINE_SIZE, state::CurrentWeapon};
 
 #[derive(Resource)]
 pub struct WeaponFireTimer(pub Timer);
@@ -28,38 +28,14 @@ pub fn reload_weapon(
   }
 }
 
-pub fn can_shoot_and_decrease_ammo(
-    weapon_state: &CurrentWeapon,
-    glock_query: &mut Query<&mut GlockComponent>,
-    ak74_query: &mut Query<&mut AK74Component>,
-) -> bool {
-    match weapon_state {
-        CurrentWeapon::Glock => {
-            if let Ok(mut glock) = glock_query.get_single_mut() {
-                if glock.current_ammo > 0 {
-                    glock.current_ammo -= 1;
-                    true
-                } else {
-                    false
-                }
-            } else {
-                false
-            }
-        },
-        CurrentWeapon::AK74 => {
-            if let Ok(mut ak74) = ak74_query.get_single_mut() {
-                if ak74.current_ammo > 0 {
-                    ak74.current_ammo -= 1;
-                    true
-                } else {
-                    false
-                }
-            } else {
-                false
-            }
-        },
-        CurrentWeapon::None => false
+pub fn can_shoot_and_decrease_ammo<T: Weapon + Component>(mut weapon_query: Query<&mut T>) -> bool {
+    if let Ok(mut weapon) = weapon_query.get_single_mut() {
+        if weapon.current_ammo() > 0 {
+            weapon.decrease_ammo();
+            return true;
+        }
     }
+    false
 }
 
 pub fn update_weapon_timer(
@@ -70,8 +46,8 @@ pub fn update_weapon_timer(
 
     match weapon_state.get() {
         CurrentWeapon::Glock => {
-            if fire_timer.0.duration() != std::time::Duration::from_secs_f32(0.5) {
-                fire_timer.0.set_duration(std::time::Duration::from_secs_f32(0.5)); // Glock fire rate
+            if fire_timer.0.duration() != std::time::Duration::from_secs_f32(0.1) {
+                fire_timer.0.set_duration(std::time::Duration::from_secs_f32(0.1)); // Glock fire rate
                 duration_changed = true;
             }
         }
