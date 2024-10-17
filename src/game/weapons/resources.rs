@@ -7,6 +7,9 @@ pub struct CasingAudioTimer {
     pub shot_fired: bool,
 }
 
+#[derive(Resource)]
+pub struct WeaponAudios(pub Vec<Handle<AudioSource>>);
+
 // ak74
 #[derive(Resource)]
 pub struct AK74Audios(pub Vec<Handle<AudioSource>>);

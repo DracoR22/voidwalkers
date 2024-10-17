@@ -23,7 +23,6 @@ impl Plugin for AK74Plugin {
           .add_systems(Update, (
             spawn_ak74,
             despawn_ak74,
-            // respawn_ak74,
             link_multiple_animations,
             load_ak74_animation,
           ))

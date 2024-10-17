@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy_kira_audio::prelude::*;
 
-use crate::game::weapons::{components::GlockComponent, resources::{CasingAudioTimer, GlockAudios, GlockTimer}};
+use crate::game::weapons::{components::GlockComponent, resources::{CasingAudioTimer, GlockAudios, GlockTimer, WeaponAudios}};
 
 pub fn setup_glock_audio(asset_server: Res<AssetServer>, mut commands: Commands) {
     commands.insert_resource(GlockAudios(vec![
@@ -14,6 +14,7 @@ pub fn setup_glock_audio(asset_server: Res<AssetServer>, mut commands: Commands)
 pub fn play_glock_audio(
     audio: Res<Audio>,
     audio_handles: Res<GlockAudios>,
+    weapon_audios_handles: Res<WeaponAudios>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mouse_input: Res<ButtonInput<MouseButton>>,
     time: Res<Time>, 
@@ -21,20 +22,22 @@ pub fn play_glock_audio(
     mut casing_timer: ResMut<CasingAudioTimer>,
     glock_query: Query<&GlockComponent>
 ) {
-    // reload auido
+    // reload audio
     if keyboard_input.just_pressed(KeyCode::KeyR) {
         audio.play(audio_handles.0[1].clone()).handle();
     }
 
     // fire audio
     if let Ok(glock) = glock_query.get_single() {
-      if glock.current_ammo > 0 {
-        if mouse_input.just_pressed(MouseButton::Left) {
+      if mouse_input.just_pressed(MouseButton::Left)  {
+        if glock.current_ammo > 0 {
             audio.play(audio_handles.0[0].clone());
             casing_timer.timer.reset();
             casing_timer.shot_fired = true;
-        }
-      }
+        } else {
+            audio.play(weapon_audios_handles.0[0].clone());
+          }
+      } 
     }
 
    // Update the timer

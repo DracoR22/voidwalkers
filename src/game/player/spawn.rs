@@ -21,7 +21,7 @@ pub fn spawn_player_system(mut commands: Commands, mut mesh_assets: ResMut<Asset
 
       // Spawn the player entity
       commands.spawn((
-        TransformBundle::from(Transform::from_xyz(500.0, 50.0, 0.0)),
+        TransformBundle::from(Transform::from_xyz(1000.0, 50.0, 0.0)),
         VisibilityBundle::default(),
         Player,
     ))
