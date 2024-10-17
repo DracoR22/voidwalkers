@@ -1,13 +1,7 @@
 use bevy::prelude::*;
 
 #[derive(Component)]
-pub struct Floor {
-    pub width: f32,
-    pub height: f32
-}
+pub struct FloorComponent;
 
-impl Floor {
-    pub fn new(width: f32, height: f32) -> Self {
-        Self { width, height }
-    }
-}
+#[derive(Component)]
+pub struct WallComponent;

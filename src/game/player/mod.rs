@@ -17,11 +17,10 @@ impl Plugin for PlayerPlugin {
          app
         .add_systems(Startup, spawn_player_system)
         .add_systems(Startup, spawn_sight_dot)
-
+        .add_systems(Update, shoot_ray)
         .add_systems(Update, (
             player_movement_system,
             player_look_system,
-            shoot_ray,
             update_tracers,
         )
         .chain()

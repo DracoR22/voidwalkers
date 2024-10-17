@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
+use crate::{common::entities::EntityType, house::components::WallComponent};
+
 pub fn spawn_walls(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
@@ -23,146 +25,116 @@ pub fn spawn_walls(
         ..default()
     });  
 
+    let mut walls_vec: Vec<(Vec3, Quat)> = Vec::new();
 
-    // commands.spawn(PbrBundle {
-    //     mesh: mesh.clone(),
-    //     material: material_handle,
-    //     transform: Transform {
-    //         translation: Vec3::new(1060.0, 175.0, -595.0),
-    //         // rotation: Quat::from_rotation_x(std::f32::consts::PI / 2.0),
-    //         ..default()
-    //     }, 
-    //     ..default()
-    // });
-
-    for i in 0..9 {
+     // First row of walls
+     for i in 0..9 {
         let x_position = initial_position.x - (i as f32) * spacing_x;
-        commands.spawn(PbrBundle {
-            mesh: mesh.clone(),
-            material: material_handle.clone(),
-            transform: Transform {
-                translation: Vec3::new(x_position, initial_position.y, initial_position.z),
-                // scale: Vec3::new(100.0, 120.0, 100.0), 
-               
-                ..default()
-            },
-            ..default()
-        })
-        .insert(Collider::cuboid(90.0, 187.5, 2.5))
-        .insert(RigidBody::Fixed);
+        walls_vec.push((Vec3::new(x_position, initial_position.y, initial_position.z), Quat::IDENTITY));
     }
 
+    // Second row of walls (rotated)
     for y in 0..9 {
         let z_position = -480.0 + (y as f32) * spacing_x;
+        walls_vec.push((Vec3::new(720.0, initial_position.y, z_position), Quat::from_rotation_y(89.53)));
+    }
+
+    // Third row of walls
+    for k in 0..9 {
+        let x_position = 320.0 + (k as f32) * spacing_x;
+        walls_vec.push((Vec3::new(x_position, initial_position.y, 500.0), Quat::from_rotation_y(std::f32::consts::PI)));
+    }
+
+    // Fourth row of walls (rotated)
+    for t in 0..9 {
+        let z_position = 885.0 - (t as f32) * spacing_x;
+        walls_vec.push((Vec3::new(1590.0, initial_position.y, z_position), Quat::from_rotation_y(-89.53)));
+    }
+
+    for (translation, rotation) in walls_vec {
         commands.spawn(PbrBundle {
             mesh: mesh.clone(),
             material: material_handle.clone(),
             transform: Transform {
-                translation: Vec3::new(720.0, initial_position.y, z_position),
-                rotation: Quat::from_rotation_y(89.53), 
-               
+                translation,
+                rotation,
                 ..default()
             },
             ..default()
         })
-        
-        .insert(Collider::cuboid(1.0, 100.0, 0.5))
+        .insert(WallComponent)
+        .insert(EntityType::Wall)
+        .insert(Collider::cuboid(90.0, 187.5, 2.5)) 
         .insert(RigidBody::Fixed);
     }
 
-    // first row
-    // for i in 0..9 {
-    //     let x_position = initial_position.x - (i as f32) * spacing_x;
-    //     commands.spawn(SceneBundle {
-    //         scene: wall_model_alt.clone(),
-    //         transform: Transform {
-    //             translation: Vec3::new(x_position, initial_position.y, initial_position.z),
-    //             scale: Vec3::new(100.0, 120.0, 100.0), 
+//     for i in 0..9 {
+//         let x_position = initial_position.x - (i as f32) * spacing_x;
+//         commands.spawn(PbrBundle {
+//             mesh: mesh.clone(),
+//             material: material_handle.clone(),
+//             transform: Transform {
+//                 translation: Vec3::new(x_position, initial_position.y, initial_position.z),
+//                 // scale: Vec3::new(100.0, 120.0, 100.0), 
                
-    //             ..default()
-    //         },
-    //         ..default()
-    //     })
-    //     .insert(Collider::cuboid(1.0, 100.0, 0.2))
-    //     .insert(RigidBody::Fixed);
-    // }
+//                 ..default()
+//             },
+//             ..default()
+//         })
+//         .insert(Collider::cuboid(90.0, 187.5, 2.5))
+//         .insert(RigidBody::Fixed);
+//     }
+
+//     for y in 0..9 {
+//         let z_position = -480.0 + (y as f32) * spacing_x;
+//         commands.spawn(PbrBundle {
+//             mesh: mesh.clone(),
+//             material: material_handle.clone(),
+//             transform: Transform {
+//                 translation: Vec3::new(720.0, initial_position.y, z_position),
+//                 rotation: Quat::from_rotation_y(89.53), 
+               
+//                 ..default()
+//             },
+//             ..default()
+//         })
+        
+//         .insert(Collider::cuboid(1.0, 100.0, 0.5))
+//         .insert(RigidBody::Fixed);
+//     }
 
 
-    // second row
-//    for y in 0..2 {
-//     let z_position = -365.0 + (y as f32) * spacing_x;
-//     commands.spawn(SceneBundle {
-//         scene: wall_model_alt.clone(),
+// // third row
+//   for k in 0..9 {
+//     let x_position = 320.0 + (k as f32) * spacing_x;
+//     commands.spawn(PbrBundle {
+//         mesh: mesh.clone(),
+//         material: material_handle.clone(),
 //         transform: Transform {
-//             translation: Vec3::new(720.0, 0.0, z_position),
-//             scale: Vec3::new(100.0, 120.0, 100.0), 
-//             rotation: Quat::from_rotation_y(89.53),
+//             translation: Vec3::new(x_position, initial_position.y, 500.0),
+//             rotation: Quat::from_rotation_y(std::f32::consts::PI),
 //             ..default()
 //         },
 //         ..default()
 //     })
 //     .insert(Collider::cuboid(1.0, 100.0, 0.2))
 //     .insert(RigidBody::Fixed);
-//    }
+//   }
 
-//    commands.spawn(  PbrBundle {
-//     mesh: mesh.clone(),
-//     material: material_handle.clone(),
-//     transform: Transform {
-//         translation: Vec3::new(720.0, initial_position.y, 4.0),
-//         rotation: Quat::from_rotation_y(89.53),
+// //   // fourth row
+//   for t in 0..9 {
+//     let z_position = 885.0 - (t as f32) * spacing_x;
+//     commands.spawn(PbrBundle {
+//         mesh: mesh.clone(),
+//         material: material_handle.clone(),
+//         transform: Transform {
+//             translation: Vec3::new(1590.0, initial_position.y, z_position),
+//             rotation: Quat::from_rotation_y(-89.53),
+//             ..default()
+//         },
 //         ..default()
-//     },
-//      ..default()
-//    })
-//    .insert(Collider::cuboid(0.3, 100.0, 0.2))
-//    .insert(RigidBody::Fixed);
-
-//    // door
-//    commands.spawn(SceneBundle {
-//     scene: wall_model_door.clone(),
-//     transform: Transform {
-//         translation: Vec3::new(722.0, 0.0, -20.0),
-//         scale: Vec3::new(100.0, 100.0, 100.0), 
-//         rotation: Quat::from_rotation_y(89.53),
-//         ..default()
-//     },
-//     ..default()
-//    })
-// //    .insert(Collider::cuboid(1.0, 100.0, 0.2))
-//    .insert(RigidBody::Fixed);
-
-// third row
-  for k in 0..9 {
-    let x_position = 320.0 + (k as f32) * spacing_x;
-    commands.spawn(PbrBundle {
-        mesh: mesh.clone(),
-        material: material_handle.clone(),
-        transform: Transform {
-            translation: Vec3::new(x_position, initial_position.y, 500.0),
-            rotation: Quat::from_rotation_y(std::f32::consts::PI),
-            ..default()
-        },
-        ..default()
-    })
-    .insert(Collider::cuboid(1.0, 100.0, 0.2))
-    .insert(RigidBody::Fixed);
-  }
-
-//   // fourth row
-  for t in 0..9 {
-    let z_position = 885.0 - (t as f32) * spacing_x;
-    commands.spawn(PbrBundle {
-        mesh: mesh.clone(),
-        material: material_handle.clone(),
-        transform: Transform {
-            translation: Vec3::new(1590.0, initial_position.y, z_position),
-            rotation: Quat::from_rotation_y(-89.53),
-            ..default()
-        },
-        ..default()
-    })
-    .insert(Collider::cuboid(1.0, 100.0, 0.2))
-    .insert(RigidBody::Fixed);
-  }
+//     })
+//     .insert(Collider::cuboid(1.0, 100.0, 0.2))
+//     .insert(RigidBody::Fixed);
+//   }
 }

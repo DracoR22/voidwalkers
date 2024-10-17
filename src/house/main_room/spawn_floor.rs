@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
+use crate::{common::entities::EntityType, house::components::FloorComponent};
+
 pub fn spawn_floor(mut commands: Commands, asset_server: Res<AssetServer>) {
     let floor_model = asset_server.load("models/wooden_floor.glb#Scene0");
 
@@ -25,6 +27,8 @@ pub fn spawn_floor(mut commands: Commands, asset_server: Res<AssetServer>) {
             })
             // .insert(floor_size)
             .insert(Collider::cuboid(10.0, 10.0, 0.05))
+            .insert(FloorComponent)
+            .insert(EntityType::Floor)
             .insert(RigidBody::Fixed);
         }
     }

@@ -58,7 +58,32 @@ pub fn update_muzzle_flash(
 
     // Check if the left mouse button is pressed
     if mouse_input.just_pressed(MouseButton::Left) {
-        let can_shoot = true;
+        let can_shoot = match weapon_state.get() {
+            CurrentWeapon::Glock => {
+                if let Ok(mut glock) = glock_query.get_single_mut() {
+                    if glock.current_ammo > 0 {
+                        true // Can shoot
+                    } else {
+                        false // Out of ammo
+                    }
+                } else {
+                    false // No weapon found
+                }
+            }
+            CurrentWeapon::AK74 => {
+                if let Ok(mut ak74) = ak74_query.get_single_mut() {
+                    if ak74.current_ammo > 0 {
+                        true // Can shoot
+                    } else {
+                        false // Out of ammo
+                    }
+                } else {
+                    false // No weapon found
+                }
+            }
+            CurrentWeapon::None => false,
+        };
+
        
        if can_shoot {
         for (_, mut muzzle_flash, mut visibility, mut transform) in muzzle_flash_query.iter_mut() {

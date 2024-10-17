@@ -132,9 +132,7 @@ pub fn update_gun_rotation(
     camera_query: Query<&Transform, With<PlayerFirstPersonCamera>>,
     mut gun_query: Query<&mut Transform, (With<AK74Component>, Without<PlayerFirstPersonCamera>)>,
 ) {
-    // Ensure the camera exists before proceeding
     if let Ok(camera_transform) = camera_query.get_single() {
-        // Ensure the gun exists before trying to modify its transform
         if let Ok(mut gun_transform) = gun_query.get_single_mut() {
             // Create a rotation that aligns the gun with the camera
             let gun_rotation = camera_transform.rotation * Quat::from_rotation_y(std::f32::consts::PI);
@@ -142,11 +140,20 @@ pub fn update_gun_rotation(
             // Update the gun's rotation
             gun_transform.rotation = gun_rotation;
 
+            let forward_vec = camera_transform.forward();
+            let camera_pitch = forward_vec.y; 
+
+            let dynamic_z_offset = if camera_pitch >= 0.0 {
+                15.9 - (camera_pitch * -5.2)  // Move closer when looking up
+            } else {
+                15.9 + (camera_pitch.abs() * -30.2)  // Move further away when looking down
+            };
+
             // Adjust the gun's position relative to the camera
             gun_transform.translation = camera_transform.translation
-                + camera_transform.forward() * 10.3 // Move it forward 
+                + camera_transform.forward() * dynamic_z_offset // Move it forward 
                 + camera_transform.right() * 0.70 // Move it to the right 
-                - camera_transform.up() * 0.1 // Move it down 
+                - camera_transform.up() * 1.1 // Move it down 
                 + Vec3::new(0.0, -20.3, 0.0); // Additional downward offset
         }
     }
