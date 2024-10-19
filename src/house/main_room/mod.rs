@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use spawn_assets::spawn_assets;
+use spawn_assets::{open_door, spawn_assets};
 use spawn_ceiling::spawn_ceiling;
 use spawn_floor::spawn_floor;
 use spawn_walls::spawn_walls;
@@ -22,6 +22,7 @@ impl Plugin for MainRoomPlugin {
             spawn_ceiling
         )
         .chain()
-    );
+    )
+    .add_systems(Update, open_door);
     }
 }

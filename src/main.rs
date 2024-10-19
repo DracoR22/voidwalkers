@@ -27,11 +27,17 @@ impl Material for MuzzleFlashMaterial {
 
 fn main() {
     App::new()
-    .add_plugins(DefaultPlugins.set(LogPlugin {
-        filter: "error".into(),
-        level: bevy::log::Level::ERROR,
-        ..default()
-    }))
+    .add_plugins(DefaultPlugins
+        .set(LogPlugin {
+            filter: "error".into(),
+            level: bevy::log::Level::ERROR,
+            ..default()
+        })
+        .set(AssetPlugin {
+            watch_for_changes_override: Some(true),
+            ..default()
+        })
+    )
     .add_plugins(FrameTimeDiagnosticsPlugin::default())
     .add_plugins(HanabiPlugin)
     .add_plugins(AudioPlugin)

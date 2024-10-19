@@ -3,6 +3,7 @@ use common::{reload_weapon, update_weapon_timer, WeaponFireTimer};
 use glock::GlockPlugin;
 use resources::{AK74Timer, CasingAudioTimer, GlockTimer, WeaponAudios};
 use ak74::{audio::{play_ak74_audio,  setup_ak74_audio}, AK74Plugin};
+use weapon_audio::setup_weapon_audio;
 
 pub mod components;
 pub mod resources;
@@ -11,6 +12,7 @@ pub mod ak74;
 pub mod glock;
 pub mod state;
 pub mod common;
+pub mod weapon_audio;
 
 pub struct WeaponsPlugin;
 
@@ -24,7 +26,7 @@ impl Plugin for WeaponsPlugin {
             timer: Timer::from_seconds(0.5, TimerMode::Once),
             shot_fired: false,
         })
-        .add_systems(Startup, setup_weapon_audios)
+        .add_systems(Startup, setup_weapon_audio)
         .add_systems(Update, reload_weapon)
         .add_systems(Update, update_weapon_timer)
         .add_plugins((
@@ -32,10 +34,4 @@ impl Plugin for WeaponsPlugin {
             GlockPlugin
         ));
     }
-}
-
-fn setup_weapon_audios(asset_server: Res<AssetServer>, mut commands: Commands) {
-    commands.insert_resource(WeaponAudios(vec![
-        asset_server.load("audios/dry_fire.ogg"),
-     ]));
 }

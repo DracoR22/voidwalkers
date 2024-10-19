@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy_kira_audio::prelude::*;
 
-use crate::game::weapons::{components::GlockComponent, resources::{CasingAudioTimer, GlockAudios, GlockTimer, WeaponAudios}};
+use crate::game::weapons::{components::GlockComponent, resources::{CasingAudioTimer, GlockAudios, GlockTimer, WeaponAudios}, weapon_audio::WeaponAudioList};
 
 pub fn setup_glock_audio(asset_server: Res<AssetServer>, mut commands: Commands) {
     commands.insert_resource(GlockAudios(vec![
@@ -24,18 +24,18 @@ pub fn play_glock_audio(
 ) {
     // reload audio
     if keyboard_input.just_pressed(KeyCode::KeyR) {
-        audio.play(audio_handles.0[1].clone()).handle();
+        audio.play(weapon_audios_handles[WeaponAudioList::GLOCKRELOADFULL].clone()).handle();
     }
 
     // fire audio
     if let Ok(glock) = glock_query.get_single() {
       if mouse_input.just_pressed(MouseButton::Left)  {
         if glock.current_ammo > 0 {
-            audio.play(audio_handles.0[0].clone());
+            audio.play(weapon_audios_handles[WeaponAudioList::GLOCKFIRE].clone());
             casing_timer.timer.reset();
             casing_timer.shot_fired = true;
         } else {
-            audio.play(weapon_audios_handles.0[0].clone());
+            audio.play(weapon_audios_handles[WeaponAudioList::DRYFIRE].clone());
           }
       } 
     }
@@ -48,7 +48,7 @@ pub fn play_glock_audio(
        // Start the timer if it's not already running
        if glock_timer.0.finished() {
            // Play the audio
-           audio.play(audio_handles.0[0].clone()).handle();
+           audio.play(weapon_audios_handles[WeaponAudioList::GLOCKFIRE].clone()).handle();
            // Reset the timer for the next interval
            glock_timer.0.reset();
             casing_timer.timer.reset();
@@ -64,7 +64,7 @@ pub fn play_glock_audio(
 
      // If the casing timer has finished and a shot was fired, play the casing sound
      if casing_timer.timer.just_finished() && casing_timer.shot_fired {
-         audio.play(audio_handles.0[2].clone());
+         audio.play(weapon_audios_handles[WeaponAudioList::BULLETCASING].clone());
          casing_timer.shot_fired = false;  // Reset the flag
      }
 }

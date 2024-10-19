@@ -6,7 +6,7 @@ use bevy::{
 };
 use bevy_rapier3d::prelude::*;
 
-use crate::{game::player::{components::{Player, PlayerFirstPersonCamera}, constants::{PLAYER_JUMP, PLAYER_SPEED}}, game::weapons::components::AK74Component};
+use crate::{common::commands::{action_from_input, Action}, game::{player::{components::{Player, PlayerFirstPersonCamera}, constants::{PLAYER_JUMP, PLAYER_SPEED}}, weapons::components::AK74Component}};
 
 pub fn player_look_system(
     windows: Query<&Window>,
@@ -44,26 +44,31 @@ pub fn player_movement_system(
 ) {
     if let Ok((mut velocity, mut transform)) = query.get_single_mut() {
         let mut direction = Vec3::ZERO;
+
+        let actions = action_from_input(&keyboard_input);
         
         let forward = transform.forward();
         let right = transform.right();
         
         let mut speed = PLAYER_SPEED;
+
         
-        if keyboard_input.pressed(KeyCode::KeyW) {
-            direction += *forward;
-        }
-        if keyboard_input.pressed(KeyCode::KeyS) {
-            direction -= *forward;
-        }
-        if keyboard_input.pressed(KeyCode::KeyA) {
-            direction -= *right;
-        }
-        if keyboard_input.pressed(KeyCode::KeyD) {
-            direction += *right;
-        }
-        if keyboard_input.pressed(KeyCode::ShiftLeft) {
-            speed *= 2.0;
+        for action in actions {
+            match action {
+                Action::WalkForward => direction += *forward,
+                Action::WalkBackward => direction -= *forward,
+                Action::WalkLeftward => direction -= *right,
+                Action::WalkRightward => direction += *right,
+                Action::Run => speed *= 2.0,
+                Action::Jump => {
+                    // Handle jump
+                    if velocity.linvel.y.abs() < 0.1 {
+                        velocity.linvel.y = PLAYER_JUMP;
+                    }
+                }
+     
+                _ => ()
+            }
         }
         
         if direction != Vec3::ZERO {
@@ -77,8 +82,44 @@ pub fn player_movement_system(
         // Apply drag to slow down the player when no input is given
         // velocity.linvel *= 0.9;
         
-        if keyboard_input.just_pressed(KeyCode::Space) && velocity.linvel.y.abs() < 0.1 {
-            velocity.linvel.y = PLAYER_JUMP;
+       
+    }
+}
+
+pub fn player_movement_editor_system(
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    mut query: Query<(&mut Transform), With<Player>>, // Removed Velocity
+    time: Res<Time>,
+) {
+    if let Ok(mut transform) = query.get_single_mut() {
+        let mut direction = Vec3::ZERO;
+
+        // Get movement actions
+        let actions = action_from_input(&keyboard_input);
+        
+        let forward = transform.forward();
+        let right = transform.right();
+        let mut speed = PLAYER_SPEED;
+
+        for action in actions {
+            match action {
+                Action::WalkForward => direction += *forward,
+                Action::WalkBackward => direction -= *forward,
+                Action::WalkLeftward => direction -= *right,
+                Action::WalkRightward => direction += *right,
+                Action::Run => speed *= 2.0,
+                Action::Crouch => transform.translation.y -= 500.0 * time.delta_seconds(),
+                Action::Jump => {
+                    transform.translation.y += 500.0 * time.delta_seconds();
+                },
+                _ => (),
+            }
+        }
+
+        // Apply movement based on direction
+        if direction != Vec3::ZERO {
+            direction = direction.normalize();
+            transform.translation += direction * speed * time.delta_seconds();
         }
     }
 }

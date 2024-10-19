@@ -1,5 +1,7 @@
 use bevy::prelude::*;
 
+use crate::common::commands::{action_from_input, Action};
+
 #[derive(Debug, Clone, Eq, Default, PartialEq, Hash, States)]
 pub enum GameState {
     #[default]
@@ -16,15 +18,32 @@ pub fn game_state_input_events(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mouse_input: Res<ButtonInput<MouseButton>>
 ) {
-    // edit mode when pressing P (todo)
- if keyboard_input.just_pressed(KeyCode::KeyP) {
-    match state.get() {
-        GameState::Playing => next_state.set(GameState::EditMode),
-        GameState::EditMode => next_state.set(GameState::Playing),
+    let actions = action_from_input(&keyboard_input);
 
-        _ => ()
+    for action in actions {
+        match action {
+            Action::TogglePhysics => {
+                match state.get() {
+                    GameState::Playing => next_state.set(GameState::EditMode),
+                    GameState::EditMode => next_state.set(GameState::Playing),
+            
+                    _ => ()
+                }
+            }
+
+            // add the other actions here...
+            _ => ()
+        }
     }
- }
+
+//  if keyboard_input.just_pressed(KeyCode::KeyP) {
+//     match state.get() {
+//         GameState::Playing => next_state.set(GameState::EditMode),
+//         GameState::EditMode => next_state.set(GameState::Playing),
+
+//         _ => ()
+//     }
+//  }
 
  // pause game when pressing ESC
  if keyboard_input.just_pressed(KeyCode::Escape) {

@@ -10,7 +10,7 @@ use bevy::{
 };
 use bevy_rapier3d::prelude::*;
 
-use crate::game::player::{components::{Player, PlayerFirstPersonCamera}, constants::{GRAVITY_SCALE, PLAYER_SPEED}};
+use crate::{common::commands::{action_from_input, Action}, game::player::{components::{Player, PlayerFirstPersonCamera}, constants::{GRAVITY_SCALE, PLAYER_SPEED}}};
 
 #[derive(Component)]
 pub struct AK74Model;
@@ -63,5 +63,56 @@ pub fn rotate_character(
     for (mut transform, _) in query.iter_mut() {
         // Rotate the character (asset) around its Y-axis
         transform.rotation = Quat::from_rotation_y(std::f32::consts::PI);
+    }
+}
+
+pub fn disable_player_physics_system(mut commands: Commands,  query: Query<(Entity, Option<&RigidBody>, Option<&Collider>), With<Player>>, keyboard_input: Res<ButtonInput<KeyCode>>) {
+    let actions = action_from_input(&keyboard_input);
+   if  let Ok ((player, rigid_body, collider)) = query.get_single() {
+    for action in actions {
+        match action {
+         Action::TogglePhysics => {
+            
+                // Remove physics components
+                println!("EDIT MOODE");
+                commands.entity(player)
+                .remove::<RigidBody>() 
+                .remove::<Collider>()  
+                .remove::<GravityScale>() 
+                .remove::<Velocity>()
+                .remove::<Damping>()  
+                .remove::<LockedAxes>(); 
+         },
+         _ => ()
+        }
+     }
+   }
+}
+
+pub fn enable_player_physics_system(mut commands: Commands, query: Query<Entity, With<Player>>, keyboard_input: Res<ButtonInput<KeyCode>>) {
+    let actions = action_from_input(&keyboard_input);
+    if let Ok (player) = query.get_single() {
+     for action in actions {
+         match action {
+          Action::TogglePhysics => {
+                 println!("GAME MODE");
+                 // Add physics components back
+                 commands.entity(player)
+                 .insert(RigidBody::Dynamic) 
+                 .insert(Collider::cuboid(70.0 / 2.0, 70.0 / 2.0, 70.0 / 2.0)) 
+                 .insert(GravityScale(GRAVITY_SCALE)) 
+                 .insert(Velocity {
+                     linvel: Vec3::new(0., 0.0, 0.), 
+                     angvel: Vec3::ZERO,
+                 })
+                 .insert(Damping {
+                     linear_damping: 0.0, 
+                     angular_damping: 2.0,
+                 }) 
+                 .insert(LockedAxes::ROTATION_LOCKED); 
+          },
+          _ => ()
+         }
+      }
     }
 }

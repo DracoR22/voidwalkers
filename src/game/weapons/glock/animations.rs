@@ -4,6 +4,17 @@ use bevy::prelude::*;
 
 use crate::{common::link_animations::MultipleAnimationEntityLinks, game::weapons::{components::GlockComponent, resources::GlockAnimations, state::CurrentWeapon}, game::player::components::Player};
 
+pub fn setup_glock_animations(mut commands: Commands, asset_server: Res<AssetServer>) {
+    commands.insert_resource(GlockAnimations(vec![
+        asset_server.load("animations/glock.glb#Animation0"), 
+        asset_server.load("animations/glock.glb#Animation1"),
+        asset_server.load("animations/glock.glb#Animation2"),
+        asset_server.load("animations/glock.glb#Animation3"),
+        asset_server.load("animations/glock.glb#Animation4"),
+  ]));
+}
+
+
 #[derive(PartialEq, Clone, Copy)]
 pub enum GlockAnimationsList {
     IDLE,
@@ -33,16 +44,6 @@ impl From<&KeyCode> for GlockAnimationsList {
     }
 }
 
-pub fn setup_glock_animations(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.insert_resource(GlockAnimations(vec![
-        asset_server.load("animations/glock.glb#Animation0"), 
-        asset_server.load("animations/glock.glb#Animation1"),
-        asset_server.load("animations/glock.glb#Animation2"),
-        asset_server.load("animations/glock.glb#Animation3"),
-        asset_server.load("animations/glock.glb#Animation4"),
-  ]));
-}
-
 pub fn load_glock_animation(
     animations: Res<GlockAnimations>,
     mut players_query: Query<&mut AnimationPlayer>,
@@ -56,7 +57,7 @@ pub fn load_glock_animation(
 ) {
     match state.get() {
         CurrentWeapon::Glock => {
-            for (player_entity, animation_entity_links) in player_character_query.iter_mut() {
+            for (_player_entity, animation_entity_links) in player_character_query.iter_mut() {
                 for &animation_entity in &animation_entity_links.0 { // Iterate through all linked entities
                     if let Ok(mut animation_player) = players_query.get_mut(animation_entity) {
                         keyboard_input.get_just_pressed().into_iter().for_each(|key_code| {

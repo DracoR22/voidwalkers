@@ -17,7 +17,7 @@ pub fn setup_muzzle_flash(
                 SceneBundle {
                     scene: muzzle_flash_handle.clone(),
                     transform: Transform {
-                        scale: Vec3::splat(0.3),
+                        scale: Vec3::splat(0.2),
                         translation: Vec3::new(90.2, 8.85, -200.0),
                         ..default()
                     },
@@ -25,7 +25,7 @@ pub fn setup_muzzle_flash(
                     ..default()
                 },
                 MuzzleFlash {
-                    timer: Timer::from_seconds(0.05, TimerMode::Once),
+                    timer: Timer::from_seconds(0.02, TimerMode::Once),
                     is_active: false,
                     frames_visible: 0
                 },
@@ -55,6 +55,9 @@ pub fn update_muzzle_flash(
     
     let forward_vector = camera_transform.forward();
     let camera_pitch = forward_vector.y;
+
+    let cam = camera_transform.rotation;
+
 
     // Check if the left mouse button is pressed
     if mouse_input.just_pressed(MouseButton::Left) {
@@ -93,43 +96,59 @@ pub fn update_muzzle_flash(
             muzzle_flash.frames_visible = 0;
             *visibility = Visibility::Visible;
             println!("Updated muzzle flash");
-            let mut new_y_pos = 72.0;
-            let mut new_z_pos = -200.50001;
+            let mut new_y_pos = 86.0;
+            let mut new_z_pos = -60.50001;
             
             println!("Y PITCH: {:?}", camera_pitch);
+            println!("ROTATION {}", cam);
 
             // camera looking up
             if camera_pitch > 0.66 {
-                println!("Camera is more looking up");
+                println!("Camera is more more more more looking up");
                 new_y_pos += camera_pitch * 310.0; 
             } 
             else if camera_pitch > 0.6 {
-                println!("Camera is more looking up");
+                println!("Camera is more more more looking up");
                 new_y_pos += camera_pitch * 290.0; 
             } 
-            else if camera_pitch > 0.47 {
-                println!("Camera is more looking up");
-                new_y_pos += camera_pitch * 260.0; 
+            else if camera_pitch > 0.2 {
+                println!("Camera is more more looking up");
+                new_y_pos += camera_pitch * 80.0; 
             } 
-            else if camera_pitch > 0.25 {
+            else if camera_pitch > 0.11 {
                 println!("Camera is more looking up");
-                new_y_pos += camera_pitch * 230.0; 
+                new_y_pos += camera_pitch * 100.0; 
             } 
-            else if camera_pitch > 0.02 {
+            else if camera_pitch > 0.004 {
                 println!("Camera is looking up");
-                new_y_pos += camera_pitch * 200.0; 
+                new_y_pos += camera_pitch * 120.0; 
             }
-            // camera looking down
-            else if camera_pitch < -0.04 {
+
+            else if camera_pitch < -0.2 {
+                println!("Camera is more looking down");
+                new_y_pos += camera_pitch * 40.0;
+                new_z_pos += camera_pitch.abs() * 80.0;
+         
+            }
+          
+            else if camera_pitch < -0.1 {
+                println!("Camera is more looking down");
+                new_y_pos += camera_pitch * 30.0;
+                new_z_pos += camera_pitch.abs() * 80.0;
+         
+            }
+              // camera looking down
+              else if camera_pitch < -0.05 {
                 println!("Camera is looking down");
-                new_y_pos += camera_pitch * 150.0;
-                new_z_pos += camera_pitch.abs() * 170.0;
-            // neutral camera
-            } else {
+                new_y_pos += camera_pitch * 10.0;
+                new_z_pos += camera_pitch.abs() * 100.0;
+         
+            } 
+              else {
                 println!("Camera is looking forward horizontally");
             }
             
-            transform.translation = Vec3::new(70.0, new_y_pos, new_z_pos);
+            transform.translation = Vec3::new(48.0, new_y_pos, new_z_pos);
 
             // rotation
             let pitch_rotation = Quat::from_rotation_x(camera_pitch * 1.5);

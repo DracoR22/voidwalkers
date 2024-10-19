@@ -12,7 +12,8 @@ pub fn spawn_walls(
     let initial_position = Vec3::new(1700.0, 156.0, -570.0);
     let spacing_x = 180.0 - 0.1; // The amount to subtract from the X position for each wall
 
-    let mesh = mesh_assets.add(Cuboid::new(180.0, 375.0, 5.0));
+    let wall_mesh = mesh_assets.add(Cuboid::new(180.0, 375.0, 5.0));
+    let wall_door_mesh = mesh_assets.add(Cuboid::new(180.0, 65.0, 5.0));
 
     let texture_handle: Handle<Image> = asset_server.load("textures/WallPaper_ALB.png");
     let normal_map_texture: Handle<Image> = asset_server.load("textures/WallPaper_NRM.png");
@@ -25,35 +26,38 @@ pub fn spawn_walls(
         ..default()
     });  
 
-    let mut walls_vec: Vec<(Vec3, Quat)> = Vec::new();
+    let mut walls_vec: Vec<(Vec3, Quat, Handle<Mesh>)> = Vec::new();
 
      // First row of walls
      for i in 0..9 {
         let x_position = initial_position.x - (i as f32) * spacing_x;
-        walls_vec.push((Vec3::new(x_position, initial_position.y, initial_position.z), Quat::IDENTITY));
+        walls_vec.push((Vec3::new(x_position, initial_position.y, initial_position.z), Quat::IDENTITY, wall_mesh.clone()));
     }
 
-    // Second row of walls (rotated)
-    for y in 0..9 {
+    // Second row of walls where door is located
+    for y in 0..2 {
         let z_position = -480.0 + (y as f32) * spacing_x;
-        walls_vec.push((Vec3::new(720.0, initial_position.y, z_position), Quat::from_rotation_y(89.53)));
+        walls_vec.push((Vec3::new(720.0, initial_position.y, z_position), Quat::from_rotation_y(89.53), wall_mesh.clone()));
     }
+
+    // door wall
+    walls_vec.push((Vec3::new(720.0, 307.0, -120.0), Quat::from_rotation_y(89.53), wall_door_mesh.clone()));
 
     // Third row of walls
     for k in 0..9 {
         let x_position = 320.0 + (k as f32) * spacing_x;
-        walls_vec.push((Vec3::new(x_position, initial_position.y, 500.0), Quat::from_rotation_y(std::f32::consts::PI)));
+        walls_vec.push((Vec3::new(x_position, initial_position.y, 500.0), Quat::from_rotation_y(std::f32::consts::PI), wall_mesh.clone()));
     }
 
     // Fourth row of walls (rotated)
     for t in 0..9 {
         let z_position = 885.0 - (t as f32) * spacing_x;
-        walls_vec.push((Vec3::new(1590.0, initial_position.y, z_position), Quat::from_rotation_y(-89.53)));
+        walls_vec.push((Vec3::new(1590.0, initial_position.y, z_position), Quat::from_rotation_y(-89.53), wall_mesh.clone()));
     }
 
-    for (translation, rotation) in walls_vec {
+    for (translation, rotation, mesh) in walls_vec {
         commands.spawn(PbrBundle {
-            mesh: mesh.clone(),
+            mesh: mesh,
             material: material_handle.clone(),
             transform: Transform {
                 translation,

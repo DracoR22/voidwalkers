@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
+use crate::house::components::DoorComponent;
+
 pub fn spawn_assets(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
@@ -66,6 +68,33 @@ pub fn spawn_assets(
            },
            ..default()
        });
+
+       // door frame
+       commands.spawn(SceneBundle {
+        scene: asset_server.load("models/door_frame.glb#Scene0"),
+        transform: Transform {
+            translation: Vec3::new(720.0, 0.0, -140.0), 
+            scale: Vec3::new(0.375, 0.4, 0.375),
+            ..default()
+        },
+        ..default()
+    });
+
+       // door
+       commands.spawn(SceneBundle {
+        scene: asset_server.load("models/wooden_door.glb#Scene0"),
+        transform: Transform {
+            translation: Vec3::new(720.0, 135.0, -140.0), 
+            scale: Vec3::new(155.0, 135.0, 155.0),
+            rotation: Quat::from_rotation_y(-std::f32::consts::PI / 2.0), 
+            ..default()
+        },
+        ..default()
+    }).insert(DoorComponent {
+        is_opening: false,
+        timer: Timer::from_seconds(1.0, TimerMode::Once)
+    });
+
 
     //    .with_children(|builder| {
     //        builder.spawn(SceneBundle {
@@ -209,4 +238,43 @@ pub fn spawn_assets(
     //     },
     //     ..default()
     // });
+}
+
+pub fn open_door(
+    mut door_query: Query<(&mut Transform, & mut DoorComponent)>,
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    time: Res<Time>
+) {
+
+   if let Ok((mut transform, mut door)) = door_query.get_single_mut() {
+       let hinge_offset = Vec3::new(0.0, 0.0, 1.0); 
+
+       if keyboard_input.just_pressed(KeyCode::KeyO) && !door.is_opening {
+          door.is_opening = true;
+          door.timer.reset();
+       }
+
+       if door.is_opening {
+           door.timer.tick(time.delta());
+           let progress = door.timer.elapsed_secs() / door.timer.duration().as_secs_f32();
+           
+           
+           // Apply smooth rotation based on progress
+           let current_rotation = transform.rotation;
+           
+           let target_rotation = Quat::from_rotation_y(0.0); // Fully opened position (90 degrees)
+           let initial_rotation = Quat::from_rotation_y(std::f32::consts::PI / 2.0); // Closed position
+           
+           let new_rotation = initial_rotation.slerp(target_rotation, progress);
+
+           // Apply rotation and adjust position for hinge
+           transform.rotation = new_rotation;
+           transform.translation = transform.translation + hinge_offset * (1.0 - progress);
+
+           // If the timer finishes, stop the animation
+           if door.timer.finished() {
+               door.is_opening = false;
+           }
+       }
+   }
 }
