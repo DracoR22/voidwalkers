@@ -74,7 +74,7 @@ pub fn spawn_assets(
         scene: asset_server.load("models/door_frame.glb#Scene0"),
         transform: Transform {
             translation: Vec3::new(720.0, 0.0, -140.0), 
-            scale: Vec3::new(0.375, 0.4, 0.375),
+            scale: Vec3::new(0.37, 0.4, 0.37),
             ..default()
         },
         ..default()
@@ -86,13 +86,15 @@ pub fn spawn_assets(
         transform: Transform {
             translation: Vec3::new(720.0, 135.0, -140.0), 
             scale: Vec3::new(155.0, 135.0, 155.0),
-            rotation: Quat::from_rotation_y(-std::f32::consts::PI / 2.0), 
+            rotation: Quat::from_rotation_y(std::f32::consts::PI / 2.0), 
             ..default()
         },
         ..default()
     }).insert(DoorComponent {
         is_opening: false,
-        timer: Timer::from_seconds(1.0, TimerMode::Once)
+        timer: Timer::from_seconds(0.2, TimerMode::Once),
+        is_opened: false,
+        initial_pos: Vec3::new(720.0, 135.0, -140.0), 
     });
 
 
@@ -247,34 +249,48 @@ pub fn open_door(
 ) {
 
    if let Ok((mut transform, mut door)) = door_query.get_single_mut() {
-       let hinge_offset = Vec3::new(0.0, 0.0, 1.0); 
+       let hinge_offset = Vec3::new(1.0, 0.0, 1.2); 
+       let translation_speed_factor = 0.4;
 
-       if keyboard_input.just_pressed(KeyCode::KeyO) && !door.is_opening {
+       if keyboard_input.just_pressed(KeyCode::KeyE) && !door.is_opening {
           door.is_opening = true;
           door.timer.reset();
        }
 
        if door.is_opening {
            door.timer.tick(time.delta());
+
            let progress = door.timer.elapsed_secs() / door.timer.duration().as_secs_f32();
+           let translation_progress = (door.timer.elapsed_secs() * translation_speed_factor) / door.timer.duration().as_secs_f32();
+
+
+           if door.is_opened {
+            let target_rotation = Quat::from_rotation_y(std::f32::consts::PI / 2.0); // Fully opened position (90 degrees)
+           let initial_rotation = Quat::from_rotation_y(0.0); // Closed position
            
+           let new_rotation = initial_rotation.slerp(target_rotation, progress);
            
-           // Apply smooth rotation based on progress
-           let current_rotation = transform.rotation;
+           transform.translation = transform.translation.lerp(door.initial_pos, translation_progress);
+           transform.rotation = new_rotation;
            
-           let target_rotation = Quat::from_rotation_y(0.0); // Fully opened position (90 degrees)
+           } else {
+            let target_rotation = Quat::from_rotation_y(0.0); // Fully opened position (90 degrees)
            let initial_rotation = Quat::from_rotation_y(std::f32::consts::PI / 2.0); // Closed position
            
            let new_rotation = initial_rotation.slerp(target_rotation, progress);
 
            // Apply rotation and adjust position for hinge
            transform.rotation = new_rotation;
-           transform.translation = transform.translation + hinge_offset * (1.0 - progress);
+           transform.translation = transform.translation + hinge_offset * (3.5 - progress);
+
+           }
 
            // If the timer finishes, stop the animation
            if door.timer.finished() {
-               door.is_opening = false;
-           }
+            door.is_opening = false;
+            door.is_opened = !door.is_opened;
+        }
+
        }
    }
 }

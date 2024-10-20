@@ -10,4 +10,6 @@ pub struct WallComponent;
 pub struct DoorComponent {
     pub is_opening: bool,
     pub timer: Timer,
+    pub is_opened: bool,
+    pub initial_pos: Vec3
 }
