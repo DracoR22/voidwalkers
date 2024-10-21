@@ -4,7 +4,7 @@ use bevy_hanabi::prelude::*;
 use bevy_rapier3d::prelude::*;
 
 use crate::{
-    common::entities::EntityType,
+    common::{entities::EntityType, states::CurrentWeapon},
     cubes::components::CubeComponent,
     effects::{blood_decal::spawn_blood, bullet_hole::spawn_plaster_bullethole},
     game::{
@@ -13,10 +13,7 @@ use crate::{
             constants::{MAX_BULLET_DISTANCE, TRACER_LIFETIME, TRACER_WIDTH},
         },
         weapons::{
-            common::{can_shoot_and_decrease_ammo, WeaponFireTimer},
-            components::{AK74Component, GlockComponent},
-            resources::{AK74Timer, GlockTimer},
-            state::CurrentWeapon,
+            ak74::components::AK74Component, common::{can_shoot_and_decrease_ammo, WeaponFireTimer}, glock::components::GlockComponent
         },
     },
 };
@@ -184,7 +181,7 @@ fn handle_shoot(
                     let forward_direction = player_rotation * Vec3::Z;
 
                     // I placed each bullethole one unit forward to the player direction
-                    let adjusted_position = end_position - forward_direction.normalize() * -1.0;
+                    let adjusted_position = end_position - forward_direction.normalize() * -1.2;
 
                     spawn_plaster_bullethole(
                         commands,
@@ -196,6 +193,8 @@ fn handle_shoot(
                     );
                     println!("Hit a wall component: {:?}", entity);
                 }
+
+                _ => ()
             }
         }
     }

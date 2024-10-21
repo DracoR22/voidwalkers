@@ -1,16 +1,13 @@
 use bevy::prelude::*;
-use common::{reload_weapon, update_weapon_timer, WeaponFireTimer};
-use glock::GlockPlugin;
-use resources::{AK74Timer, CasingAudioTimer, GlockTimer, WeaponAudios};
-use ak74::{audio::{play_ak74_audio,  setup_ak74_audio}, AK74Plugin};
-use weapon_audio::setup_weapon_audio;
+use bevy_kira_audio::prelude::AudioSource;
 
-pub mod components;
-pub mod resources;
+use common::{reload_weapon, update_weapon_timer, WeaponFireTimer};
+use glock::{resources::GlockTimer, GlockPlugin};
+use ak74::{audio::{play_ak74_audio,  setup_ak74_audio}, resources::AK74Timer, AK74Plugin};
+use weapon_audio::setup_weapon_audio;
 
 pub mod ak74;
 pub mod glock;
-pub mod state;
 pub mod common;
 pub mod weapon_audio;
 
@@ -35,3 +32,12 @@ impl Plugin for WeaponsPlugin {
         ));
     }
 }
+
+#[derive(Resource)]
+pub struct CasingAudioTimer {
+    pub timer: Timer,
+    pub shot_fired: bool,
+}
+
+#[derive(Resource, Default)]
+pub struct WeaponAudios(pub Vec<Handle<AudioSource>>);

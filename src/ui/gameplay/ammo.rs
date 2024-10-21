@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::game::weapons::{components::{AK74Component, GlockComponent}, state::CurrentWeapon};
+use crate::{common::states::CurrentWeapon, game::weapons::{ak74::components::AK74Component, glock::components::GlockComponent}};
 
 #[derive(Component)]
 pub struct AmmoText;

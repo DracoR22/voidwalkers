@@ -1,9 +1,10 @@
 use bevy::prelude::*;
 
-use super::resources::WeaponAudios;
 use crate::game::weapons::weapon_audio::WeaponAudioList::DRYFIRE;
 use bevy_kira_audio::AudioSource;
 use std::ops::Index;
+
+use super::WeaponAudios;
 pub fn setup_weapon_audio(asset_server: Res<AssetServer>, mut commands: Commands) {
     commands.insert_resource(WeaponAudios(vec![
         // general

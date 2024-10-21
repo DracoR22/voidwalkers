@@ -3,13 +3,14 @@ use audio::{play_ak74_audio, setup_ak74_audio};
 use bevy::prelude::*;
 use spawn::{despawn_ak74, respawn_ak74, spawn_ak74, update_gun_rotation};
 
-use crate::common::link_animations::link_multiple_animations;
+use crate::common::{link_animations::link_multiple_animations, states::CurrentWeapon};
 
-use super::state::CurrentWeapon;
 
 pub mod animations;
 pub mod audio;
 pub mod spawn;
+pub mod components;
+pub mod resources;
 
 pub struct AK74Plugin;
 

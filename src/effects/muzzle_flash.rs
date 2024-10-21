@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{game::weapons::{components::{AK74Component, GlockComponent}, state::CurrentWeapon, common::can_shoot_and_decrease_ammo}, game::player::components::{Player, PlayerFirstPersonCamera}};
+use crate::{common::states::CurrentWeapon, game::{player::components::{Player, PlayerFirstPersonCamera}, weapons::{ak74::components::AK74Component, common::can_shoot_and_decrease_ammo, glock::components::GlockComponent}}};
 
 use super::components::{HasMuzzleFlash, MuzzleFlash};
 

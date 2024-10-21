@@ -35,7 +35,7 @@ pub fn spawn_assets(
            transform: Transform::from_xyz(760.0, 286.0, -520.0),
            point_light: PointLight {
                intensity: 100_000_000_0.0,
-               range: 100_000_000.0,
+               range: 100_000_000_00.0,
                color: Color::rgb(1.0, 0.8, 0.6),
             //    shadows_enabled: true,
                ..default()
@@ -58,7 +58,7 @@ pub fn spawn_assets(
        commands
        .spawn(PointLightBundle {
            // transform: Transform::from_xyz(5.0, 8.0, 2.0),
-           transform: Transform::from_xyz(1420.0, 286.0, -510.0),
+           transform: Transform::from_xyz(1400.0, 286.0, -510.0),
            point_light: PointLight {
                intensity: 100_000_000_0.0,
                range: 100_000.0,
@@ -96,6 +96,19 @@ pub fn spawn_assets(
         is_opened: false,
         initial_pos: Vec3::new(720.0, 135.0, -140.0), 
     });
+
+    // light switch
+    commands.spawn(SceneBundle {
+        scene: asset_server.load("models/light_switch.glb#Scene0"),
+        transform: Transform {
+            translation: Vec3::new(723.0, 155.0, -275.0), 
+            scale: Vec3::splat(210.0),
+            // rotation: Quat::from_rotation_y(std::f32::consts::PI / 2.0), 
+            ..default()
+        },
+        ..default()
+    });
+
 
 
     //    .with_children(|builder| {
@@ -149,7 +162,7 @@ pub fn spawn_assets(
     commands.spawn(SceneBundle {
         scene: asset_server.load("models/antique_table.glb#Scene0"),
         transform: Transform {
-            translation: Vec3::new(760.0, 3.0, -420.0),
+            translation: Vec3::new(760.0, 2.0, -420.0),
             scale: Vec3::splat(137.0),
             rotation: Quat::from_rotation_y(std::f32::consts::PI / 2.0),
             ..default()
@@ -215,19 +228,6 @@ pub fn spawn_assets(
         },
         ..default()
     });
-
-    // floor lamp
-    // commands.spawn(SceneBundle {
-    //     scene: asset_server.load("models/floor-lamp.glb#Scene0"),
-    //     transform: Transform {
-    //         translation: Vec3::new(270.0, 1.0, -430.0),
-    //         scale: Vec3::splat(100.0),
-    //         rotation: Quat::from_rotation_y(std::f32::consts::PI),
-    //         ..default()
-    //     },
-    //     ..default()
-    // });
-
 
     // coffee table
     // commands.spawn(SceneBundle {

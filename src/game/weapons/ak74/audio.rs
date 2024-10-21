@@ -1,7 +1,9 @@
 use bevy::prelude::*;
 use bevy_kira_audio::prelude::*;
 
-use crate::game::weapons::{components::AK74Component, resources::{AK74Audios, AK74Timer, CasingAudioTimer}};
+use crate::game::weapons::{ak74::components::AK74Component, CasingAudioTimer};
+
+use super::resources::{AK74Audios, AK74Timer};
 
 pub fn setup_ak74_audio(asset_server: Res<AssetServer>, mut commands: Commands) {
  commands.insert_resource(AK74Audios(vec![

@@ -1,7 +1,9 @@
 use bevy::prelude::*;
 use bevy_kira_audio::prelude::*;
 
-use crate::game::weapons::{components::GlockComponent, resources::{CasingAudioTimer, GlockAudios, GlockTimer, WeaponAudios}, weapon_audio::WeaponAudioList};
+use crate::game::weapons::{glock::components::GlockComponent, weapon_audio::WeaponAudioList, CasingAudioTimer, WeaponAudios};
+
+use super::resources::{GlockAudios, GlockTimer};
 
 pub fn setup_glock_audio(asset_server: Res<AssetServer>, mut commands: Commands) {
     commands.insert_resource(GlockAudios(vec![

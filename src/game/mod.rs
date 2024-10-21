@@ -2,7 +2,9 @@ use bevy::prelude::*;
 
 use player::PlayerPlugin;
 use state::{game_state_input_events, GameState};
-use weapons::{state::CurrentWeapon, WeaponsPlugin};
+use weapons::{ WeaponsPlugin};
+
+use crate::common::states::CurrentWeapon;
 
 pub mod state;
 pub mod weapons;

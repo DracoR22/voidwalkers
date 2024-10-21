@@ -2,7 +2,7 @@ use std::time::Duration;
 use std::collections::HashSet;
 use bevy::prelude::*;
 
-use crate::{common::link_animations::MultipleAnimationEntityLinks, game::weapons::{components::GlockComponent, resources::GlockAnimations, state::CurrentWeapon}, game::player::components::Player};
+use crate::{common::{link_animations::MultipleAnimationEntityLinks, states::CurrentWeapon}, game::{player::components::Player, weapons::glock::{components::GlockComponent, resources::GlockAnimations}}};
 
 pub fn setup_glock_animations(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.insert_resource(GlockAnimations(vec![

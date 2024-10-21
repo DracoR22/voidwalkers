@@ -1,6 +1,6 @@
 use bevy::{input::mouse::MouseWheel, prelude::*};
 
-use crate::{game::player::components::{Player, PlayerFirstPersonCamera}, game::weapons::{components::{AK74Component, HasAK74}, state::CurrentWeapon}};
+use crate::{common::states::CurrentWeapon, game::{player::components::{Player, PlayerFirstPersonCamera}, weapons::ak74::components::{AK74Component, HasAK74}}};
 
 pub fn spawn_ak74(  
     mut commands: Commands,

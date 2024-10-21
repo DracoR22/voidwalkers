@@ -15,8 +15,8 @@ pub fn spawn_walls(
     let wall_mesh = mesh_assets.add(Cuboid::new(180.0, 375.0, 5.0));
     let wall_door_mesh = mesh_assets.add(Cuboid::new(150.0, 65.0, 5.0));
 
-    let texture_handle: Handle<Image> = asset_server.load("textures/WallPaper_ALB.png");
-    let normal_map_texture: Handle<Image> = asset_server.load("textures/WallPaper_NRM.png");
+    let texture_handle: Handle<Image> = asset_server.load("textures/Wall2_ALB.png");
+    let normal_map_texture: Handle<Image> = asset_server.load("textures/Wall2_NRM.png");
     // let rma_texture: Handle<Image> = asset_server.load("textures/WallPaper_RMA.png");
 
     let material_handle = material_assets.add(StandardMaterial {
@@ -59,7 +59,7 @@ pub fn spawn_walls(
     // Fourth row of walls (rotated)
     for t in 0..9 {
         let z_position = 885.0 - (t as f32) * spacing_x;
-        walls_vec.push((Vec3::new(1590.0, initial_position.y, z_position), Quat::from_rotation_y(-89.53), wall_mesh.clone()));
+        walls_vec.push((Vec3::new(1460.0, initial_position.y, z_position), Quat::from_rotation_y(-89.53), wall_mesh.clone()));
     }
 
     for (translation, rotation, mesh) in walls_vec {

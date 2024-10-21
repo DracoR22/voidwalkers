@@ -16,7 +16,7 @@ use crate::{common::commands::{action_from_input, Action}, game::player::{compon
 pub struct AK74Model;
 
 pub fn spawn_player_system(mut commands: Commands, mut mesh_assets: ResMut<Assets<Mesh>>, asset_server: Res<AssetServer>, keyboard_input: Res<ButtonInput<KeyCode>>) {
-    let player_size = 70.0;
+    let player_size = 100.0;
     let capsule_radius = player_size / 4.0;
 
       // Spawn the player entity

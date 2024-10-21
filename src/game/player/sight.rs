@@ -6,8 +6,8 @@ pub fn spawn_sight_dot(mut commands: Commands, assets_server: Res<AssetServer>) 
 commands.spawn((
     NodeBundle {
         style: Style {
-            width: Val::Px(6.0),
-            height: Val::Px(6.0),
+            width: Val::Px(3.0),
+            height: Val::Px(3.0),
             position_type: PositionType::Absolute,
             left: Val::Percent(50.0),
             top: Val::Percent(50.0),

@@ -4,5 +4,7 @@ use bevy::prelude::*;
 pub enum EntityType {
     Cube,
     Floor,
-    Wall
+    Wall,
+    Door,
+    Cat
 }

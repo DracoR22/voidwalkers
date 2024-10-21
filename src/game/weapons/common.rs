@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 
-use super::{components::{AK74Component, GlockComponent, Weapon}, glock::GLOCK_MAGAZINE_SIZE, state::CurrentWeapon};
+use crate::common::states::CurrentWeapon;
+
+use super::{ak74::components::AK74Component, glock::{components::GlockComponent, Weapon, GLOCK_MAGAZINE_SIZE}};
 
 #[derive(Resource)]
 pub struct WeaponFireTimer(pub Timer);
