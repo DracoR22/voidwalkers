@@ -10,7 +10,9 @@ pub enum Action {
     Reload,
     Shoot,
     Crouch,
-    TogglePhysics
+    TogglePhysics,
+    Interact,
+    ToggleDebugMenu
 }
 
 pub fn action_from_input(keyboard_input: &Res<ButtonInput<KeyCode>>) -> Vec<Action> {
@@ -38,9 +40,13 @@ pub fn action_from_input(keyboard_input: &Res<ButtonInput<KeyCode>>) -> Vec<Acti
         actions.push(Action::Crouch);
     }
 
+
     // Use just_pressed for actions that should only happen once per press
     if keyboard_input.just_pressed(KeyCode::KeyP) {
         actions.push(Action::TogglePhysics);
+    }
+    if keyboard_input.just_pressed(KeyCode::KeyE) {
+        actions.push(Action::Interact);
     }
 
     actions

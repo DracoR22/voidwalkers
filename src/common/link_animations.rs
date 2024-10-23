@@ -38,9 +38,9 @@ pub fn link_animations(
 }
 
 #[derive(Component)]
-pub struct MultipleAnimationEntityLinks(pub Vec<Entity>); // Store multiple entities
+pub struct MultipleAnimationEntityLinks(pub Vec<Entity>);
 
-// this implementation let us to have multiple animation players inside the same entity
+// this implementation let us have multiple animation players inside the same entity, why? because a player can own multiple weapons!
 pub fn link_multiple_animations(
     player_query: Query<Entity, Added<AnimationPlayer>>,
     parent_query: Query<&Parent>,

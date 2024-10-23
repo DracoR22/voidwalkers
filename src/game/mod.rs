@@ -9,6 +9,7 @@ use crate::common::states::CurrentWeapon;
 pub mod state;
 pub mod weapons;
 pub mod player;
+pub mod map;
 
 pub struct GamePlugin;
 
