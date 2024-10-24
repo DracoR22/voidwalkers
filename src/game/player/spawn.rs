@@ -1,23 +1,21 @@
 use bevy::{
-    input::{
-        mouse::{MouseButtonInput, MouseMotion, MouseWheel},
-    },
     core_pipeline::{
         bloom::{BloomCompositeMode, BloomSettings},
-        tonemapping::Tonemapping,
-    },
-    prelude::*,
+        tonemapping::Tonemapping, Skybox,
+    }, input::mouse::{MouseButtonInput, MouseMotion, MouseWheel}, prelude::*
 };
+use bevy_atmosphere::plugin::AtmosphereCamera;
 use bevy_rapier3d::prelude::*;
 
-use crate::{common::commands::{action_from_input, Action}, game::player::{components::{Player, PlayerFirstPersonCamera}, constants::{GRAVITY_SCALE, PLAYER_SPEED}}};
+use crate::{common::commands::{action_from_input, Action}, game::{map::skybox::{Cubemap, CUBEMAPS}, player::{components::{Player, PlayerFirstPersonCamera}, constants::{GRAVITY_SCALE, PLAYER_SPEED}}}};
 
 #[derive(Component)]
 pub struct AK74Model;
 
 pub fn spawn_player_system(mut commands: Commands, mut mesh_assets: ResMut<Assets<Mesh>>, asset_server: Res<AssetServer>, keyboard_input: Res<ButtonInput<KeyCode>>) {
     let player_size = 100.0;
-    let capsule_radius = player_size / 4.0;
+
+    // let skybox_handle = asset_server.load(CUBEMAPS[0].0);
 
       // Spawn the player entity
       commands.spawn((
@@ -44,16 +42,28 @@ pub fn spawn_player_system(mut commands: Commands, mut mesh_assets: ResMut<Asset
             Camera3dBundle {
                 camera: Camera {
                     hdr: true,
+                    
                     ..default()
                 },
+                projection: PerspectiveProjection {
+                    far: 10000.0, // Set the far plane to a large value to render distant objects and sky
+                    ..default()
+                }.into(),
                 tonemapping: Tonemapping::TonyMcMapface,
                 transform: Transform::from_xyz(0.0, 107.7, 10.5),
                 ..default()
             },
             BloomSettings::NATURAL,
-            PlayerFirstPersonCamera
+            PlayerFirstPersonCamera,
+            AtmosphereCamera::default()
         ));
     });
+
+    
+
+
+    
+   
 }
 
 pub fn rotate_character(
