@@ -4,11 +4,10 @@ use bevy_atmosphere::plugin::AtmosphereSkyBox;
 use bevy_kira_audio::prelude::*;
 use bevy_hanabi::prelude::*;
 use bevy_rapier3d::plugin::{NoUserData, RapierPhysicsPlugin};
-use voidhunt::{cubes::systems::spawn::spawn_cube_system, effects::EffectsPlugin, enemies::EnemiesPlugin, game::{map::skybox::{setup_skybox, }, GamePlugin}, house::HousePlugin, ui::GameUIPugin, window::WindowSetupPlugin};
+use voidhunt::game::map::MapPlugin;
+use voidhunt::{cubes::systems::spawn::spawn_cube_system, effects::EffectsPlugin, enemies::EnemiesPlugin, game::GamePlugin, house::HousePlugin, ui::GameUIPugin, window::WindowSetupPlugin};
 use bevy::render::render_resource::{AsBindGroup, ShaderRef};
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
-use bevy::prelude::AlphaMode;
-use bevy_atmosphere::prelude::*;
 
 // Custom material for the muzzle flash
 #[derive(Asset, TypePath, AsBindGroup, Debug, Clone)]
@@ -43,7 +42,7 @@ fn main() {
     .add_plugins(FrameTimeDiagnosticsPlugin::default())
     .add_plugins(HanabiPlugin)
     .add_plugins(AudioPlugin)
-    .add_plugins(AtmospherePlugin)
+    .add_plugins(MapPlugin)
     // .add_plugins(MaterialPlugin::<SkyboxMaterial>::default())
     .add_plugins(MaterialPlugin::<MuzzleFlashMaterial>::default())
     .add_plugins(WindowSetupPlugin)

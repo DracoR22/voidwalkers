@@ -7,7 +7,7 @@ use bevy::{
 use bevy_atmosphere::plugin::AtmosphereCamera;
 use bevy_rapier3d::prelude::*;
 
-use crate::{common::commands::{action_from_input, Action}, game::{map::skybox::{Cubemap, CUBEMAPS}, player::{components::{Player, PlayerFirstPersonCamera}, constants::{GRAVITY_SCALE, PLAYER_SPEED}}}};
+use crate::{common::commands::{action_from_input, Action}, game::player::{components::{Player, PlayerFirstPersonCamera}, constants::{GRAVITY_SCALE, PLAYER_SPEED}}};
 
 #[derive(Component)]
 pub struct AK74Model;
