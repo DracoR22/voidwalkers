@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::game::weapons::weapon_audio::WeaponAudioList::DRYFIRE;
+use crate::game::weapons::weapon_audio::WeaponAudioList::DryFire;
 use bevy_kira_audio::AudioSource;
 use std::ops::Index;
 
@@ -23,17 +23,17 @@ pub fn setup_weapon_audio(asset_server: Res<AssetServer>, mut commands: Commands
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum WeaponAudioList {
-    DRYFIRE,
-    BULLETCASING,
-    GLOCKFIRE,
-    GLOCKRELOADFULL,
-    AK74FIRE,
-    AK74RELOADFULL
+    DryFire,
+    BulletCasing,
+    GlockFire,
+    GlockReloadFull,
+    Ak74Fire,
+    Ak74RealodFull
 }
 
 impl Default for WeaponAudioList {
     fn default() -> Self {
-        self::DRYFIRE
+        self::DryFire
     }
 }
 

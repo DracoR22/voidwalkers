@@ -26,18 +26,18 @@ pub fn play_glock_audio(
 ) {
     // reload audio
     if keyboard_input.just_pressed(KeyCode::KeyR) {
-        audio.play(weapon_audios_handles[WeaponAudioList::GLOCKRELOADFULL].clone()).handle();
+        audio.play(weapon_audios_handles[WeaponAudioList::GlockReloadFull].clone()).handle();
     }
 
     // fire audio
     if let Ok(glock) = glock_query.get_single() {
       if mouse_input.just_pressed(MouseButton::Left)  {
         if glock.current_ammo > 0 {
-            audio.play(weapon_audios_handles[WeaponAudioList::GLOCKFIRE].clone());
+            audio.play(weapon_audios_handles[WeaponAudioList::GlockFire].clone());
             casing_timer.timer.reset();
             casing_timer.shot_fired = true;
         } else {
-            audio.play(weapon_audios_handles[WeaponAudioList::DRYFIRE].clone());
+            audio.play(weapon_audios_handles[WeaponAudioList::DryFire].clone());
           }
       } 
     }
@@ -50,7 +50,7 @@ pub fn play_glock_audio(
        // Start the timer if it's not already running
        if glock_timer.0.finished() {
            // Play the audio
-           audio.play(weapon_audios_handles[WeaponAudioList::GLOCKFIRE].clone()).handle();
+           audio.play(weapon_audios_handles[WeaponAudioList::GlockFire].clone()).handle();
            // Reset the timer for the next interval
            glock_timer.0.reset();
             casing_timer.timer.reset();
@@ -66,7 +66,7 @@ pub fn play_glock_audio(
 
      // If the casing timer has finished and a shot was fired, play the casing sound
      if casing_timer.timer.just_finished() && casing_timer.shot_fired {
-         audio.play(weapon_audios_handles[WeaponAudioList::BULLETCASING].clone());
+         audio.play(weapon_audios_handles[WeaponAudioList::BulletCasing].clone());
          casing_timer.shot_fired = false;  // Reset the flag
      }
 }

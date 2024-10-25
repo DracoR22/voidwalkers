@@ -34,10 +34,6 @@ fn main() {
             level: bevy::log::Level::ERROR,
             ..default()
         })
-        .set(AssetPlugin {
-            watch_for_changes_override: Some(true),
-            ..default()
-        })
     )
     .add_plugins(FrameTimeDiagnosticsPlugin::default())
     .add_plugins(HanabiPlugin)
