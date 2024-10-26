@@ -78,7 +78,7 @@ pub fn rotate_character(
 
 pub fn disable_player_physics_system(mut commands: Commands,  query: Query<(Entity, Option<&RigidBody>, Option<&Collider>), With<Player>>, keyboard_input: Res<ButtonInput<KeyCode>>) {
     let actions = action_from_input(&keyboard_input);
-   if  let Ok ((player, rigid_body, collider)) = query.get_single() {
+   if let Ok ((player, rigid_body, collider)) = query.get_single() {
     for action in actions {
         match action {
          Action::TogglePhysics => {

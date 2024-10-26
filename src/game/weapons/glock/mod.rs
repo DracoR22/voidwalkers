@@ -3,7 +3,7 @@ use bevy::prelude::*;
 
 use animations::{load_glock_animation, setup_glock_animations};
 use components::GlockComponent;
-use spawn::{despawn_glock, print_glock_position_system, spawn_glock, update_gun_rotation};
+use spawn::{despawn_glock, spawn_glock, update_gun_rotation};
 
 use crate::common::{link_animations::link_multiple_animations, states::CurrentWeapon};
 
@@ -35,7 +35,8 @@ impl Plugin for GlockPlugin {
             
          ))
          .add_systems(Update, (
-            play_glock_audio
+            play_glock_audio,
+            update_gun_rotation
          ).run_if(in_state(CurrentWeapon::Glock)))
          .add_systems(Update, update_gun_rotation.after(spawn_glock));
     }
