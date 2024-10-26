@@ -109,16 +109,6 @@ pub fn spawn_assets(
         ..default()
     });
 
-    commands.spawn(SceneBundle {
-        scene: asset_server.load("animations/makarov.glb#Scene0"),
-        transform: Transform {
-            translation: Vec3::new(300.0, 0.0, -140.0), 
-            scale: Vec3::splat(150.0),
-            ..default()
-        },
-        ..default()
-    });
-
 
 
     //    .with_children(|builder| {

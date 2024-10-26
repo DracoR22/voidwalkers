@@ -48,7 +48,7 @@ pub fn load_glock_animation(
     animations: Res<GlockAnimations>,
     mut players_query: Query<&mut AnimationPlayer>,
     mut current_animation: Local<GlockAnimationsList>,
-    mut player_character_query: Query<(&Player, &MultipleAnimationEntityLinks)>, // Use AnimationEntityLinks
+    mut player_character_query: Query<(&GlockComponent, &MultipleAnimationEntityLinks)>, // Use AnimationEntityLinks
     keyboard_input: Res<ButtonInput<KeyCode>>,
     mouse_input: Res<ButtonInput<MouseButton>>,
     state: Res<State<CurrentWeapon>>,

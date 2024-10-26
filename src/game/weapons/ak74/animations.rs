@@ -11,7 +11,9 @@ pub enum AK74AnimationsList {
   SHOOT,
   RELOAD,
   RELOADFAST,
-  RELOADFULL
+  RELOADFULL,
+
+  GlockReloadFull
 }
 
 impl Default for AK74AnimationsList {
@@ -38,14 +40,14 @@ impl From<&KeyCode> for AK74AnimationsList {
 
 pub fn setup_ak74_animations(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.insert_resource(AK74Animations(vec![
-        asset_server.load("animations/ak74.glb#Animation0"), // add more animations
+        asset_server.load("animations/ak74.glb#Animation0"), 
         asset_server.load("animations/ak74.glb#Animation1"),
         asset_server.load("animations/ak74.glb#Animation2"),
         asset_server.load("animations/ak74.glb#Animation3"),
         asset_server.load("animations/ak74.glb#Animation4"),
         asset_server.load("animations/ak74.glb#Animation5"),
         asset_server.load("animations/ak74.glb#Animation6"),
-        asset_server.load("animations/ak74.glb#Animation7")
+        asset_server.load("animations/ak74.glb#Animation7"),
     ]));
 }
 
@@ -61,9 +63,10 @@ pub fn load_ak74_animation(
 ) {
     match state.get() {
         CurrentWeapon::AK74 => {
-            for (player_entity, animation_entity_links) in &mut player_character_query.iter_mut() {
+            for (player_entity, animation_entity_links) in player_character_query.iter_mut() {
                 for &animation_entity in &animation_entity_links.0 {
                 if let Ok(mut animation_player) = players_query.get_mut(animation_entity) {
+                    // println!("LOADING ANIMATIONS");
                     keyboard_input.get_just_pressed().into_iter().for_each(|key_code| *current_animation = AK74AnimationsList::from(key_code));
             
                     // shoot
@@ -117,6 +120,34 @@ pub fn load_ak74_animation(
                 }}
             }
         }
+        
+        // CurrentWeapon::Glock => {
+        //     for (player_entity, animation_entity_links) in player_character_query.iter_mut() {
+        //         for &animation_entity in &animation_entity_links.0 {
+        //         if let Ok(mut animation_player) = players_query.get_mut(animation_entity) {
+        //             // println!("LOADING ANIMATIONS");
+        //             // keyboard_input.get_just_pressed().into_iter().for_each(|key_code| *current_animation = AK74AnimationsList::from(key_code));
+
+        //             if keyboard_input.just_pressed(KeyCode::KeyR) {
+                       
+        //                 *current_animation = AK74AnimationsList::GlockReloadFull
+        //             }
+
+            
+        //             let animation: &mut AnimationPlayer = animation_player.play_with_transition(
+        //                 animations.0[*current_animation as usize].clone_weak(), 
+        //                 Duration::from_millis(100), // transition duration
+        //             );
+
+        //             if *current_animation == AK74AnimationsList::GlockReloadFull {
+        //                 println!("ANIMATION IS GLOCK LOOPING");
+        //                 animation.repeat();
+        //                 animation.set_speed(2.0); 
+        //         }
+                
+        //         }}
+        //     }
+        // }
 
         _ => ()
     }

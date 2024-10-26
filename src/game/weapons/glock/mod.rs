@@ -36,7 +36,7 @@ impl Plugin for GlockPlugin {
          ))
          .add_systems(Update, (
             play_glock_audio,
-            update_gun_rotation
+            
          ).run_if(in_state(CurrentWeapon::Glock)))
          .add_systems(Update, update_gun_rotation.after(spawn_glock));
     }
