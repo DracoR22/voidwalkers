@@ -85,7 +85,7 @@ pub fn spawn_assets(
         scene: asset_server.load("models/wooden_door.glb#Scene0"),
         transform: Transform {
             translation: Vec3::new(720.0, 135.0, -140.0), 
-            scale: Vec3::new(155.0, 135.0, 155.0),
+            scale: Vec3::new(165.0, 135.0, 165.0),
             rotation: Quat::from_rotation_y(std::f32::consts::PI / 2.0), 
             ..default()
         },

@@ -28,7 +28,7 @@ pub enum WeaponAudioList {
     GlockFire,
     GlockReloadFull,
     Ak74Fire,
-    Ak74RealodFull
+    Ak74RealoadFull
 }
 
 impl Default for WeaponAudioList {
