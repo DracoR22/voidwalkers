@@ -8,3 +8,9 @@ pub enum EntityType {
     Door,
     Cat
 }
+
+#[derive(Component, PartialEq)]
+pub enum WeaponType {
+    Ak74,
+    Glock
+}

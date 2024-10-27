@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::common::states::CurrentWeapon;
+use crate::common::{entities::WeaponType, states::CurrentWeapon};
 
 use super::{
     ak74::components::AK74Component,
@@ -29,7 +29,7 @@ pub fn spawn_weapons(mut commands: Commands, asset_server: Res<AssetServer>) {
             reload_time: 1.0,
             reload_timer: 0.0,
         },
-    ));
+    )).insert(WeaponType::Ak74);
 
     commands.spawn((
         SceneBundle {
@@ -48,7 +48,7 @@ pub fn spawn_weapons(mut commands: Commands, asset_server: Res<AssetServer>) {
             max_ammo: MAX_GLOCK_AMMO,
             timer: 0.6,
         },
-    ));
+    )).insert(WeaponType::Glock);
 }
 
 pub fn reload_weapon(

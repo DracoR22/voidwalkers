@@ -3,11 +3,11 @@ use bevy::prelude::*;
 
 use animations::{load_glock_animation, setup_glock_animations};
 use components::GlockComponent;
-use spawn::{despawn_glock, spawn_glock, update_gun_rotation};
+use spawn::update_gun_rotation;
 
 use crate::common::{link_animations::link_multiple_animations, states::CurrentWeapon};
 
-use super::{ak74::components::AK74Component};
+use super::{ak74::components::AK74Component, weapon_manager::equip_weapon};
 
 pub mod spawn;
 pub mod animations;
@@ -28,8 +28,6 @@ impl Plugin for GlockPlugin {
             setup_glock_audio
         ))
          .add_systems(Update, (
-            spawn_glock,
-            despawn_glock,
             link_multiple_animations,
             load_glock_animation,
             
@@ -38,7 +36,7 @@ impl Plugin for GlockPlugin {
             play_glock_audio,
             
          ).run_if(in_state(CurrentWeapon::Glock)))
-         .add_systems(Update, update_gun_rotation.after(spawn_glock));
+         .add_systems(Update, update_gun_rotation.after(equip_weapon));
     }
 }
 
