@@ -4,8 +4,8 @@ use bevy_atmosphere::plugin::AtmosphereSkyBox;
 use bevy_kira_audio::prelude::*;
 use bevy_hanabi::prelude::*;
 use bevy_rapier3d::plugin::{NoUserData, RapierPhysicsPlugin};
-use voidhunt::game::map::MapPlugin;
-use voidhunt::{cubes::systems::spawn::spawn_cube_system, effects::EffectsPlugin, enemies::EnemiesPlugin, game::GamePlugin, house::HousePlugin, ui::GameUIPugin, window::WindowSetupPlugin};
+use descent::game::map::MapPlugin;
+use descent::{cubes::systems::spawn::spawn_cube_system, effects::EffectsPlugin, enemies::EnemiesPlugin, game::GamePlugin, house::HousePlugin, ui::GameUIPugin, window::WindowSetupPlugin};
 use bevy::render::render_resource::{AsBindGroup, ShaderRef};
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 

@@ -68,7 +68,9 @@ pub fn reload_weapon(
             }
         }
 
-        CurrentWeapon::AK74 => {}
+        CurrentWeapon::AK74 => {
+            
+        }
 
         CurrentWeapon::None => {}
     }

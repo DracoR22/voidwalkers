@@ -3,6 +3,7 @@ use bevy_atmosphere::prelude::*;
 use skybox::{daylight_cycle, setup_environment};
 
 pub mod skybox;
+pub mod audio;
 
 pub struct MapPlugin;
 

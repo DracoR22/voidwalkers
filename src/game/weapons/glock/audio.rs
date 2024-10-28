@@ -7,9 +7,9 @@ use super::resources::{GlockAudios, GlockTimer};
 
 pub fn setup_glock_audio(asset_server: Res<AssetServer>, mut commands: Commands) {
     commands.insert_resource(GlockAudios(vec![
-        asset_server.load("audios/glock-fire.ogg"),
-        asset_server.load("audios/glock-reload-empty.ogg"),
-        asset_server.load("audios/bullet-casing-bounce.ogg"),
+        asset_server.load("audio/glock-fire.ogg"),
+        asset_server.load("audio/glock-reload-empty.ogg"),
+        asset_server.load("audio/bullet-casing-bounce.ogg"),
     ]));
 }
 

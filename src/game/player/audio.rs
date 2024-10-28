@@ -17,10 +17,10 @@ pub struct PlayerAudios(pub Vec<Handle<AudioSource>>);
 
 pub fn setup_player_audio(asset_server: Res<AssetServer>, mut commands: Commands) {
     commands.insert_resource(PlayerAudios(vec![
-        asset_server.load("audios/player_step_1.ogg"),
-        asset_server.load("audios/player_step_2.ogg"),
-        asset_server.load("audios/player_step_3.ogg"),
-        asset_server.load("audios/player_step_4.ogg"),
+        asset_server.load("audio/player_step_1.ogg"),
+        asset_server.load("audio/player_step_2.ogg"),
+        asset_server.load("audio/player_step_3.ogg"),
+        asset_server.load("audio/player_step_4.ogg"),
     ]));
 }
 

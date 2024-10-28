@@ -7,9 +7,9 @@ use super::resources::{AK74Audios, AK74Timer};
 
 pub fn setup_ak74_audio(asset_server: Res<AssetServer>, mut commands: Commands) {
  commands.insert_resource(AK74Audios(vec![
-    asset_server.load("audios/ak74-fire.ogg"),
-    asset_server.load("audios/ak74-reload-empty.ogg"),
-    asset_server.load("audios/bullet-casing-bounce.ogg"),
+    asset_server.load("audio/ak74-fire.ogg"),
+    asset_server.load("audio/ak74-reload-empty.ogg"),
+    asset_server.load("audio/bullet-casing-bounce.ogg"),
  ]));
 }
 
