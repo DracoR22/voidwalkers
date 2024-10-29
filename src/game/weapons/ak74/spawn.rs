@@ -18,9 +18,9 @@ pub fn update_gun_rotation(
             let camera_pitch = forward_vec.y; 
 
             let dynamic_z_offset = if camera_pitch >= 0.0 {
-                8.9 - (camera_pitch * -5.2)  // Move closer when looking up
+                19.6 - (camera_pitch * -5.2)  // Move closer when looking up
             } else {
-                8.9 + (camera_pitch.abs() * -30.2)  // Move further away when looking down
+                19.6 + (camera_pitch.abs() * -30.2)  // Move further away when looking down
             };
 
             // Adjust the gun's position relative to the camera
