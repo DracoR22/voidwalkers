@@ -13,7 +13,7 @@ pub struct WeaponFireTimer(pub Timer);
 pub fn spawn_weapons(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
         SceneBundle {
-            scene: asset_server.load("animations/ak74.glb#Scene0"),
+            scene: asset_server.load("animations/saiga.glb#Scene0"),
             transform: Transform {
                 scale: Vec3::splat(50.0),
                 translation: Vec3::new(0.2, 85.5, 0.3),

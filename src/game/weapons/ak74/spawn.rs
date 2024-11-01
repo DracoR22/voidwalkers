@@ -18,9 +18,9 @@ pub fn update_gun_rotation(
             let camera_pitch = forward_vec.y; 
 
             let dynamic_z_offset = if camera_pitch >= 0.0 {
-                19.6 - (camera_pitch * -5.2)  // Move closer when looking up
+                7.2 - (camera_pitch * -5.2)  // Move closer when looking up
             } else {
-                19.6 + (camera_pitch.abs() * -30.2)  // Move further away when looking down
+                7.2 + (camera_pitch.abs() * -30.2)  // Move further away when looking down
             };
 
             // Adjust the gun's position relative to the camera
@@ -28,7 +28,7 @@ pub fn update_gun_rotation(
                 + camera_transform.forward() * dynamic_z_offset // Move it forward 
                 + camera_transform.right() * 0.70 // Move it to the right 
                 - camera_transform.up() * 1.1 // Move it down 
-                + Vec3::new(0.0, -18.3, 0.0); // Additional downward offset
+                + Vec3::new(0.0, -28.3, 0.0); // Additional downward offset
             }
         }
     }
