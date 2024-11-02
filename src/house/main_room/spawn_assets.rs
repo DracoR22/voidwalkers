@@ -219,10 +219,10 @@ pub fn spawn_assets(
 
      // wood window next to sofa
      commands.spawn(SceneBundle {
-        scene: asset_server.load("models/wooden_window.glb#Scene0"),
+        scene: asset_server.load("models/wood_window.glb#Scene0"),
         transform: Transform {
-            translation: Vec3::new(1215.0, 5.0, -50.0),
-            scale: Vec3::splat(3.0),
+            translation: Vec3::new(850.0, 200.0, -500.0),
+            scale: Vec3::splat(1.0),
             rotation: Quat::from_rotation_y(-std::f32::consts::PI / 2.0),
             ..default()
         },

@@ -67,7 +67,6 @@ pub fn load_ak74_animation(
             for (player_entity, animation_entity_links) in player_character_query.iter_mut() {
                 for &animation_entity in &animation_entity_links.0 {
                     if let Ok(mut animation_player) = players_query.get_mut(animation_entity) {
-                        // println!("LOADING ANIMATIONS");
                         keyboard_input.get_just_pressed().into_iter().for_each(|key_code| {
                                  pressed_keys.insert(*key_code);
                                 *current_animation = AK74AnimationsList::from(key_code)
@@ -93,7 +92,7 @@ pub fn load_ak74_animation(
 
                         if mouse_input.just_released(MouseButton::Left) {
                             // Stop looping or switch animation when left-click is released
-                            *current_animation = AK74AnimationsList::Idle; // Reset or change animation on release
+                            *current_animation = AK74AnimationsList::Idle; 
                         }
 
                         if *current_animation == AK74AnimationsList::Idle || *current_animation == AK74AnimationsList::Walk {
