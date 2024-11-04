@@ -5,7 +5,7 @@ use bevy_kira_audio::prelude::*;
 use bevy_hanabi::prelude::*;
 use bevy_rapier3d::plugin::{NoUserData, RapierPhysicsPlugin};
 use descent::game::map::MapPlugin;
-use descent::{cubes::systems::spawn::spawn_cube_system, effects::EffectsPlugin, enemies::EnemiesPlugin, game::GamePlugin, house::HousePlugin, ui::GameUIPugin, window::WindowSetupPlugin};
+use descent::{cubes::systems::spawn::spawn_cube_system, effects::EffectsPlugin, game::GamePlugin, house::HousePlugin, ui::GameUIPugin, window::WindowSetupPlugin};
 use bevy::render::render_resource::{AsBindGroup, ShaderRef};
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 
@@ -45,7 +45,6 @@ fn main() {
     .add_plugins(RapierPhysicsPlugin::<NoUserData>::default())
     .add_plugins(GamePlugin)
     .add_plugins(HousePlugin)
-    .add_plugins(EnemiesPlugin)
     .add_plugins(GameUIPugin)
     .add_systems(Startup, spawn_cube_system)
     .add_plugins(EffectsPlugin)

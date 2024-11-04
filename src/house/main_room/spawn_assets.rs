@@ -221,7 +221,7 @@ pub fn spawn_assets(
      commands.spawn(SceneBundle {
         scene: asset_server.load("models/wood_window.glb#Scene0"),
         transform: Transform {
-            translation: Vec3::new(850.0, 200.0, -500.0),
+            translation: Vec3::new(845.0, 130.0, -572.0),
             scale: Vec3::splat(1.0),
             rotation: Quat::from_rotation_y(-std::f32::consts::PI / 2.0),
             ..default()

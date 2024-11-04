@@ -1,8 +1,9 @@
 use bevy::prelude::*;
 
+use enemies::EnemiesPlugin;
 use player::PlayerPlugin;
 use state::{game_state_input_events, GameState};
-use weapons::{ WeaponsPlugin};
+use weapons::{WeaponsPlugin};
 
 use crate::common::states::CurrentWeapon;
 
@@ -10,6 +11,7 @@ pub mod state;
 pub mod weapons;
 pub mod player;
 pub mod map;
+pub mod enemies;
 
 pub struct GamePlugin;
 
@@ -20,6 +22,7 @@ impl Plugin for GamePlugin {
          .init_state::<CurrentWeapon>()
          .add_plugins(PlayerPlugin)
          .add_plugins(WeaponsPlugin)
+         .add_plugins(EnemiesPlugin)
          .add_systems(Update, game_state_input_events);
     }
 }

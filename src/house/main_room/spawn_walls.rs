@@ -13,7 +13,11 @@ pub fn spawn_walls(
     let spacing_x = 180.0 - 0.1; // The amount to subtract from the X position for each wall
 
     let wall_mesh = mesh_assets.add(Cuboid::new(180.0, 375.0, 5.0));
-    let wall_door_mesh = mesh_assets.add(Cuboid::new(150.0, 65.0, 5.0));
+
+    let short_wall_mesh = mesh_assets.add(Cuboid::new(170.0, 150.0, 5.0));
+    let short_wall_mesh_high = mesh_assets.add(Cuboid::new(170.0, 70.0, 5.0));
+
+    let wall_door_mesh = mesh_assets.add(Cuboid::new(150.0, 55.0, 5.0));
 
     let texture_handle: Handle<Image> = asset_server.load("textures/Wall2_ALB.png");
     let normal_map_texture: Handle<Image> = asset_server.load("textures/Wall2_NRM.png");
@@ -29,10 +33,24 @@ pub fn spawn_walls(
     let mut walls_vec: Vec<(Vec3, Quat, Handle<Mesh>)> = Vec::new();
 
      // First row of walls
-     for i in 0..9 {
-        let x_position = initial_position.x - (i as f32) * spacing_x;
+    //  for i in 0..9 {
+    //     let x_position = initial_position.x - (i as f32) * spacing_x;
+    //     walls_vec.push((Vec3::new(x_position, initial_position.y, initial_position.z), Quat::IDENTITY, wall_mesh.clone()));
+    // }
+
+    for i in 0..4 {
+        let x_position = initial_position.x - 143.0 - (i as f32) * spacing_x;
         walls_vec.push((Vec3::new(x_position, initial_position.y, initial_position.z), Quat::IDENTITY, wall_mesh.clone()));
     }
+
+     /* window gap */
+    walls_vec.push((Vec3::new(680.0, initial_position.y, initial_position.z), Quat::IDENTITY, wall_mesh.clone()));
+
+    // lower portion
+    walls_vec.push((Vec3::new(850.0, initial_position.y - 100.0, initial_position.z), Quat::IDENTITY, short_wall_mesh.clone()));
+
+    // higher portion
+    walls_vec.push((Vec3::new(850.0, initial_position.y + 152.0, initial_position.z), Quat::IDENTITY, short_wall_mesh_high.clone()));
 
     // Second row of walls where door is located
     for y in 0..2 {
