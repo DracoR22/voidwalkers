@@ -31,20 +31,14 @@ impl Material for MuzzleFlashMaterial {
 
 fn main() {
     App::new()
-    .add_plugins((DefaultPlugins
+    .add_plugins(DefaultPlugins
         .set(LogPlugin {
             filter: "error".into(),
             level: bevy::log::Level::ERROR,
             ..default()
-        }), DefaultPlugins.set(AssetPlugin {
-            watch_for_changes_override: Some(true),
-            ..default()
-        }))
+        
+        })
     )
-
-    .register_type::<ComponentA>()
-    .register_type::<ComponentB>()
-    .register_type::<ResourceA>()
 
     .add_plugins(FrameTimeDiagnosticsPlugin::default())
     .add_plugins(HanabiPlugin)
@@ -59,19 +53,30 @@ fn main() {
     .add_plugins(GameUIPugin)
     .add_systems(Startup, spawn_cube_system)
     .add_plugins(EffectsPlugin)
-    // .add_systems(
-    //     Update,
-    //     (
-    //         cycle_cubemap_asset,
-    //         asset_loaded.after(cycle_cubemap_asset),
-    //         animate_light_direction,
-    //     ),
-    // )
-    // .add_systems(Startup, setup_skybox)
+   
+
+    .register_type::<ComponentA>()
+    .register_type::<ComponentB>()
+    .register_type::<ResourceA>()
+
+    .add_systems(
+        Startup,
+        (save_scene_system, load_scene_system),
+    )
+    .add_systems(Update, log_system)
+
+
+
     .run();
 }
 
 
+// Registered components must implement the `Reflect` and `FromWorld` traits.
+// The `Reflect` trait enables serialization, deserialization, and dynamic property access.
+// `Reflect` enable a bunch of cool behaviors, so its worth checking out the dedicated `reflect.rs`
+// example. The `FromWorld` trait determines how your component is constructed when it loads.
+// For simple use cases you can just implement the `Default` trait (which automatically implements
+// `FromWorld`). The simplest registered component just needs these three derives:
 #[derive(Component, Reflect, Default)]
 #[reflect(Component)] // this tells the reflect derive to also reflect component behaviors
 struct ComponentA {
@@ -79,18 +84,16 @@ struct ComponentA {
     pub y: f32,
 }
 
+// Some components have fields that cannot (or should not) be written to scene files. These can be
+// ignored with the #[reflect(skip_serializing)] attribute. This is also generally where the `FromWorld`
+// trait comes into play. `FromWorld` gives you access to your App's current ECS `Resources`
+// when you construct your component.
 #[derive(Component, Reflect)]
-#[reflect(Component)]
+#[reflect(Component, FromWorld)]
 struct ComponentB {
     pub value: String,
     #[reflect(skip_serializing)]
     pub _time_since_startup: Duration,
-}
-
-#[derive(Resource, Reflect, Default)]
-#[reflect(Resource)]
-struct ResourceA {
-    pub score: u32,
 }
 
 impl FromWorld for ComponentB {
@@ -103,6 +106,12 @@ impl FromWorld for ComponentB {
     }
 }
 
+// Resources can be serialized in scenes as well, with the same requirements `Component`s have.
+#[derive(Resource, Reflect, Default)]
+#[reflect(Resource)]
+struct ResourceA {
+    pub score: u32,
+}
 
 // The initial scene file will be loaded below and not change when the scene is saved
 const SCENE_FILE_PATH: &str = "scenes/load_scene_example.scn.ron";
@@ -111,17 +120,19 @@ const SCENE_FILE_PATH: &str = "scenes/load_scene_example.scn.ron";
 const NEW_SCENE_FILE_PATH: &str = "scenes/load_scene_example-new.scn.ron";
 
 fn load_scene_system(mut commands: Commands, asset_server: Res<AssetServer>) {
-    // Spawning a DynamicSceneRoot creates a new entity and spawns new instances
+    // "Spawning" a scene bundle creates a new entity and spawns new instances
     // of the given scene's entities as children of that entity.
-    // Scenes can be loaded just like any other asset.
     commands.spawn(DynamicSceneBundle {
+        // Scenes are loaded just like any other asset.
         scene: asset_server.load(SCENE_FILE_PATH),
         ..default()
     });
 }
 
-
-pub fn log_system(
+// This system logs all ComponentA components in our world. Try making a change to a ComponentA in
+// load_scene_example.scn. If you enable the `file_watcher` cargo feature you should immediately see
+// the changes appear in the console whenever you make a change.
+fn log_system(
     query: Query<(Entity, &ComponentA), Changed<ComponentA>>,
     res: Option<Res<ResourceA>>,
 ) {

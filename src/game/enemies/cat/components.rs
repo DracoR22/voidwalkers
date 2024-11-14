@@ -6,4 +6,4 @@ pub struct AnimationState {
 }
 
 #[derive(Component)]
-pub struct Cat;
+pub struct CatComponent;

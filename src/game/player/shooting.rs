@@ -164,6 +164,12 @@ fn handle_shoot(
                     spawn_blood(commands, effects, 0.0, 0.0, 0.0, Some(entity), asset_server);
                 }
 
+                EntityType::Cat => {
+                    println!("Hit a Cat component");
+
+
+                }
+
                 EntityType::Floor => {
                     spawn_plaster_bullethole(
                         commands,

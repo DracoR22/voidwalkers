@@ -1,0 +1,46 @@
+(
+  resources: {
+    "descent::ResourceA": (
+      score: 1,
+    ),
+  },
+  entities: {
+    4294967296: (
+      components: {
+        "descent::ComponentB": (
+          value: "hello",
+        ),
+        "descent::ComponentA": (
+          x: 1.0,
+          y: 2.0,
+        ),
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+      },
+    ),
+    4294967297: (
+      components: {
+        "descent::ComponentA": (
+          x: 3.0,
+          y: 4.0,
+        ),
+      },
+    ),
+  },
+)

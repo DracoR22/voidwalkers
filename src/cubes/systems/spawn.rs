@@ -20,11 +20,11 @@ pub fn spawn_cube_system(mut commands: Commands, mut mesh_assets: ResMut<Assets<
     commands.spawn(PbrBundle {
         mesh: mesh.clone(),
         material: material.clone(),
-        transform: Transform::from_translation(Vec3::new(400.0, 70.0, 0.0)), // Position it above the ground
+        transform: Transform::from_translation(Vec3::new(400.0, 70.0, 0.0)), 
         ..default()
     })
     .insert(RigidBody::Dynamic)
-    .insert(Collider::cuboid(width / 2.0, height / 2.0, depth / 2.0)) // Use half-extents for the collider
+    .insert(Collider::cuboid(width / 2.0, height / 2.0, depth / 2.0)) 
     .insert(CubeComponent)
     .insert(EntityType::Cube)
     .insert(GravityScale(70.0));

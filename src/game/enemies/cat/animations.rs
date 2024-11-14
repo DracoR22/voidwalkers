@@ -2,11 +2,11 @@ use bevy::prelude::*;
 
 use crate::common::link_animations::AnimationEntityLink;
 
-use super::{components::Cat, resources::CatAnimations};
+use super::{components::CatComponent, resources::CatAnimations};
 
 pub fn play_cat_animation(
     mut players_query: Query<&mut AnimationPlayer>,
-    mut player_character_query: Query<(&Cat, &AnimationEntityLink)>,
+    mut player_character_query: Query<(&CatComponent, &AnimationEntityLink)>,
     animations: Res<CatAnimations>,
 ) {
     for (cat, animation_entity_link) in &mut player_character_query.iter_mut() {
