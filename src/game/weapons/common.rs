@@ -3,8 +3,8 @@ use bevy::prelude::*;
 use crate::common::{entities::WeaponType, states::CurrentWeapon};
 
 use super::{
-    ak74::components::AK74Component,
-    glock::{components::GlockComponent, Weapon, GLOCK_MAGAZINE_SIZE, MAX_GLOCK_AMMO},
+    ak74::{self, components::AK74Component},
+    glock::{components::GlockComponent, Weapon, AK74_MAGAZINE_SIZE, GLOCK_MAGAZINE_SIZE, MAX_AK74_AMMO, MAX_GLOCK_AMMO},
 };
 
 #[derive(Resource)]
@@ -23,9 +23,9 @@ pub fn spawn_weapons(mut commands: Commands, asset_server: Res<AssetServer>) {
             ..default()
         },
         AK74Component {
-            current_ammo: 35,
-            magazine_size: 35,
-            max_ammo: 325,
+            current_ammo: AK74_MAGAZINE_SIZE,
+            magazine_size: AK74_MAGAZINE_SIZE,
+            max_ammo: MAX_AK74_AMMO,
             reload_time: 1.0,
             reload_timer: 0.0,
         },
@@ -69,7 +69,11 @@ pub fn reload_weapon(
         }
 
         CurrentWeapon::AK74 => {
-            
+            if let Ok(mut ak74) = ak74_query.get_single_mut() {
+                if keyboard_input.just_pressed((KeyCode::KeyR)) && ak74.current_ammo != AK74_MAGAZINE_SIZE {
+                    ak74.magazine_size += AK74_MAGAZINE_SIZE - ak74.current_ammo;
+                }
+            }
         }
 
         CurrentWeapon::None => {}

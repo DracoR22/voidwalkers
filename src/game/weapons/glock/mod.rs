@@ -18,6 +18,9 @@ pub mod resources;
 pub const MAX_GLOCK_AMMO: usize = 125;
 pub const GLOCK_MAGAZINE_SIZE: usize = 15;
 
+pub const MAX_AK74_AMMO: usize = 325;
+pub const AK74_MAGAZINE_SIZE: usize = 45;
+
 pub struct GlockPlugin;
 
 impl Plugin for GlockPlugin {
