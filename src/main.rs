@@ -53,11 +53,6 @@ fn main() {
     .add_plugins(GameUIPugin)
     .add_systems(Startup, spawn_cube_system)
     .add_plugins(EffectsPlugin)
-   
-
-    .register_type::<ComponentA>()
-    .register_type::<ComponentB>()
-    .register_type::<ResourceA>()
 
     .add_systems(
         Startup,
