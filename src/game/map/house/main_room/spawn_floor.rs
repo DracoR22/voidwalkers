@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
-use crate::{common::entities::EntityType, house::components::FloorComponent};
+use crate::{common::entities::EntityType, game::map::house::components::FloorComponent};
 
 pub fn spawn_floor(mut commands: Commands, asset_server: Res<AssetServer>) {
     let floor_model = asset_server.load("models/wooden_floor.glb#Scene0");

@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
-use crate::house::components::DoorComponent;
+use crate::game::map::house::components::{self, DoorComponent};
 
 pub fn spawn_assets(
     mut commands: Commands,

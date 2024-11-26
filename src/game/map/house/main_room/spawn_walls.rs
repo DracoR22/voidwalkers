@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 
-use crate::{common::entities::EntityType, house::components::WallComponent};
+use crate::{common::entities::EntityType, game::map::house::components::WallComponent};
 
 pub fn spawn_walls(
     mut commands: Commands,
