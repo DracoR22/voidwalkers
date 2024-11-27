@@ -1,10 +1,9 @@
 use bevy::prelude::*;
-use fps::{update_game_fps, write_game_fps, GameFPSText, GameFpsRoot};
+use debug_menu::fps::{update_game_fps, write_game_fps, GameFPSText, GameFpsRoot};
 use gameplay::GamePlayUIPlugin;
-use position::{update_player_position, write_player_position, PlayerPosition};
+use debug_menu::position::{update_player_position, write_player_position, PlayerPosition};
 
-pub mod position;
-pub mod fps;
+pub mod debug_menu;
 pub mod gameplay;
 
 #[derive(Component)]
